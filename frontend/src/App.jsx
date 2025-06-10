@@ -1,13 +1,21 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/css/style.scss';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import Home from './components/frontend/Home';
+import About from './components/frontend/About';
 
 function App() {
 
-  return (
-    <>
-     <button className='btn btn-primary'>Click Here...</button>
-    </>
-  )
+    return (
+        <>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/about' element={<About />} />
+                </Routes>
+            </BrowserRouter>
+        </>
+    )
 }
 
 export default App
