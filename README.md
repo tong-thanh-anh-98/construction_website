@@ -1,6 +1,36 @@
+Setup project:
+Install backend:
+
+- cd "project name"
+- composer create-project laravel/laravel backend
+
+Install frontend ReactJs with vite:
+
+- npm create vite@latest
+- enter project name: frontend
+- select react
+- select javascript
+  - cd "frontend name"
+  - npm install
+  - npm run dev
+
+########################################################################
+#################################################################
+########################################################
+################################################
+
 Install Frontend:
+
+- react bootstrap: npm install react-bootstrap bootstrap
 - react-router-dom: npm i react-router-dom
-- sass-embedded: npm i sass-embedded hoặc lệnh npm install -D sass-embedded
-- Swiper React Components:  npm i swiper
-##########################################
+- sass-embedded: npm i sass-embedded "OR" npm install -D sass-embedded
+- Swiper React Components: npm i swiper
+
+########################################################################
+#################################################################
+########################################################
+################################################
+
 Install Backend:
+
+- Install Laravel Sanctum: php artisan install:api
