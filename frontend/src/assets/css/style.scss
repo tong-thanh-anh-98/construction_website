@@ -1,12 +1,14 @@
 // Global Colors
-$primary-color: #fe538d;
-$secondary-color: #FFB703;
+// $primary-color: #fe538d;
+// $secondary-color: #FFB703;
+$primary-color: #6f42c1;
+$secondary-color: #8d6e63;
 $text-color: #000;
 $text-white: #FFFFFF;
 $dark-background: #222725;
 $light-background: #9e9b9b;
 
-// font 
+// font text
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 body {
@@ -343,5 +345,29 @@ footer {
 .section-9 {
     .card {
         border-radius: 40px;
+    }
+}
+
+.login-form {
+    .card {
+        width: 450px;
+    }
+}
+
+.dashboard {
+    .card {
+        min-height: 400px;
+    }
+}
+
+.sidebar {
+    ul {
+        li {
+            a {
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            }
+        }
     }
 }

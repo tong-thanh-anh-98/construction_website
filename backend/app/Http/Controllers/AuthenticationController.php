@@ -22,7 +22,7 @@ class AuthenticationController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false,
+                    'status' => 422,
                     'message' => 'Validation failed.',
                     'errors' => $validator->errors(),
                 ], 422);
@@ -40,12 +40,12 @@ class AuthenticationController extends Controller
                         'id' => Auth::user()->id,
                         'token' => $token,
                         'status' => 200,
-                        'message' => 'You authentication successfully.',
+                        'message' => 'Admin authentication successfully.',
                     ], 200);
                 } else {
                     return response()->json([
                         'status' => 422,
-                        'message' => 'Email/Password is incorrect.',
+                        'message' => 'Either Email/Password is incorrect.',
                     ], 422);
                 }
             }
