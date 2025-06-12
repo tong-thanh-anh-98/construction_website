@@ -10,17 +10,19 @@ const Blogs = () => {
             <Header />
             <main>
                 <Hero
-                    preHeading='Latest Insights'
-                    heading='Blogs & New'
-                    text='Explore expert opinions, project updates, and industry trends. Stay informed with the latest from Amazing Constructions.'
+                    preHeading="Góc Nhìn Mới"
+                    heading="Blog & Tin Tức"
+                    text="Khám phá góc nhìn chuyên gia, cập nhật dự án và xu hướng ngành. Đón đọc những thông tin mới nhất từ Amazing Constructions."
                 />
 
                 <section className='section-6 bg-light py-5'>
                     <div className="container">
                         <div className="section-header text-center">
-                            <span>Blog & New</span>
-                            <h2>Latest Updates and Industry Insights</h2>
-                            <p>Discover the latest articles, news, and trends in the construction industry. We share real-world insights, technology updates, and professional perspectives from our ongoing projects.</p>
+                            <span>Blog & Tin Tức</span>
+                            <h2>Cập Nhật Mới Nhất & Góc Nhìn Ngành</h2>
+                            <p>
+                                Cùng khám phá những bài viết, tin tức và xu hướng mới trong ngành xây dựng. Chúng tôi chia sẻ góc nhìn thực tế, cập nhật công nghệ và kinh nghiệm từ các dự án đang triển khai.
+                            </p>
                         </div>
                         <div className="row pt-3">
                             {[...Array(3)].map((_, index) => (
@@ -32,9 +34,9 @@ const Blogs = () => {
 
                                         <div className="card-body p-4">
                                             <div className='mb-3'>
-                                                <a href="#" className='title'>Blog title</a>
+                                                <a href="#" className='title'>Tiêu đề bài viết</a>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Read More</a>
+                                            <a href="#" className='btn btn-primary small'>Xem thêm</a>
                                         </div>
                                     </div>
                                 </div>

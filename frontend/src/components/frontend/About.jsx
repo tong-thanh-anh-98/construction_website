@@ -11,9 +11,9 @@ const About = () => {
             <Header />
             <main>
                 <Hero
-                    preHeading='Quality. Integrity. Value'
-                    heading='About Us'
-                    text='We bring your visions to life through exceptional craftsmanship, <br /> attention to detail and a passion for building lasting value.'
+                    preHeading="Chất lượng. Uy tín. Giá trị."
+                    heading="Giới Thiệu"
+                    text="Chúng tôi hiện thực hóa ý tưởng của bạn bằng tay nghề tinh xảo, <br /> chú trọng từng chi tiết và xây dựng giá trị bền vững."
                 />
 
                 <AboutUS />
@@ -22,11 +22,10 @@ const About = () => {
                 <section className="section-8 bg-light py-5">
                     <div className="container-fluid py-5">
                         <div className="section-header text-center">
-                            <span>Team</span>
-                            <h2>Our Team</h2>
+                            <span>Đội Ngũ</span>
+                            <h2>Đội Ngũ Của Chúng Tôi</h2>
                             <p>
-                                We are a team of passionate architects, engineers, and professionals with creativity and experience at our core.
-                                Every member plays a vital role in delivering efficient, sustainable, and uniquely crafted construction solutions.
+                                Chúng tôi là tập thể kiến trúc sư, kỹ sư và chuyên gia đầy đam mê, sáng tạo và kinh nghiệm. Mỗi thành viên đều góp phần mang đến giải pháp xây dựng hiệu quả, bền vững và khác biệt.
                             </p>
                         </div>
                         <div className="row pt-3">
@@ -39,10 +38,10 @@ const About = () => {
 
                                         <div className="card-body p-4">
                                             <div className="card-title pb-0 mb-0">
-                                                No Name
+                                                Họ Và Tên
                                             </div>
                                             <div className="card-sub-title mb-2">
-                                                Construction Architect
+                                                Kiến trúc sư xây dựng
                                             </div>
                                             <a href="#">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-linkedin" viewBox="0 0 16 16">

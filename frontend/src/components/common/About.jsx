@@ -11,14 +11,14 @@ const About = () => {
                     </div>
 
                     <div className="col-md-6">
-                        <span>About Us</span>
-                        <h2>Crafting structures that last a lifetime</h2>
+                        <span>Giới Thiệu</span>
+                        <h2>Kiến tạo công trình bền vững</h2>
                         <p>
-                            Crafting structures that last a lifetime. Crafting structures that last a lifetime. Crafting structures that last a lifetime.
+                            Chúng tôi xây dựng những công trình chất lượng, mang lại giá trị lâu dài cho khách hàng.
                         </p>
 
                         <p>
-                            Crafting structures that last a lifetime. Crafting structures that last a lifetime. Crafting structures that last a lifetime.
+                            Với đội ngũ chuyên nghiệp và tận tâm, chúng tôi hiện thực hóa mọi ý tưởng của bạn.
                         </p>
                     </div>
                 </div>

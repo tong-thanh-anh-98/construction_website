@@ -12,22 +12,24 @@ const Projects = () => {
             <Header />
             <main>
                 <Hero
-                    preHeading='Building with Vision, Creating with Purpose'
-                    heading='Out Project'
-                    text='We are proud to showcase our featured projects that reflect our commitment to quality, innovation, and sustainability. <br />
-                    From social housing and residential buildings to commercial developments — each project is a testament to our dedication and expertise.'
+                    preHeading="Kiến Tạo Tương Lai, Dẫn Đầu Chất Lượng"
+                    heading="Dấu Ấn Từ Những Dự Án Nổi Bật"
+                    text="Mỗi công trình là minh chứng cho năng lực vượt trội và cam kết không ngừng về chất lượng, sáng tạo và bền vững. <br />
+    Từ nhà ở xã hội đến dự án thương mại cao cấp — chúng tôi không chỉ xây dựng, mà còn kiến tạo giá trị dài lâu cho cộng đồng và đối tác."
                 />
 
                 {/* Our Projects */}
                 <section className="section-3 bg-light py-5">
                     <div className="container py-5">
                         <div className="section-header text-center">
-                            <span>Our Projects</span>
-                            <h2>Our construction projects</h2>
-                            <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                            <span>Dự Án Tiêu Biểu</span>
+                            <h2>Những Công Trình Chúng Tôi Đã Thực Hiện</h2>
+                            <p>
+                                Chúng tôi mang đến giải pháp xây dựng toàn diện — từ thiết kế, thi công đến bàn giao hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng tuyệt đối từ khách hàng là ưu tiên hàng đầu.
+                            </p>
                         </div>
-                        <div className="row pt-4">
 
+                        <div className="row pt-4">
                             {[...Array(3)].map((_, index) => (
                                 <div className="col-md-4 col-lg-4" key={index}>
                                     <div className="item">
@@ -37,13 +39,15 @@ const Projects = () => {
 
                                         <div className="service-body">
                                             <div className="service-title">
-                                                <h3>Social Housing – Quality for the Community</h3>
+                                                <h3>Nhà Ở Xã Hội – Chất Lượng Vì Cộng Đồng</h3>
                                             </div>
 
                                             <div className="service-content">
-                                                <p>We are proud to deliver multiple social housing projects aimed at providing safe, comfortable, and sustainable living spaces for low- and middle-income residents. Each project is cost-effective yet maintains high standards of quality and aesthetics.</p>
+                                                <p>
+                                                    Chúng tôi tự hào thực hiện nhiều dự án nhà ở xã hội nhằm mang đến không gian sống an toàn, tiện nghi và bền vững cho người dân có thu nhập thấp và trung bình. Mỗi công trình đều tối ưu chi phí nhưng vẫn đảm bảo chất lượng và thẩm mỹ vượt trội.
+                                                </p>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Read More</a>
+                                            <a href="#" className='btn btn-primary small'>Xem Thêm</a>
                                         </div>
                                     </div>
                                 </div>

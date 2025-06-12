@@ -12,12 +12,12 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ms-auto">
-                            <Nav.Link href="/" className='nav-link'>Home</Nav.Link>
-                            <Nav.Link href="/about" className='nav-link'>About Us</Nav.Link>
-                            <Nav.Link href="/services" className='nav-link'>Services</Nav.Link>
-                            <Nav.Link href="/projects" className='nav-link'>Projects</Nav.Link>
-                            <Nav.Link href="/blogs" className='nav-link'>Blogs</Nav.Link>
-                            <Nav.Link href="/contact" className='nav-link'>Contact Us</Nav.Link>
+                            <Nav.Link href="/" className='nav-link'>Trang chủ</Nav.Link>
+                            <Nav.Link href="/about" className='nav-link'>Giới Thiệu</Nav.Link>
+                            <Nav.Link href="/services" className='nav-link'>Dịch Vụ</Nav.Link>
+                            <Nav.Link href="/projects" className='nav-link'>Dự Án</Nav.Link>
+                            <Nav.Link href="/blogs" className='nav-link'>Blog & Tin Tức</Nav.Link>
+                            <Nav.Link href="/contact" className='nav-link'>Liên Hệ</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>

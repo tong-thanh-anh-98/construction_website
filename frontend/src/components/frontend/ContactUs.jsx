@@ -20,16 +20,17 @@ const ContactUs = () => {
                 <section className="section-9 py-5">
                     <div className="container">
                         <div className="section-header text-center">
-                            <h2>Contact Us</h2>
+                            <h2>Liên Hệ</h2>
                             <p>
-                                Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.
+                                Bạn có câu hỏi hoặc dự án cần thực hiện? Chúng tôi luôn sẵn sàng hỗ trợ. Hãy liên hệ để cùng nhau tạo nên những công trình tuyệt vời.
                             </p>
                         </div>
+
                         <div className="row mt-5">
                             <div className="col-md-3">
                                 <div className="card shadow border-0 mb-3">
                                     <div className="card-body p-4">
-                                        <h3>Call Us</h3>
+                                        <h3>Gọi ngay</h3>
                                         <div>
                                             <a href="#">0989.890.123</a>
                                         </div>
@@ -37,7 +38,7 @@ const ContactUs = () => {
                                             <a href="#">0989.890.456</a>
                                         </div>
 
-                                        <h3 className='mt-4'>Your can write us</h3>
+                                        <h3 className='mt-4'>Gửi email cho chúng tôi</h3>
                                         <div>
                                             <a href="#">contact@construction.com</a>
                                         </div>
@@ -45,9 +46,9 @@ const ContactUs = () => {
                                             <a href="#">contact@construction.vn</a>
                                         </div>
 
-                                        <h3 className='mt-4'>Address</h3>
+                                        <h3 className='mt-4'>Địa chỉ</h3>
                                         <div>
-                                            133 Quang Trung, <br /> Go Vap district, Ho Chi Minh city.
+                                            133 Quang Trung, <br /> Quận Gò Vấp, TP. Hồ Chí Minh
                                         </div>
                                     </div>
                                 </div>

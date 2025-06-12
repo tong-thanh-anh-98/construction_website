@@ -24,14 +24,14 @@ const Home = () => {
                     <div className="hero d-flex align-items-center">
                         <div className="container-fluid">
                             <div className="text-center">
-                                <span>Welcome to Us</span>
-                                <h1>Timeless architecture <br /> where classic charm meets modern sophistication.</h1>
+                                <span>Construction Website</span>
+                                <h1>Kiến trúc đỉnh cao — Tinh tế & Bền vững</h1>
                                 <p>
-                                    We bring your visions to life through exceptional craftsmanship, attention to detail, and a passion for building lasting value.<br />
+                                    Biến ý tưởng thành công trình thực tế với chất lượng vượt trội và đam mê sáng tạo.<br />
                                 </p>
                                 <div className="mt-4">
-                                    <a className='btn btn-primary large'>Contact Now</a>
-                                    <a className='btn btn-secondary ms-2 large'>View Projects</a>
+                                    <a className='btn btn-primary large'>Liên Hệ</a>
+                                    <a className='btn btn-secondary ms-2 large'> Xem Dự Án</a>
                                 </div>
                             </div>
                         </div>
@@ -45,9 +45,11 @@ const Home = () => {
                 <section className="section-3 bg-light py-5">
                     <div className="container-fluid py-5">
                         <div className="section-header text-center">
-                            <span>Our Services</span>
-                            <h2>Our construction services</h2>
-                            <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                            <span>Dịch Vụ</span>
+                            <h2>Dịch vụ xây dựng của chúng tôi</h2>
+                            <p>
+                                Chúng tôi cung cấp giải pháp xây dựng toàn diện — từ thiết kế, thi công đến hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng.
+                            </p>
                         </div>
                         <div className="row pt-4">
                             {[...Array(4)].map((_, index) => (
@@ -59,13 +61,15 @@ const Home = () => {
 
                                         <div className="service-body">
                                             <div className="service-title">
-                                                <h3>Specialty Construction</h3>
+                                                <h3>Xây dựng chuyên biệt</h3>
                                             </div>
 
                                             <div className="service-content">
-                                                <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                                                <p>
+                                                    Chúng tôi cung cấp giải pháp xây dựng trọn gói — từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng.
+                                                </p>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Read More</a>
+                                            <a href="#" className="btn btn-primary small">Xem thêm</a>
                                         </div>
                                     </div>
                                 </div>
@@ -78,9 +82,11 @@ const Home = () => {
                 <section className="section-4">
                     <div className="container py-5">
                         <div className="section-header text-center">
-                            <span>Why Choose Us</span>
-                            <h2>Our construction projects</h2>
-                            <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                            <span>Vì Sao Chọn Chúng Tôi</span>
+                            <h2>Dự án xây dựng tiêu biểu</h2>
+                            <p>
+                                Chúng tôi mang đến giải pháp xây dựng toàn diện — từ thiết kế đến hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng.
+                            </p>
                         </div>
                         <div className="row pt-4">
                             <div className="col-md-4">
@@ -89,9 +95,11 @@ const Home = () => {
                                         <img src={Icon1} alt="" />
                                     </div>
                                     <div className="card-title mt-3">
-                                        <h3>Cutting-Edge Solutions</h3>
+                                        <h3>Giải pháp tiên tiến</h3>
                                     </div>
-                                    <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                                    <p>
+                                        Chúng tôi cung cấp giải pháp xây dựng toàn diện — từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, tiến độ và sự hài lòng của khách hàng.
+                                    </p>
                                 </div>
                             </div>
 
@@ -101,9 +109,11 @@ const Home = () => {
                                         <img src={Icon2} alt="" />
                                     </div>
                                     <div className="card-title mt-3">
-                                        <h3>Cutting-Edge Solutions</h3>
+                                        <h3>Giải pháp tiên tiến</h3>
                                     </div>
-                                    <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                                    <p>
+                                        Chúng tôi cung cấp giải pháp xây dựng toàn diện — từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, tiến độ và sự hài lòng của khách hàng.
+                                    </p>
                                 </div>
                             </div>
 
@@ -113,9 +123,11 @@ const Home = () => {
                                         <img src={Icon3} alt="" />
                                     </div>
                                     <div className="card-title mt-3">
-                                        <h3>Cutting-Edge Solutions</h3>
+                                        <h3>Giải pháp tiên tiến</h3>
                                     </div>
-                                    <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                                    <p>
+                                        Chúng tôi cung cấp giải pháp xây dựng toàn diện — từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, tiến độ và sự hài lòng của khách hàng.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -126,10 +138,13 @@ const Home = () => {
                 <section className="section-3 bg-light py-5">
                     <div className="container-fluid py-5">
                         <div className="section-header text-center">
-                            <span>Our Projects</span>
-                            <h2>Our construction projects</h2>
-                            <p>We provide comprehensive construction solutions — from design and execution to project completion. Committed to quality, timeliness, and customer satisfaction.</p>
+                            <span>Dự Án</span>
+                            <h2>Các công trình tiêu biểu</h2>
+                            <p>
+                                Chúng tôi thực hiện các dự án xây dựng trọn gói — từ thiết kế, thi công đến hoàn thiện. Cam kết chất lượng, tiến độ và sự hài lòng của khách hàng.
+                            </p>
                         </div>
+
                         <div className="row pt-4">
                             {[...Array(4)].map((_, index) => (
                                 <div className="col-md-3 col-lg-3" key={index}>
@@ -140,13 +155,15 @@ const Home = () => {
 
                                         <div className="service-body">
                                             <div className="service-title">
-                                                <h3>Social Housing – Quality for the Community</h3>
+                                                <h3>Nhà ở xã hội – Chất lượng vì cộng đồng</h3>
                                             </div>
 
                                             <div className="service-content">
-                                                <p>We are proud to deliver multiple social housing projects aimed at providing safe, comfortable, and sustainable living spaces for low- and middle-income residents. Each project is cost-effective yet maintains high standards of quality and aesthetics.</p>
+                                                <p>
+                                                    Chúng tôi tự hào thực hiện nhiều dự án nhà ở xã hội, mang đến không gian sống an toàn, tiện nghi và bền vững cho người dân có thu nhập thấp và trung bình. Dự án tiết kiệm chi phí nhưng vẫn đảm bảo chất lượng và tính thẩm mỹ cao.
+                                                </p>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Read More</a>
+                                            <a href="#" className='btn btn-primary small'>Xem thêm</a>
                                         </div>
                                     </div>
                                 </div>
@@ -158,9 +175,11 @@ const Home = () => {
                 <section className="section-5 py-5">
                     <div className="container">
                         <div className="section-header text-center">
-                            <span>Testimonials</span>
-                            <h2>What people are saying about us</h2>
-                            <p>We always prioritize customer satisfaction. Positive feedback from our partners and clients is a testament to the quality, reliability, and dedication we bring to every project.</p>
+                            <span>Khách Hàng Nói Gì</span>
+                            <h2>Những đánh giá về chúng tôi</h2>
+                            <p>
+                                Chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu. Những phản hồi tích cực từ đối tác và khách hàng là minh chứng cho chất lượng, uy tín và sự tận tâm trong từng dự án.
+                            </p>
                         </div>
                     </div>
                     <Swiper
@@ -182,7 +201,7 @@ const Home = () => {
                                         </div>
                                         <div className="content pb-2">
                                             <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae molestias nihil excepturi reiciendis repudiandae reprehenderit, accusamus architecto dolore non quaerat tempora veritatis culpa porro, tenetur amet obcaecati eveniet quas alias.
+                                                Chúng tôi rất hài lòng với chất lượng và tiến độ thi công. Đội ngũ làm việc chuyên nghiệp, luôn lắng nghe và đáp ứng đúng yêu cầu thiết kế của chúng tôi.
                                             </p>
                                         </div>
                                         <hr />
@@ -192,8 +211,8 @@ const Home = () => {
                                                 <img src={AvatarImg} alt="" width={50} />
                                             </div>
                                             <div className='ps-3'>
-                                                <div className='name'>No Name</div>
-                                                <div>Architect</div>
+                                                <div className='name'>Họ Và Tên</div>
+                                                <div>Khách hàng</div>
                                             </div>
                                         </div>
                                     </div>
@@ -206,10 +225,13 @@ const Home = () => {
                 <section className='section-6 bg-light py-5'>
                     <div className="container">
                         <div className="section-header text-center">
-                            <span>Blog & New</span>
-                            <h2>Latest Updates and Industry Insights</h2>
-                            <p>Discover the latest articles, news, and trends in the construction industry. We share real-world insights, technology updates, and professional perspectives from our ongoing projects.</p>
+                            <span>Blog & Tin Tức</span>
+                            <h2>Cập nhật mới nhất & góc nhìn chuyên ngành</h2>
+                            <p>
+                                Khám phá những bài viết, tin tức và xu hướng mới trong ngành xây dựng. Chúng tôi chia sẻ góc nhìn thực tế, công nghệ mới và kinh nghiệm từ các dự án đang triển khai.
+                            </p>
                         </div>
+
                         <div className="row pt-3">
                             {[...Array(3)].map((_, index) => (
                                 <div className="col-md-4" key={index}>
@@ -220,9 +242,9 @@ const Home = () => {
 
                                         <div className="card-body p-4">
                                             <div className='mb-3'>
-                                                <a href="#" className='title'>Blog title</a>
+                                                <a href="#" className='title'>Tiêu đề bài viết</a>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Read More</a>
+                                            <a href="#" className='btn btn-primary small'>Xem Thêm</a>
                                         </div>
                                     </div>
                                 </div>
