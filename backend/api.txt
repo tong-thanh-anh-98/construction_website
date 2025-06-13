@@ -1,0 +1,12 @@
+Admin Service:
+function: create
+method: POST,
+route: http://localhost:8000/api/services
+
+{
+  "title": "Thiết kế kiến trúc và Nội thất",
+  "slug": "thiet-ke-kien-truc-va-noi-that",
+  "short_desc": "Dịch vụ thiết kế hiện đại, tối ưu không gian sống.",
+  "content": "Chúng tôi cung cấp giải pháp thiết kế kiến trúc và nội thất toàn diện, phù hợp từng phong cách và nhu cầu khách hàng.",
+  "status": 1
+}

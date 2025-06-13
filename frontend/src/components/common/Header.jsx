@@ -7,7 +7,7 @@ const Header = () => {
             <div className="container py-3">
                 <Navbar expand="lg">
                     <Navbar.Brand href="/" className='logo'>
-                        <span>Constructions </span> Website
+                        Website<span> Xây Dựng</span>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

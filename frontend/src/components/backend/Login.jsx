@@ -9,7 +9,7 @@ import { AuthContext } from './context/AuthContext';
 
 const Login = () => {
     const {login} = useContext(AuthContext);
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useContext(false);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const {
