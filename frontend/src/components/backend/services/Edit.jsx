@@ -1,9 +1,10 @@
 import React from 'react'
-import Header from '../common/Header'
-import Footer from '../common/Footer'
-import Sidebar from '../common/Sidebar'
+import Sidebar from '../../common/Sidebar'
+import { Link } from 'react-router-dom'
+import Footer from '../../common/Footer'
+import Header from '../../common/Header'
 
-const Dashboard = () => {
+const Edit = () => {
     return (
         <>
             <Header />
@@ -15,11 +16,14 @@ const Dashboard = () => {
                             <Sidebar />
                         </div>
 
-                        <div className="col-md-9 dashboard">
+                        <div className="col-md-9">
                             {/* Dashboard */}
                             <div className="card shadow border-0">
-                                <div className="card-body d-flex justify-content-center align-items-center">
-                                    <h4>BẢNG ĐIỀU KHIỂN</h4>
+                                <div className="card-body">
+                                    <div className="d-flex justify-content-between">
+                                        <h4 className='h5'><Link to="/admin/services">Services</Link> / Edit</h4>
+                                        {/* <Link to="/admin/services" className="btn btn-primary">Back</Link> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -31,4 +35,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default Edit

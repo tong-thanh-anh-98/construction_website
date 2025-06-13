@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../backend/context/AuthContext'
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
     const { logout } = useContext(AuthContext);
@@ -8,8 +9,8 @@ const Sidebar = () => {
             <div className="card-body py-4 sidebar">
                 <h4>Danh Mục</h4>
                 <ul>
-                    <li><a href="#">Bảng Điều Khiển</a></li>
-                    <li><a href="#">Dịch Vụ</a></li>
+                    <li><Link to="/admin/dashboard">Bảng Điều Khiển</Link></li>
+                    <li><Link to="/admin/services">Dịch Vụ</Link></li>
                     <li><a href="#">Dự Án</a></li>
                     <li><a href="#">Bài Viết</a></li>
                     <li>

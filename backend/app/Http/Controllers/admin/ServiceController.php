@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Service;
 use App\Models\TempImage;
+use App\Helpers\SlugHelper;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +22,7 @@ class ServiceController extends Controller
     public function index()
     {
         try {
-            $services = Service::where('status', 1)->orderBy('created_at', 'desc')->get();
+            $services = Service::orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'status'  => 200,
@@ -56,16 +57,18 @@ class ServiceController extends Controller
             ]);
 
             // If no slug from user, create one from title
-            if (empty($data['slug'])) {
-                $data['slug'] = Str::slug($data['title']);
-            }
+            // if (empty($data['slug'])) {
+            //     $data['slug'] = Str::slug($data['title']);
+            // }
+            $data['slug'] = SlugHelper::generateSlug($data['slug'] ?? $data['title']);
 
             // Khởi tạo trước để có $serviceId cho tên file
             $service = Service::create($data);
 
             // Nếu có ảnh tạm, xử lý ảnh và gán tên ảnh vào
             $fileName = null;
-            if ((int)$request->imageId > 0) {
+            // if ((int)$request->imageId > 0) {
+            if ($request->has('imageId') && (int)$request->imageId > 0) {
                 $fileName = $this->handleImageUpload($request->imageId, $service->id);
 
                 if ($fileName) {
