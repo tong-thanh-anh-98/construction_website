@@ -8,8 +8,8 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthContext } from './context/AuthContext';
 
 const Login = () => {
-    const {login} = useContext(AuthContext);
-    const [disable, setDisable] = useContext(false);
+    const { login } = useContext(AuthContext);
+    const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const {
@@ -74,6 +74,7 @@ const Login = () => {
                                                 }
                                             })}
                                             type="text"
+                                            autoComplete="email"
                                             className={`form-control ${errors.email && 'is-invalid'}`}
                                             placeholder='Enter email'
                                         />
@@ -83,21 +84,6 @@ const Login = () => {
                                         }
                                     </div>
 
-                                    {/* <div className="mb-3">
-                                        <label htmlFor="" className="form-label">Password</label>
-                                        <input
-                                            {...register("password",
-                                                { required: "The password field is required." }
-                                            )}
-                                            type="password"
-                                            className={`form-control ${errors.password && 'is-invalid'}`}
-                                            placeholder='Enter password'
-                                        />
-
-                                        {
-                                            errors.password && <p className='invalid-feedback'>{errors.password?.message}</p>
-                                        }
-                                    </div> */}
                                     <div className="mb-3">
                                         <label className="form-label">Password</label>
                                         <div className="input-group">
@@ -106,6 +92,7 @@ const Login = () => {
                                                     required: "The password field is required."
                                                 })}
                                                 type={showPassword ? "text" : "password"}
+                                                autoComplete="current-password"
                                                 className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                                                 placeholder="Enter password"
                                             />
