@@ -3,9 +3,40 @@ import Footer from '../common/Footer';
 import Hero from '../common/Hero';
 
 import ServiceImg1 from '../../assets/images/construction4.jpg';
+import { adminToken, apiUrlFile, apiUrlFront } from '../common/http';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 
 const Services = () => {
+    const [services, setServices] = useState([]);
+
+    const fetchServices = async () => {
+        try {
+            const response = await fetch(`${apiUrlFront}/get-services`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${adminToken()}`
+                }
+            });
+            const result = await response.json();
+
+            if (result.status === 200) {
+                setServices(result.data);
+            } else {
+                toast.error(result.message);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    useEffect(() => {
+        fetchServices()
+    }, []);
+
     return (
         <>
             <Header />
@@ -14,7 +45,7 @@ const Services = () => {
                     preHeading='Chất Lượng. Uy Tín. Giá Trị.'
                     heading='Dịch Vụ'
                     text='Chúng tôi cung cấp giải pháp xây dựng trọn gói — từ tư vấn, thiết kế đến thi công và bàn giao. <br />
-    Với đội ngũ chuyên nghiệp và quy trình tối ưu, mỗi dự án đều được hoàn thiện đúng tiến độ, chất lượng và ngân sách.'
+                        Với đội ngũ chuyên nghiệp và quy trình tối ưu, mỗi dự án đều được hoàn thiện đúng tiến độ, chất lượng và ngân sách.'
                 />
 
                 {/* Our Services */}
@@ -29,28 +60,38 @@ const Services = () => {
                         </div>
 
                         <div className="row pt-4">
-                            {[...Array(3)].map((_, index) => (
-                                <div className="col-md-4 col-lg-4" key={index}>
-                                    <div className="item">
-                                        <div className="service-image">
-                                            <img src={ServiceImg1} alt="" className='w-100' />
-                                        </div>
+                            {
+                                services && services.map(service => {
+                                    return (
+                                        <div className="col-md-4 col-lg-4" key={`service-${service.id}`}>
+                                            <div className="item">
+                                                <div className="service-image">
+                                                    <img src={
+                                                        service.image
+                                                            ? `${apiUrlFile}/uploads/services/small/${service.image}`
+                                                            : `${apiUrlFile}/uploads/images/no_img.jpg`
+                                                    }
+                                                        alt={service.title}
+                                                        className="w-100" />
+                                                </div>
 
-                                        <div className="service-body">
-                                            <div className="service-title">
-                                                <h3>Xây Dựng Chuyên Biệt</h3>
-                                            </div>
+                                                <div className="service-body">
+                                                    <div className="service-title">
+                                                        <h3>{service.title}</h3>
+                                                    </div>
 
-                                            <div className="service-content">
-                                                <p>
-                                                    Chúng tôi cung cấp giải pháp thi công chuyên sâu, phù hợp với từng loại công trình. Đảm bảo chất lượng, tiến độ và hiệu quả đầu tư.
-                                                </p>
+                                                    <div className="service-content">
+                                                        <p>
+                                                            {service.short_desc}
+                                                        </p>
+                                                    </div>
+                                                    <a href="#" className='btn btn-primary small'>Xem Thêm</a>
+                                                </div>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Xem Thêm</a>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </section>

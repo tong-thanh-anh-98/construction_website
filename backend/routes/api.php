@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\AuthenticationController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\front\ServiceController as FrontServiceController;
 
 Route::post('authenticate', [AuthenticationController::class, 'authenticate']);
 
@@ -22,5 +23,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
 // Group front
 Route::prefix('front')->name('front.')->group(function () {
-
+    Route::get('get-services', [FrontServiceController::class, 'index'])->name('index');
+    Route::get('get-latest-services', [FrontServiceController::class, 'latestServices'])->name('latestServices');
 });

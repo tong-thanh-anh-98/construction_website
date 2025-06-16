@@ -6,15 +6,16 @@ import Header from '../common/Header';
 import Footer from '../common/Footer';
 import About from '../common/About';
 
-import ServiceImg1 from '../../assets/images/construction4.jpg';
 import ServiceImg2 from '../../assets/images/construction2.jpg';
 import Icon1 from '../../assets/images/icon-1.svg';
 import Icon2 from '../../assets/images/icon-2.svg';
 import Icon3 from '../../assets/images/icon-3.svg';
 import AvatarImg from '../../assets/images/author-2.jpg';
 import BlogImg from '../../assets/images/construction3.jpg';
+import LatestServices from '../common/LatestServices';
 
 const Home = () => {
+
     return (
         <>
             <Header />
@@ -42,41 +43,7 @@ const Home = () => {
                 <About />
 
                 {/* Our Services */}
-                <section className="section-3 bg-light py-5">
-                    <div className="container-fluid py-5">
-                        <div className="section-header text-center">
-                            <span>Dịch Vụ</span>
-                            <h2>Dịch vụ xây dựng của chúng tôi</h2>
-                            <p>
-                                Chúng tôi cung cấp giải pháp xây dựng toàn diện — từ thiết kế, thi công đến hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng.
-                            </p>
-                        </div>
-                        <div className="row pt-4">
-                            {[...Array(4)].map((_, index) => (
-                                <div className="col-md-3 col-lg-3" key={index}>
-                                    <div className="item">
-                                        <div className="service-image">
-                                            <img src={ServiceImg1} alt="" className='w-100' />
-                                        </div>
-
-                                        <div className="service-body">
-                                            <div className="service-title">
-                                                <h3>Xây dựng chuyên biệt</h3>
-                                            </div>
-
-                                            <div className="service-content">
-                                                <p>
-                                                    Chúng tôi cung cấp giải pháp xây dựng trọn gói — từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng.
-                                                </p>
-                                            </div>
-                                            <a href="#" className="btn btn-primary small">Xem thêm</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                <LatestServices />
 
                 {/* Why choose Us */}
                 <section className="section-4">
