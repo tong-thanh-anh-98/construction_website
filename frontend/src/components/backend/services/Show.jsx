@@ -86,11 +86,6 @@ const Show = () => {
                                                                     <td>{service.title}</td>
                                                                     <td>{service.slug}</td>
                                                                     <td>{service.status === 1 ? 'Active' : 'Block'}</td>
-                                                                    {/* <td>
-                                                                        <Link onClick={() => deleteService(service.id)} className="btn btn-danger">
-                                                                            <MdDelete />
-                                                                        </Link>
-                                                                    </td> */}
                                                                 </tr>
                                                             )
                                                         })

@@ -12,6 +12,7 @@ const Create = ({ placeholder }) => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [disable, setDisable] = useState(false);
+    const [imageId, setImageId] = useState(null);
     const navigate = useNavigate();
     const {
         register,
@@ -22,13 +23,14 @@ const Create = ({ placeholder }) => {
 
     const config = useMemo(() => ({
         readonly: false,
-        placeholder: placeholder || '',
+        placeholder: placeholder || 'Enter Content',
     }),
         [placeholder]
     );
 
     const saveService = async (data) => {
-        data.description = content;
+        // data.description = content;
+        const newData = { ...data, "content": content, "imageId": imageId }
         setDisable(true);
 
         try {
@@ -39,17 +41,18 @@ const Create = ({ placeholder }) => {
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${adminToken()}`
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(newData)
             });
 
             const result = await response.json();
-            console.log(result);
+            console.log(result.data);
 
             if (result.status === 200) {
                 toast.success(result.message);
                 navigate('/admin/services');
             } else if (result.errors) {
                 const formErrors = result.errors;
+
                 Object.keys(formErrors).forEach((field) => {
                     setError(field, { type: 'server', message: formErrors[field][0] });
                 });
@@ -62,6 +65,34 @@ const Create = ({ placeholder }) => {
             setDisable(false);
         }
     };
+
+    const handleFile = async (e) => {
+        const formData = new FormData();
+        const file = e.target.files[0];
+        formData.append("image", file);
+
+        try {
+            const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${adminToken()}`
+                },
+                body: formData
+            });
+
+            const result = await res.json();
+
+            if (result.status === 400) {
+                toast.error(result.errors.image[0]);
+            } else {
+                setImageId(result.data.id);
+            }
+
+        } catch (error) {
+            console.error('Upload error:', error.message);
+        }
+    }
 
     return (
         <>
@@ -132,8 +163,8 @@ const Create = ({ placeholder }) => {
                                                 ref={editor}
                                                 value={content}
                                                 config={config}
-                                                tabIndex={1}
-                                                onChange={newContent => setContent(newContent)}
+                                                tabIndex={1} // tabIndex of textarea
+                                                onBlur={newContent => setContent(newContent)}
                                             />
                                         </div>
 
@@ -156,9 +187,16 @@ const Create = ({ placeholder }) => {
                                             }
                                         </div>
 
+                                        <div className='mb-3'>
+                                            <label htmlFor='' className='form-label'>Images</label>
+                                            <br />
+                                            <input type="file" onChange={handleFile} />
+                                        </div>
+
                                         <button disabled={disable} type="submit" className="btn btn-primary mt-3">
                                             {disable ? 'Creating...' : 'Create'}
                                         </button>
+
                                     </form>
                                 </div>
                             </div>

@@ -33,7 +33,6 @@ class ServiceRequest extends FormRequest
         if ($this->isMethod('post')) {
             // store
             $rules['slug'] = [
-                'nullable',
                 Rule::unique('services', 'slug'),
             ];
         }
@@ -41,7 +40,6 @@ class ServiceRequest extends FormRequest
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             // update
             $rules['slug'] = [
-                'nullable',
                 Rule::unique('services', 'slug')->ignore($this->route('service')),
             ];
         }
