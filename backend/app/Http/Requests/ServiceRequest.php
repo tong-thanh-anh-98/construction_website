@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\SlugHelper;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,6 +15,21 @@ class ServiceRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Method prepareForValidation
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $slugInput = $this->input('slug') ?: $this->input('title');
+        if ($slugInput) {
+            $this->merge([
+                'slug' => SlugHelper::generateSlug($slugInput)
+            ]);
+        }
     }
 
     /**
@@ -31,16 +47,17 @@ class ServiceRequest extends FormRequest
         ];
 
         if ($this->isMethod('post')) {
-            // store
-            $rules['slug'] = [
-                Rule::unique('services', 'slug'),
-            ];
-        }
+            // Tạo mới
+            $rules['slug'] = 'required|string|unique:services,slug';
+        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
+            // Cập nhật
+            $routeParam = $this->route('service'); // có thể là object hoặc string ID
+            $serviceId = is_object($routeParam) ? $routeParam->id : $routeParam;
 
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            // update
             $rules['slug'] = [
-                Rule::unique('services', 'slug')->ignore($this->route('service')),
+                'required',
+                'string',
+                Rule::unique('services', 'slug')->ignore($serviceId),
             ];
         }
 
