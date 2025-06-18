@@ -5,7 +5,7 @@ import Footer from '../../common/Footer';
 import Header from '../../common/Header';
 import { useForm } from 'react-hook-form';
 import JoditEditor from 'jodit-react';
-import { adminToken, apiUrlAdmin, apiUrlFile } from '../../common/http';
+import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import ModalDelete from '../../common/ModalDelete';
 
@@ -19,6 +19,9 @@ const Edit = ({ placeholder }) => {
     const params = useParams();
     const [showModal, setShowModal] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
+    const [removeImage, setRemoveImage] = useState(false);
+    const [tempImages, setTempImages] = useState([]);
+    const fileInputRef = useRef(null);
 
     const config = useMemo(() => ({
         readonly: false,
@@ -35,8 +38,8 @@ const Edit = ({ placeholder }) => {
         formState: { errors },
     } = useForm();
 
-    // Fetch product data to pre-fill form
-    const fetchProduct = useCallback(async () => {
+    // Fetch Service data to pre-fill form
+    const fetchService = useCallback(async () => {
         try {
             const response = await fetch(`${apiUrlAdmin}/services/${params.id}`, {
                 method: 'GET',
@@ -65,7 +68,7 @@ const Edit = ({ placeholder }) => {
     }, [params.id, reset]);
 
     const updateService = async (data) => {
-        const newData = { ...data, "content": content, "imageId": imageId }
+        const newData = { ...data, "content": content, "imageId": imageId, removeImage: removeImage ? 1 : 0 }
         setDisable(true);
 
         try {
@@ -115,20 +118,48 @@ const Edit = ({ placeholder }) => {
             });
 
             const result = await res.json();
+            console.log(result.data);
 
             if (result.status === 400) {
                 toast.error(result.errors.image[0]);
             } else {
                 setImageId(result.data.id);
+                setTempImages(prev => [...prev, result.data]);
             }
-
         } catch (error) {
             console.error('Upload error:', error.message);
         }
     }
 
-    const deleteService = async () => {
+    const removeTempImage = async (id) => {
+        if (confirm("Confirm deletion – are you sure?")) {
+            try {
+                const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${adminToken()}`
+                    }
+                });
 
+                const result = await res.json();
+
+                if (result.status === 200) {
+                    setTempImages(prev => prev.filter(img => img.id !== id));
+                    if (fileInputRef.current) fileInputRef.current.value = '';
+                    toast.success('Image removed successfully');
+                } else {
+                    toast.error(result.message);
+                }
+            } catch (error) {
+                console.error('Remove image error:', error.message);
+                toast.error('Remove image error');
+            }
+        }
+    };
+
+
+    const deleteService = async () => {
         try {
             const res = await fetch(`${apiUrlAdmin}/services/${deleteId}`, {
                 method: 'DELETE',
@@ -154,8 +185,8 @@ const Edit = ({ placeholder }) => {
     };
 
     useEffect(() => {
-        fetchProduct();
-    }, [fetchProduct]);
+        fetchService();
+    }, [fetchService]);
 
 
     return (
@@ -264,13 +295,60 @@ const Edit = ({ placeholder }) => {
                                             <div className='mb-3'>
                                                 <label htmlFor='' className='form-label'>Images</label>
                                                 <br />
-                                                <input type="file" onChange={handleFile} />
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef}
+                                                    onChange={handleFile} />
                                             </div>
 
-                                            <div className='pb-3'>
-                                                {
-                                                    service.image && <img className='w-100' src={`${apiUrlFile}/uploads/services/small/${service.image}`} alt={service.title} />
-                                                }
+                                            <div className="row">
+                                                {/* Ảnh gốc nếu chưa xoá */}
+                                                {service.image && !removeImage && (
+                                                    <div className="col-md-3 mb-4">
+                                                        <div className="card h-100 shadow-sm">
+                                                            <img
+                                                                src={service.image_url}
+                                                                alt={service.title}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body p-2">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-sm w-100"
+                                                                    onClick={() => {
+                                                                        if (confirm("Confirm deletion – are you sure?")) {
+                                                                            setRemoveImage(true);
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    Remove Image
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Ảnh tạm thời */}
+                                                {tempImages && tempImages.map((image) => (
+                                                    <div className="col-md-3 mb-4" key={`temp-${image.id}`}>
+                                                        <div className="card h-100 shadow-sm">
+                                                            <img
+                                                                src={image.image_url}
+                                                                alt={image.name}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body p-2">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-sm w-100"
+                                                                    onClick={() => removeTempImage(image.id)}
+                                                                >
+                                                                    Remove Image
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
 
                                             <button disabled={disable} type="submit" className="btn btn-primary mt-3">

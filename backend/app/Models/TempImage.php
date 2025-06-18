@@ -10,4 +10,15 @@ class TempImage extends Model
     use SoftDeletes;
 
     protected $fillable = ['name'];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->name === "") {
+            return "";
+        }
+
+        return asset('/uploads/temp/thumb/' . $this->name);
+    }
 }

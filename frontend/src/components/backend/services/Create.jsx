@@ -14,6 +14,8 @@ const Create = ({ placeholder }) => {
     const [disable, setDisable] = useState(false);
     const [imageId, setImageId] = useState(null);
     const navigate = useNavigate();
+    const [tempImages, setTempImages] = useState([]);
+    const fileInputRef = useRef(null);
     const {
         register,
         handleSubmit,
@@ -29,7 +31,6 @@ const Create = ({ placeholder }) => {
     );
 
     const saveService = async (data) => {
-        // data.description = content;
         const newData = { ...data, "content": content, "imageId": imageId }
         setDisable(true);
 
@@ -82,17 +83,46 @@ const Create = ({ placeholder }) => {
             });
 
             const result = await res.json();
+            console.log(result.data);
 
             if (result.status === 400) {
                 toast.error(result.errors.image[0]);
             } else {
                 setImageId(result.data.id);
+                setTempImages(prev => [...prev, result.data]);
             }
-
         } catch (error) {
             console.error('Upload error:', error.message);
         }
     }
+
+
+    const removeTempImage = async (id) => {
+        if (confirm("Confirm deletion – are you sure?")) {
+            try {
+                const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${adminToken()}`
+                    }
+                });
+
+                const result = await res.json();
+
+                if (result.status === 200) {
+                    setTempImages(prev => prev.filter(img => img.id !== id));
+                    if (fileInputRef.current) fileInputRef.current.value = '';
+                    toast.success('Image removed successfully');
+                } else {
+                    toast.error(result.message);
+                }
+            } catch (error) {
+                console.error('Remove image error:', error.message);
+                toast.error('Remove image error');
+            }
+        }
+    };
 
     return (
         <>
@@ -190,13 +220,39 @@ const Create = ({ placeholder }) => {
                                         <div className='mb-3'>
                                             <label htmlFor='' className='form-label'>Images</label>
                                             <br />
-                                            <input type="file" onChange={handleFile} />
+                                            <input
+                                                type="file"
+                                                ref={fileInputRef}
+                                                onChange={handleFile} />
                                         </div>
 
-                                        <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                            {disable ? 'Creating...' : 'Create'}
-                                        </button>
+                                        <div className='pb-3'>
+                                            <div className='row gy-3'>
+                                                {
+                                                    tempImages && tempImages.map((image) => {
+                                                        return (
+                                                            <div className='col-md-3' key={`temp-${image.id}`}>
+                                                                <div className='card shadow'>
+                                                                    <img src={image.image_url} alt={image.name} className='w-100' />
+                                                                </div>
+                                                                <button
+                                                                    className='btn btn-danger mt-3 w-100'
+                                                                    onClick={() => removeTempImage(image.id)}
+                                                                >
+                                                                    Remove Image
+                                                                </button>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
 
+                                        <div className='mb-3'>
+                                            <button disabled={disable} type="submit" className="btn btn-primary mt-3">
+                                                {disable ? 'Creating...' : 'Create'}
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

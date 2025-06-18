@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class TempImageController extends Controller
@@ -74,7 +75,7 @@ class TempImageController extends Controller
 
             $manager = new ImageManager(Driver::class);
             $image = $manager->read($sourcePath);
-            $image->coverDown(450, 450);
+            $image->coverDown(720, 480);
             $image->save($destPath);
 
             DB::commit();
@@ -92,6 +93,89 @@ class TempImageController extends Controller
                 'status'    => 500,
                 'message'   => 'Failed.',
                 'error'     => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $image = TempImage::find($id);
+
+            if (!$image) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Image not found',
+                ], 404);
+            }
+
+            $imageUrl = asset('uploads/temp/' . $image->name);
+            $thumbUrl = asset('uploads/temp/thumb/' . $image->name);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Image found',
+                'data' => [
+                    'id' => $image->id,
+                    'name' => $image->name,
+                    'url' => $imageUrl,
+                    'thumb_url' => $thumbUrl,
+                    'created_at' => $image->created_at,
+                    'updated_at' => $image->updated_at,
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Show Temp Image Error: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server error while retrieving image',
+                'error' => $e->getMessage(), // Ẩn nếu cần bảo mật
+            ], 500);
+        }
+    }
+
+
+    public function removeTempImage($id)
+    {
+        try {
+            $image = TempImage::find($id);
+
+            if (!$image) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Image not found',
+                ], 404);
+            }
+
+            // Xác định đường dẫn
+            $originalPath = public_path('uploads/temp/' . $image->name);
+            $thumbPath    = public_path('uploads/temp/thumb/' . $image->name);
+
+            // Xóa file gốc nếu tồn tại
+            if (File::exists($originalPath)) {
+                File::delete($originalPath);
+            }
+
+            // Xóa file thumbnail nếu tồn tại
+            if (File::exists($thumbPath)) {
+                File::delete($thumbPath);
+            }
+
+            // Xóa record trong DB
+            $image->delete();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Deleted successfully',
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Remove Temp Image Error: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server error while removing image',
+                'error' => $e->getMessage(), // Có thể ẩn nếu không muốn expose lỗi
             ], 500);
         }
     }

@@ -218,8 +218,8 @@ class ServiceController extends Controller
         $tempImage = TempImage::find($imageId);
         if (!$tempImage) return null;
 
-        // pathinfo() là một hàm PHP dùng để lấy thông tin về đường dẫn của file,
-        // là hằng số truyền vào để chỉ lấy đuôi file (ví dụ: jpg, png, webp, v.v.)
+        // pathinfo(): là một hàm PHP dùng để lấy thông tin về đường dẫn của file.
+        // PATHINFO_EXTENSION: là hằng số truyền vào để chỉ lấy đuôi file (jpg, png, webp, v.v.).
         $ext = pathinfo($tempImage->name, PATHINFO_EXTENSION);
         $fileName = Str::uuid() . '_' . $serviceId . '.' . $ext;
 
@@ -238,12 +238,12 @@ class ServiceController extends Controller
 
         // Create thumbnail
         $smallImage = $manager->read($sourcePath);
-        $smallImage->coverDown(500, 600);
+        $smallImage->coverDown(720, 480);
         $smallImage->save($smallPath . '/' . $fileName);
 
         // Create large image
         $largeImage = $manager->read($sourcePath);
-        $largeImage->scaleDown(1200);
+        $largeImage->scaleDown(1024, 768);
         $largeImage->save($largePath . '/' . $fileName);
 
         return $fileName;

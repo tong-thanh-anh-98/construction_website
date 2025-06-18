@@ -17,4 +17,18 @@ class Service extends Model
         'image',
         'status',
     ];
+
+    protected $appends = ['image_url'];
+
+    /**
+     * Image URL
+     */
+    public function getImageUrlAttribute(): string
+    {
+        if (!$this->image || !file_exists(public_path('/uploads/services/small/' . $this->image))) {
+            return asset('/images/no_img.jpg');
+        }
+
+        return asset('/uploads/services/small/' . $this->image);
+    }
 }
