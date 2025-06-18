@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\ProjectController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ServiceController;
@@ -12,13 +13,13 @@ Route::post('authenticate', [AuthenticationController::class, 'authenticate']);
 // Group admin
 Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(function () {
     Route::get('logout', [AuthenticationController::class, 'logout'])->name('logout');
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // admin service route
     Route::apiResource('services', ServiceController::class);
-
-    // admin temp image
+    Route::apiResource('projects', ProjectController::class);
     Route::post('save-temp-images', [TempImageController::class, 'store']);
+    Route::get('get-temp-images/{id}', [TempImageController::class, 'show']);
+    Route::delete('remove-temp-images/{id}', [TempImageController::class, 'removeTempImage']);
 });
 
 // Group front
