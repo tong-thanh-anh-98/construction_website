@@ -83,7 +83,6 @@ const Create = ({ placeholder }) => {
             });
 
             const result = await res.json();
-            console.log(result.data);
 
             if (result.status === 400) {
                 toast.error(result.errors.image[0]);
