@@ -40,3 +40,5 @@ Install Backend:
 
 - Install Laravel Sanctum: php artisan install:api
 - Installing Intervention Image: composer require intervention/image
+- Clear cache IntelliSense trong VSCode (Ctrl+Shift+P → “Reload Window”)|(Tùy chọn) Chạy lại composer dump-autoload nếu dùng CLI: composer dump-autoload
+
