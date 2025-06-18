@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import ServiceImg1 from '../../assets/images/construction4.jpg';
-import { adminToken, apiUrlFile, apiUrlFront } from './http';
+import { adminToken, apiUrlFront } from './http';
 import { toast } from 'react-toastify';
 
 const LatestServices = () => {
@@ -50,11 +49,7 @@ const LatestServices = () => {
                                     <div className="item">
                                         <div className="service-image">
                                             <img
-                                                src={
-                                                    service.image
-                                                        ? `${apiUrlFile}/uploads/services/small/${service.image}`
-                                                        : `${apiUrlFile}/uploads/images/no_img.jpg`
-                                                }
+                                                src={service.image_url}
                                                 alt={service.title}
                                                 className="w-100"
                                             />

@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\TempImage;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
+use App\Services\ImageUploadService;
 use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class TempImageController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(ImageUploadService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     /**
      * Method store
      *
@@ -25,64 +29,25 @@ class TempImageController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
 
         try {
-            $validator = Validator::make($request->all(), [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 400,
-                    'errors' => $validator->errors()
-                ], 400);
-            }
-
-            $image = $request->image;
-            $ext =  $image->extension();
-            $imageName = Str::uuid() . '.' . $ext;
-
-            // save image in table database
-            $model = new TempImage();
-            $model->name = $imageName;
-            $model->save();
-
-            // Define directories
-            $tempDir = public_path('uploads/temp');
-            $thumbDir = public_path('uploads/temp/thumb');
-
-            // Auto-create temp directory if it doesn't exist
-            if (!file_exists($tempDir)) {
-                mkdir($tempDir, 0755, true);
-            }
-
-            // Auto-create thumb directory if it doesn't exist
-            if (!file_exists($thumbDir)) {
-                mkdir($thumbDir, 0755, true);
-            }
-
-            // Save image in uploads/temp
-            $image->move($tempDir, $imageName);
-
-            // Create thumbnail
-            $sourcePath = $tempDir . '/' . $imageName;
-            $destPath = $thumbDir . '/' . $imageName;
-
-            // Using this method you must create a folder before saving.
-            // $image->move(public_path('uploads/temp'), $imageName);
-            // $sourcePath = public_path('uploads/temp/' . $imageName);
-            // $destPath = public_path('uploads/temp/thumb'. $imageName);
-
-            $manager = new ImageManager(Driver::class);
-            $image = $manager->read($sourcePath);
-            $image->coverDown(720, 480);
-            $image->save($destPath);
+            $model = $this->imageService->storeTempImage($request->image);
 
             DB::commit();
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Successfully.',
+                'message'   => 'Successfully uploaded.',
                 'data'      => $model
             ], 200);
         } catch (\Throwable $e) {
@@ -109,17 +74,14 @@ class TempImageController extends Controller
                 ], 404);
             }
 
-            $imageUrl = asset('uploads/temp/' . $image->name);
-            $thumbUrl = asset('uploads/temp/thumb/' . $image->name);
-
             return response()->json([
                 'status' => 200,
                 'message' => 'Image found',
                 'data' => [
                     'id' => $image->id,
                     'name' => $image->name,
-                    'url' => $imageUrl,
-                    'thumb_url' => $thumbUrl,
+                    'url' => asset('uploads/temp/' . $image->name),
+                    'thumb_url' => asset('uploads/temp/thumb/' . $image->name),
                     'created_at' => $image->created_at,
                     'updated_at' => $image->updated_at,
                 ],
@@ -148,22 +110,7 @@ class TempImageController extends Controller
                 ], 404);
             }
 
-            // Xác định đường dẫn
-            $originalPath = public_path('uploads/temp/' . $image->name);
-            $thumbPath    = public_path('uploads/temp/thumb/' . $image->name);
-
-            // Xóa file gốc nếu tồn tại
-            if (File::exists($originalPath)) {
-                File::delete($originalPath);
-            }
-
-            // Xóa file thumbnail nếu tồn tại
-            if (File::exists($thumbPath)) {
-                File::delete($thumbPath);
-            }
-
-            // Xóa record trong DB
-            $image->delete();
+            $this->imageService->deleteTempImage($image->id);
 
             return response()->json([
                 'status' => 200,

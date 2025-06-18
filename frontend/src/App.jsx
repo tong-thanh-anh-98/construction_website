@@ -35,6 +35,7 @@ function App() {
 
                     {/* route backend (admin) */}
                     <Route path='/admin/login' element={<Login />} />
+                    {/* <Route path='/admin' */}
                     <Route path='/admin/dashboard'
                         element={
                             <RequireAuth>

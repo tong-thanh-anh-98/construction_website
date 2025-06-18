@@ -124,6 +124,11 @@ const Edit = ({ placeholder }) => {
             } else {
                 setImageId(result.data.id);
                 setTempImages(prev => [...prev, result.data]);
+
+                // Reset input sau khi upload thành công
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = null;
+                }
             }
         } catch (error) {
             console.error('Upload error:', error.message);
@@ -145,7 +150,7 @@ const Edit = ({ placeholder }) => {
 
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
-                    if (fileInputRef.current) fileInputRef.current.value = '';
+                    if (fileInputRef.current) fileInputRef.current.value = null;
                     toast.success('Image removed successfully');
                 } else {
                     toast.error(result.message);

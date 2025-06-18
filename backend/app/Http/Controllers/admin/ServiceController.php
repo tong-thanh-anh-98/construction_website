@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Service;
-use App\Models\TempImage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
+use App\Services\ImageUploadService;
 use App\Http\Requests\ServiceRequest;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class ServiceController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(ImageUploadService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -55,24 +58,18 @@ class ServiceController extends Controller
                 'status'
             ]);
 
-            // Khởi tạo trước để có $serviceId cho tên file
             $service = Service::create($data);
 
-            // Nếu có ảnh tạm, xử lý ảnh và gán tên ảnh vào
-            $fileName = null;
-            if ($request->has('imageId') && (int)$request->imageId > 0) {
-                $fileName = $this->handleImageUpload($request->imageId, $service->id);
-
-                if ($fileName) {
-                    $service->update(['image' => $fileName]);
-                }
+            if ($request->has('imageId')) {
+                $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $request->imageId);
+                $service->update(['image' => $fileName]);
             }
 
             DB::commit();
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Successfully.',
+                'message'   => 'Successfully created.',
                 'data'      => $service
             ], 200);
         } catch (\Throwable $e) {
@@ -81,7 +78,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Failed.',
+                'message'   => 'Creation failed.',
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -142,22 +139,21 @@ class ServiceController extends Controller
                 'status',
             ]);
 
-            // save temp image here
-            $fileName = null;
-            if ($request->has('imageId') && (int)$request->imageId > 0) {
-                $fileName = $this->handleImageUpload($request->imageId, $service->id);
-
-                if ($fileName) {
-                    // Xóa ảnh cũ nếu có
-                    $this->deleteOldImages($service->image);
-                    $data['image'] = $fileName;
+            if ($request->filled('imageId') && is_numeric($request->imageId)) {
+                // Có ảnh mới → chuyển từ temp sang permanent
+                $tempImageId = (int) $request->imageId;
+                $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $tempImageId);
+                // Xóa ảnh cũ nếu có
+                if ($service->image) {
+                    $this->imageService->deletePermanentImage('services', $service->image);
                 }
-            }
-
-            // Nếu yêu cầu xoá ảnh mà không upload ảnh mới
-            if ($request->has('removeImage') && $request->removeImage && !$fileName) {
-                $this->deleteOldImages($service->image); // xoá file vật lý
-                $data['image'] = null; // set lại DB
+                $data['image'] = $fileName;
+            } elseif ($request->boolean('removeImage') && !$request->filled('imageId')) {
+                // Chỉ xóa ảnh nếu không có ảnh mới đi kèm
+                if ($service->image) {
+                    $this->imageService->deletePermanentImage('services', $service->image);
+                }
+                $data['image'] = null;
             }
 
             $service->update($data);
@@ -166,16 +162,16 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Successfully.',
+                'message'   => 'Successfully updated.',
                 'data'      => $service
             ], 200);
         } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error('Errors: ' . $e->getMessage());
+            Log::error('Service Update Error: ' . $e->getMessage());
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Failed.',
+                'message'   => 'Update failed.',
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -211,51 +207,5 @@ class ServiceController extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
-    }
-
-    private function handleImageUpload($imageId, $serviceId)
-    {
-        $tempImage = TempImage::find($imageId);
-        if (!$tempImage) return null;
-
-        // pathinfo(): là một hàm PHP dùng để lấy thông tin về đường dẫn của file.
-        // PATHINFO_EXTENSION: là hằng số truyền vào để chỉ lấy đuôi file (jpg, png, webp, v.v.).
-        $ext = pathinfo($tempImage->name, PATHINFO_EXTENSION);
-        $fileName = Str::uuid() . '_' . $serviceId . '.' . $ext;
-
-        $sourcePath = public_path('uploads/temp/' . $tempImage->name);
-        $largePath  = public_path('uploads/services/large');
-        $smallPath  = public_path('uploads/services/small');
-
-        // Create directory if not exists
-        foreach ([$largePath, $smallPath] as $path) {
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-        }
-
-        $manager = new ImageManager(Driver::class);
-
-        // Create thumbnail
-        $smallImage = $manager->read($sourcePath);
-        $smallImage->coverDown(720, 480);
-        $smallImage->save($smallPath . '/' . $fileName);
-
-        // Create large image
-        $largeImage = $manager->read($sourcePath);
-        $largeImage->scaleDown(1024, 768);
-        $largeImage->save($largePath . '/' . $fileName);
-
-        return $fileName;
-    }
-
-    private function deleteOldImages($oldImage)
-    {
-        if (!$oldImage) return;
-
-        $large = public_path('uploads/services/large/' . $oldImage);
-        $small = public_path('uploads/services/small/' . $oldImage);
-
-        File::delete([$large, $small]);
     }
 }

@@ -25,10 +25,10 @@ class Service extends Model
      */
     public function getImageUrlAttribute(): string
     {
-        if (!$this->image || !file_exists(public_path('/uploads/services/small/' . $this->image))) {
-            return asset('/images/no_img.jpg');
+        if ($this->image && file_exists(public_path('uploads/services/small/' . $this->image))) {
+            return url('uploads/services/small/' . $this->image);
         }
 
-        return asset('/uploads/services/small/' . $this->image);
+        return url('uploads/images/no_img.jpg');
     }
 }

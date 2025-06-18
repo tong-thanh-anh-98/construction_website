@@ -2,8 +2,7 @@ import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Hero from '../common/Hero';
 
-import ServiceImg1 from '../../assets/images/construction4.jpg';
-import { adminToken, apiUrlFile, apiUrlFront } from '../common/http';
+import { adminToken, apiUrlFront } from '../common/http';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -66,13 +65,11 @@ const Services = () => {
                                         <div className="col-md-4 col-lg-4" key={`service-${service.id}`}>
                                             <div className="item">
                                                 <div className="service-image">
-                                                    <img src={
-                                                        service.image
-                                                            ? `${apiUrlFile}/uploads/services/small/${service.image}`
-                                                            : `${apiUrlFile}/uploads/images/no_img.jpg`
-                                                    }
+                                                    <img
+                                                        src={service.image_url}
                                                         alt={service.title}
-                                                        className="w-100" />
+                                                        className="w-100"
+                                                    />
                                                 </div>
 
                                                 <div className="service-body">
