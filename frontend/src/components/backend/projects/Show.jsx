@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react'
 import Header from '../../common/Header';
-import Footer from '../../common/Footer';
 import Sidebar from '../../common/Sidebar';
+import Footer from '../../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
-import Loader from '../../common/Loader';
 import Notate from '../../common/Notate';
+import Loader from '../../common/Loader';
 
 const Show = () => {
-    const [services, setServices] = useState([]);
     const [loader, setLoader] = useState(false);
+    const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
 
-    const fetchServices = async () => {
+    const fetchProjects = async () => {
         setLoader(true);
         try {
-            const response = await fetch(`${apiUrlAdmin}/services`, {
+            const response = await fetch(`${apiUrlAdmin}/projects`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const Show = () => {
             const result = await response.json();
 
             if (result.status === 200) {
-                setServices(result.data);
+                setProjects(result.data);
             } else {
                 toast.error(result.message);
             }
@@ -39,7 +39,7 @@ const Show = () => {
     }
 
     useEffect(() => {
-        fetchServices()
+        fetchProjects()
     }, []);
 
     return (
@@ -56,34 +56,34 @@ const Show = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'>Services</h4>
-                                        <Link to="/admin/services/create" className="btn btn-primary">Create</Link>
+                                        <h4 className='h5'>Dự Án</h4>
+                                        <Link to="/admin/projects/create" className="btn btn-primary">Tạo Dự án</Link>
                                     </div>
                                     <hr />
                                     {
                                         loader ? <Loader /> : (
-                                            services.length > 0 ? (
+                                            projects.length > 0 ? (
                                                 <table className="table table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th width="50">ID</th>
-                                                            <th>Title</th>
+                                                            <th>Tiêu Đề</th>
                                                             <th>Slug</th>
-                                                            <th width="100">Status</th>
+                                                            <th width="100">Trạng Thái</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            services.map(service =>
+                                                            projects.map(project =>
                                                             (
-                                                                <tr key={`service-${service.id}`}
-                                                                    onClick={() => navigate(`/admin/services/edit/${service.id}`)}
+                                                                <tr key={`project-${project.id}`}
+                                                                    onClick={() => navigate(`/admin/projects/edit/${project.id}`)}
                                                                     style={{ cursor: 'pointer' }}
                                                                 >
-                                                                    <td>#{service.id}</td>
-                                                                    <td>{service.title}</td>
-                                                                    <td>{service.slug}</td>
-                                                                    <td>{service.status === 1 ? 'Active' : 'Block'}</td>
+                                                                    <td>#{project.id}</td>
+                                                                    <td>{project.title}</td>
+                                                                    <td>{project.slug}</td>
+                                                                    <td>{project.status === 1 ? 'Hiển thị' : 'Bị Ẩn'}</td>
                                                                 </tr>
                                                             ))
                                                         }

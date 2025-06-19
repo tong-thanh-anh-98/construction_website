@@ -192,12 +192,16 @@ class ServiceController extends Controller
                     'message'   => 'Not Found.',
                 ], 404);
             }
+            // xóa hình ảnh trong thư mục nếu xóa services
+            if ($service->image) {
+                $this->imageService->deletePermanentImage('services', $service->image);
+            }
 
             $service->delete();
 
             return response()->json([
                 'status'  => 200,
-                'message'    => 'Delete Successfully.'
+                'message'    => 'Deleted Successfully.'
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());

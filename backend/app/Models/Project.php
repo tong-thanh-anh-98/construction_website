@@ -20,4 +20,18 @@ class Project extends Model
         'image',
         'status',
     ];
+
+    protected $appends = ['image_url'];
+
+    /**
+     * Image URL
+     */
+    public function getImageUrlAttribute(): string
+    {
+        if ($this->image && file_exists(public_path('uploads/projects/small/' . $this->image))) {
+            return url('uploads/projects/small/' . $this->image);
+        }
+
+        return url('uploads/images/no_img.jpg');
+    }
 }

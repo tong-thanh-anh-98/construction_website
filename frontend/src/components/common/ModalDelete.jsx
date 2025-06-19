@@ -1,4 +1,4 @@
-const ModalDelete = ({ show, onClose, onConfirm, title = 'Are you sure you want to delete?' }) => {
+const ModalDelete = ({ show, onClose, onConfirm, title = 'Bạn có chắc chắn muốn xóa nó không?' }) => {
     if (!show) return null;
 
     return (
@@ -7,7 +7,7 @@ const ModalDelete = ({ show, onClose, onConfirm, title = 'Are you sure you want 
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title">Confirm Delete</h5>
+                        <h5 className="modal-title">Xác nhận</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
 
@@ -16,8 +16,8 @@ const ModalDelete = ({ show, onClose, onConfirm, title = 'Are you sure you want 
                     </div>
 
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
-                        <button type="button" className="btn btn-danger" onClick={onConfirm}>Delete</button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>Hủy</button>
+                        <button type="button" className="btn btn-danger" onClick={onConfirm}>Xóa</button>
                     </div>
 
                 </div>

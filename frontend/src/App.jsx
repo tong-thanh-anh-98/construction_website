@@ -19,6 +19,10 @@ import { default as ShowServices } from './components/backend/services/Show';
 import { default as CreateServices } from './components/backend/services/Create';
 import { default as EditServices } from './components/backend/services/Edit';
 
+import { default as ShowProjects } from './components/backend/projects/Show';
+import { default as EditProjects } from './components/backend/projects/Edit';
+import { default as CreateProjects } from './components/backend/projects/Create';
+
 function App() {
 
     return (
@@ -35,7 +39,7 @@ function App() {
 
                     {/* route backend (admin) */}
                     <Route path='/admin/login' element={<Login />} />
-                    {/* <Route path='/admin' */}
+
                     <Route path='/admin/dashboard'
                         element={
                             <RequireAuth>
@@ -64,6 +68,30 @@ function App() {
                         element={
                             <RequireAuth>
                                 <EditServices />
+                            </RequireAuth>
+                        }
+                    />
+
+                    <Route path='/admin/projects'
+                        element={
+                            <RequireAuth>
+                                <ShowProjects />
+                            </RequireAuth>
+                        }
+                    />
+
+                    <Route path='/admin/projects/edit/:id'
+                        element={
+                            <RequireAuth>
+                                <EditProjects />
+                            </RequireAuth>
+                        }
+                    />
+
+                    <Route path='/admin/projects/create'
+                        element={
+                            <RequireAuth>
+                                <CreateProjects />
                             </RequireAuth>
                         }
                     />

@@ -1,21 +1,26 @@
-import React, { useMemo, useRef, useState } from 'react';
-import Sidebar from '../../common/Sidebar';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
+import Sidebar from '../../common/Sidebar';
+import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
 
 const Create = ({ placeholder }) => {
+    const config = useMemo(() => ({
+        readonly: false,
+        placeholder: placeholder || 'Nhập nội dung.',
+    }),
+        [placeholder]
+    );
+
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [disable, setDisable] = useState(false);
-    const [imageId, setImageId] = useState(null);
     const navigate = useNavigate();
-    const [tempImages, setTempImages] = useState([]);
-    const fileInputRef = useRef(null);
+
     const {
         register,
         handleSubmit,
@@ -23,19 +28,16 @@ const Create = ({ placeholder }) => {
         formState: { errors },
     } = useForm();
 
-    const config = useMemo(() => ({
-        readonly: false,
-        placeholder: placeholder || 'Enter Content',
-    }),
-        [placeholder]
-    );
+    const [imageId, setImageId] = useState(null);
+    const [tempImages, setTempImages] = useState([]);
+    const fileInputRef = useRef(null);
 
-    const saveService = async (data) => {
+    const saveProject = async (data) => {
         const newData = { ...data, "content": content, "imageId": imageId }
         setDisable(true);
 
         try {
-            const response = await fetch(`${apiUrlAdmin}/services`, {
+            const response = await fetch(`${apiUrlAdmin}/projects`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,11 +48,10 @@ const Create = ({ placeholder }) => {
             });
 
             const result = await response.json();
-            console.log(result.data);
 
             if (result.status === 201) {
                 toast.success(result.message);
-                navigate('/admin/services');
+                navigate('/admin/projects');
             } else if (result.errors) {
                 const formErrors = result.errors;
 
@@ -61,7 +62,7 @@ const Create = ({ placeholder }) => {
                 toast.error(result.message);
             }
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.error('Errors:', error);
         } finally {
             setDisable(false);
         }
@@ -93,10 +94,10 @@ const Create = ({ placeholder }) => {
         } catch (error) {
             console.error('Upload error:', error.message);
         }
-    }
+    };
 
     const removeTempImage = async (id) => {
-        if (confirm("Confirm deletion – are you sure?")) {
+        if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
             try {
                 const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
                     method: 'DELETE',
@@ -111,13 +112,12 @@ const Create = ({ placeholder }) => {
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
                     if (fileInputRef.current) fileInputRef.current.value = '';
-                    toast.success('Image removed successfully');
+                    toast.success('Hình ảnh đã được xóa.');
                 } else {
                     toast.error(result.message);
                 }
             } catch (error) {
-                console.error('Remove image error:', error.message);
-                toast.error('Remove image error');
+                console.error('Remove error:', error.message);
             }
         }
     };
@@ -136,21 +136,18 @@ const Create = ({ placeholder }) => {
                             <div className="card shadow border-0">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'><Link to="/admin/services">Services</Link> / Create</h4>
+                                        <h4 className='h5'><Link to="/admin/projects">Dự Án</Link> / Tạo</h4>
                                     </div>
                                     <hr />
 
-                                    <form onSubmit={handleSubmit(saveService)}>
+                                    <form onSubmit={handleSubmit(saveProject)}>
                                         <div className="mb-3">
-                                            <label htmlFor="" className='form-label'>Title</label>
+                                            <label htmlFor="" className='form-label'>Tiêu Đề</label>
                                             <input
-                                                {...register('title',
-                                                    { required: 'The name field is required' }
-                                                )
-                                                }
+                                                {...register('title', { required: 'Bắt buộc nhập' })}
                                                 type='text'
                                                 className={`form-control ${errors.title && 'is-invalid'}`}
-                                                placeholder='Enter name'
+                                                placeholder='Nhập tiêu đề.'
                                             />
 
                                             {
@@ -161,13 +158,10 @@ const Create = ({ placeholder }) => {
                                         <div className="mb-3">
                                             <label htmlFor="" className='form-label'>Slug</label>
                                             <input
-                                                {...register('slug',
-                                                    { required: 'The slug field is required' }
-                                                )
-                                                }
+                                                {...register('slug', { required: 'Bắt buộc nhập.' })}
                                                 type='text'
                                                 className={`form-control ${errors.slug && 'is-invalid'}`}
-                                                placeholder='Enter slug'
+                                                placeholder='Nhập slug'
                                             />
 
                                             {
@@ -175,48 +169,93 @@ const Create = ({ placeholder }) => {
                                             }
                                         </div>
 
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="" className='form-label'>Vị Trí</label>
+                                                    <input
+                                                        {...register('location')}
+                                                        type='text'
+                                                        className="form-control"
+                                                        placeholder='Nhập vị trí.'
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="" className='form-label'>Loại Hình Xây Dựng</label>
+                                                    <select
+                                                        className="form-control"
+                                                        {...register('construction_type')}
+                                                    >
+                                                        <option value="">Chọn loại xây dựng</option>
+                                                        <option value="Residential Construction">Xây dựng nhà ở</option>
+                                                        <option value="Commercial Construction">Xây dựng thương mại</option>
+                                                        <option value="Industrial Construction">Xây dựng công nghiệp</option>
+                                                        <option value="Infrastructure Construction">Xây dựng cơ sở hạ tầng</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label htmlFor="" className='form-label'>Lĩnh Vực Xây Dựng</label>
+                                                    <select
+                                                        className="form-control"
+                                                        {...register('sector')}
+                                                    >
+                                                        <option value="">Chọn ngành</option>
+                                                        <option value="Health">Sức khỏe</option>
+                                                        <option value="Education">Giáo dục</option>
+                                                        <option value="Corporate">Doanh nghiệp</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6">
+                                                <div className='mb-3'>
+                                                    <label htmlFor='' className='form-label'>Trạng Thái</label>
+                                                    <select
+                                                        {...register('status', { required: 'Chọn một trạng thái.' })}
+                                                        className={`form-control ${errors.status && 'is-invalid'}`}>
+                                                        <option value="">Chọn trạng thái</option>
+                                                        <option value="1">Hiển thị</option>
+                                                        <option value="0">Ẩn đi</option>
+                                                    </select>
+
+                                                    {
+                                                        errors.status && <p className='invalid-feedback'>{errors.status?.message}</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Short Description</label>
+                                            <label htmlFor='' className='form-label'>Mô Tả Ngắn Gọn</label>
                                             <textarea
                                                 {...register('short_desc')}
                                                 className='form-control'
-                                                rows={5}
-                                                placeholder='Short description'>
+                                                rows={3}
+                                                placeholder='Nhập mô tả.'>
                                             </textarea>
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Content</label>
+                                            <label htmlFor='' className='form-label'>Nội Dung</label>
                                             <JoditEditor
                                                 ref={editor}
                                                 value={content}
                                                 config={config}
-                                                tabIndex={1} // tabIndex of textarea
+                                                tabIndex={1}
                                                 onBlur={newContent => setContent(newContent)}
                                             />
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Status</label>
-                                            <select
-                                                {
-                                                ...register('status',
-                                                    { required: 'Please select a status' }
-                                                )
-                                                }
-                                                className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                <option value="">Select a status</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Block</option>
-                                            </select>
-
-                                            {
-                                                errors.status && <p className='invalid-feedback'>{errors.status?.message}</p>
-                                            }
-                                        </div>
-
-                                        <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Images</label>
+                                            <label htmlFor='' className='form-label'>Hình Ảnh</label>
                                             <br />
                                             <input
                                                 type="file"
@@ -224,12 +263,12 @@ const Create = ({ placeholder }) => {
                                                 onChange={handleFile} />
                                         </div>
 
-                                        <div className='pb-3'>
+                                        <div className='mb-3'>
                                             <div className='row gy-3'>
                                                 {
                                                     tempImages && tempImages.map((image) => {
                                                         return (
-                                                            <div className='col-md-3' key={`temp-${image.id}`}>
+                                                            <div className='col-md-4' key={`temp-${image.id}`}>
                                                                 <div className='card shadow'>
                                                                     <img src={image.image_url} alt={image.name} className='w-100' />
                                                                 </div>
@@ -238,7 +277,7 @@ const Create = ({ placeholder }) => {
                                                                     className='btn btn-danger mt-3 w-100'
                                                                     onClick={() => removeTempImage(image.id)}
                                                                 >
-                                                                    Remove Image
+                                                                    Xóa Ảnh
                                                                 </button>
                                                             </div>
                                                         )
@@ -249,7 +288,7 @@ const Create = ({ placeholder }) => {
 
                                         <div className='mb-3'>
                                             <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                                {disable ? 'Creating...' : 'Create'}
+                                                {disable ? 'Đang tạo...' : 'Tạo'}
                                             </button>
                                         </div>
                                     </form>

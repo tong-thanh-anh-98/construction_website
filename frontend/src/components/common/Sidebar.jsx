@@ -11,7 +11,7 @@ const Sidebar = () => {
                 <ul>
                     <li><Link to="/admin/dashboard">Bảng Điều Khiển</Link></li>
                     <li><Link to="/admin/services">Dịch Vụ</Link></li>
-                    <li><a href="#">Dự Án</a></li>
+                    <li><Link to="/admin/projects">Dự Án</Link></li>
                     <li><a href="#">Bài Viết</a></li>
                     <li>
                         <button className='btn btn-primary mt-4' onClick={logout}>Đăng Xuất</button>

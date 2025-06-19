@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Project;
-use App\Models\TempImage;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Services\ImageUploadService;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
 use App\Http\Requests\ProjectRequest;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class ProjectController extends Controller
 {
@@ -34,7 +28,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Display successfully.',
+                'message' => 'Successfully.',
                 'data'    => $projects
             ], 200);
         } catch (\Exception $e) {
@@ -42,7 +36,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => 'Internal Server Error.',
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -56,17 +50,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
 
         try {
-            $data = $request->only([
-                'title',
-                'slug',
-                'short_desc',
-                'content',
-                'construction_type',
-                'sector',
-                'location',
-                'image',
-                'status'
-            ]);
+            $data = $this->extractProjectData($request);
 
             $project = Project::create($data);
 
@@ -78,17 +62,17 @@ class ProjectController extends Controller
             DB::commit();
 
             return response()->json([
-                'status'    => 200,
-                'message'   => 'Created successfully.',
+                'status'    => 201,
+                'message'   => 'Created Successfully.',
                 'data'      => $project
-            ], 200);
+            ], 201);
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Failed.',
+                'message'   => 'Internal Server Error.',
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -104,14 +88,14 @@ class ProjectController extends Controller
 
             if (!$project) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
             }
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Display successfully.',
+                'message' => 'Successfully.',
                 'data'    => $project
             ], 200);
         } catch (\Exception $e) {
@@ -119,7 +103,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => 'Internal Server Error.',
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -137,22 +121,12 @@ class ProjectController extends Controller
 
             if (!$project) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
             }
 
-            $data = $request->only([
-                'title',
-                'slug',
-                'short_desc',
-                'content',
-                'construction_type',
-                'sector',
-                'location',
-                'image',
-                'status'
-            ]);
+            $data = $this->extractProjectData($request);
 
             if ($request->filled('imageId') && is_numeric($request->imageId)) {
                 // Có ảnh mới → chuyển từ temp sang permanent
@@ -177,7 +151,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Updated successfully.',
+                'message'   => 'Updated Successfully.',
                 'data'      => $project
             ], 200);
         } catch (\Throwable $e) {
@@ -186,7 +160,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Failed.',
+                'message'   => 'Internal Server Error.',
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -202,25 +176,47 @@ class ProjectController extends Controller
 
             if (!$project) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
+            }
+            // xóa ảnh trong thư mục nếu xóa project
+            if ($project->image) {
+                $this->imageProject->deletePermanentImage('projects', $project->image);
             }
 
             $project->delete();
 
             return response()->json([
                 'status'  => 200,
-                'message'    => 'Deleted successfully.'
+                'message'    => 'Deleted Successfully.'
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => 'Internal Server Error.',
                 'error'   => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Method extractProjectData
+     */
+    private function extractProjectData(ProjectRequest $request)
+    {
+        return $request->only([
+            'title',
+            'slug',
+            'short_desc',
+            'content',
+            'construction_type',
+            'sector',
+            'location',
+            'image',
+            'status'
+        ]);
     }
 }
