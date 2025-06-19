@@ -90,7 +90,7 @@ class ImageUploadService
             //     ->scaleDown(1024, 768)
             //     ->save($largePath . '/' . $fileName);
 
-            // ✅ Kiểm tra file tồn tại
+            // Kiểm tra file tồn tại
             if (!file_exists($sourcePath)) {
                 Log::error("Source file not found: {$sourcePath}");
 

@@ -48,7 +48,7 @@ const Create = ({ placeholder }) => {
             const result = await response.json();
             console.log(result.data);
 
-            if (result.status === 200) {
+            if (result.status === 201) {
                 toast.success(result.message);
                 navigate('/admin/services');
             } else if (result.errors) {

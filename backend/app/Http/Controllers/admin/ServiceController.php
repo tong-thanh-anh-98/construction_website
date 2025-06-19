@@ -68,17 +68,17 @@ class ServiceController extends Controller
             DB::commit();
 
             return response()->json([
-                'status'    => 200,
-                'message'   => 'Successfully created.',
+                'status'    => 201,
+                'message'   => 'Created successfully.',
                 'data'      => $service
-            ], 200);
+            ], 201);
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Creation failed.',
+                'message'   => 'Internal Server Error.',
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -94,13 +94,14 @@ class ServiceController extends Controller
 
             if (!$service) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
             }
 
             return response()->json([
                 'status'  => 200,
+                'message' => 'Successfully.',
                 'data'    => $service
             ], 200);
         } catch (\Exception $e) {
@@ -108,7 +109,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => 'Internal Server Error.',
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -126,9 +127,9 @@ class ServiceController extends Controller
 
             if (!$service) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
             }
 
             $data = $request->only([
@@ -162,7 +163,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Successfully updated.',
+                'message'   => 'Updated Successfully.',
                 'data'      => $service
             ], 200);
         } catch (\Throwable $e) {
@@ -187,23 +188,23 @@ class ServiceController extends Controller
 
             if (!$service) {
                 return response()->json([
-                    'status'    => 400,
-                    'message'   => 'Data not found.',
-                ], 400);
+                    'status'    => 404,
+                    'message'   => 'Not Found.',
+                ], 404);
             }
 
             $service->delete();
 
             return response()->json([
                 'status'  => 200,
-                'message'    => 'Successfully.'
+                'message'    => 'Delete Successfully.'
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => 'Internal Server Error.',
                 'error'   => $e->getMessage()
             ], 500);
         }
