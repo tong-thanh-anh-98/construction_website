@@ -7,11 +7,13 @@ import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import Notate from '../../common/Notate';
 import Loader from '../../common/Loader';
+import { useTranslation } from 'react-i18next';
 
 const Show = () => {
     const [loader, setLoader] = useState(false);
     const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const fetchProjects = async () => {
         setLoader(true);
@@ -56,8 +58,8 @@ const Show = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'>Dự Án</h4>
-                                        <Link to="/admin/projects/create" className="btn btn-primary">Tạo Dự án</Link>
+                                        <h4 className='h5'>{t('projects')}</h4>
+                                        <Link to="/admin/projects/create" className="btn btn-primary">{t('create')}</Link>
                                     </div>
                                     <hr />
                                     {
@@ -67,9 +69,9 @@ const Show = () => {
                                                     <thead>
                                                         <tr>
                                                             <th width="50">ID</th>
-                                                            <th>Tiêu Đề</th>
+                                                            <th>{t('title')}</th>
                                                             <th>Slug</th>
-                                                            <th width="100">Trạng Thái</th>
+                                                            <th width="100">{t('status')}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -83,7 +85,9 @@ const Show = () => {
                                                                     <td>#{project.id}</td>
                                                                     <td>{project.title}</td>
                                                                     <td>{project.slug}</td>
-                                                                    <td>{project.status === 1 ? 'Hiển thị' : 'Ẩn'}</td>
+                                                                    <td>
+                                                                        {project.status === 1 ? t('active') : t('block')}
+                                                                    </td>
                                                                 </tr>
                                                             ))
                                                         }

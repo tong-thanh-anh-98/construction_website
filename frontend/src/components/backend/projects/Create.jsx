@@ -7,14 +7,14 @@ import { useForm } from 'react-hook-form';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
+import { useTranslation } from 'react-i18next';
 
 const Create = ({ placeholder }) => {
+    const { t } = useTranslation();
     const config = useMemo(() => ({
         readonly: false,
-        placeholder: placeholder || 'Nhập nội dung.',
-    }),
-        [placeholder]
-    );
+        placeholder: placeholder || t('enter_content'),
+    }), [placeholder, t]);
 
     const editor = useRef(null);
     const [content, setContent] = useState('');
@@ -100,7 +100,7 @@ const Create = ({ placeholder }) => {
     };
 
     const removeTempImage = async (id) => {
-        if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+        if (confirm(t('confirm_remove'))) {
             setDisable(true);
 
             try {
@@ -117,7 +117,7 @@ const Create = ({ placeholder }) => {
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
                     if (fileInputRef.current) fileInputRef.current.value = '';
-                    toast.success('Hình ảnh đã được xóa.');
+                    toast.success(result.message);
                 } else {
                     toast.error(result.message);
                 }
@@ -143,18 +143,18 @@ const Create = ({ placeholder }) => {
                             <div className="card shadow border-0">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'><Link to="/admin/projects">Dự Án</Link> / Tạo</h4>
+                                        <h4 className='h5'><Link to="/admin/projects">{t('project')}</Link> / {t('create')}</h4>
                                     </div>
                                     <hr />
 
                                     <form onSubmit={handleSubmit(saveProject)}>
                                         <div className="mb-3">
-                                            <label htmlFor="" className='form-label'>Tiêu Đề</label>
+                                            <label className='form-label'>{t('title')}</label>
                                             <input
-                                                {...register('title', { required: 'Bắt buộc nhập' })}
+                                                {...register('title', { required: t('title_required') })}
                                                 type='text'
                                                 className={`form-control ${errors.title && 'is-invalid'}`}
-                                                placeholder='Nhập tiêu đề.'
+                                                placeholder={t('enter_title')}
                                             />
 
                                             {
@@ -163,12 +163,12 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className="mb-3">
-                                            <label htmlFor="" className='form-label'>Slug</label>
+                                            <label className='form-label'>{t('slug')}</label>
                                             <input
-                                                {...register('slug', { required: 'Bắt buộc nhập.' })}
+                                                {...register('slug', { required: t('slug_required') })}
                                                 type='text'
                                                 className={`form-control ${errors.slug && 'is-invalid'}`}
-                                                placeholder='Nhập slug'
+                                                placeholder={t('enter_slug')}
                                             />
 
                                             {
@@ -179,28 +179,28 @@ const Create = ({ placeholder }) => {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="mb-3">
-                                                    <label htmlFor="" className='form-label'>Vị Trí</label>
+                                                    <label className='form-label'>{t('location')}</label>
                                                     <input
                                                         {...register('location')}
                                                         type='text'
                                                         className="form-control"
-                                                        placeholder='Nhập vị trí.'
+                                                        placeholder={t('enter_location')}
                                                     />
                                                 </div>
                                             </div>
 
                                             <div className="col-md-6">
                                                 <div className="mb-3">
-                                                    <label htmlFor="" className='form-label'>Loại Hình Xây Dựng</label>
+                                                    <label className='form-label'>{t('construction_type')}</label>
                                                     <select
                                                         className="form-control"
                                                         {...register('construction_type')}
                                                     >
-                                                        <option value="">------Chọn loại xây dựng------</option>
-                                                        <option value="residential">Xây dựng nhà ở</option>
-                                                        <option value="commercial">Xây dựng thương mại</option>
-                                                        <option value="industrial">Xây dựng công nghiệp</option>
-                                                        <option value="infrastructure">Xây dựng cơ sở hạ tầng</option>
+                                                        <option value="">{t('select_construction')}</option>
+                                                        <option value="residential">{t('residential')}</option>
+                                                        <option value="commercial">{t('commercial')}</option>
+                                                        <option value="industrial">{t('industrial')}</option>
+                                                        <option value="infrastructure">{t('infrastructure')}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -209,30 +209,29 @@ const Create = ({ placeholder }) => {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="mb-3">
-                                                    <label htmlFor="" className='form-label'>Lĩnh Vực Xây Dựng</label>
+                                                    <label className='form-label'>{t('sector')}</label>
                                                     <select
                                                         className="form-control"
                                                         {...register('sector')}
                                                     >
-                                                        <option value="">------Chọn lĩnh vực------</option>
-                                                        <option value="health">Sức khỏe</option>
-                                                        <option value="education">Giáo dục</option>
-                                                        <option value="corporate">Doanh nghiệp</option>
-                                                        <option value="individual">Cá nhân</option>
-                                                        <option value="community">Cộng đồng</option>
+                                                        <option value="">{t('select_sector')}</option>
+                                                        <option value="health">{t('health')}</option>
+                                                        <option value="education">{t('education')}</option>
+                                                        <option value="corporate">{t('corporate')}</option>
+                                                        <option value="individual">{t('individual')}</option>
+                                                        <option value="community">{t('community')}</option>
                                                     </select>
                                                 </div>
                                             </div>
-
                                             <div className="col-md-6">
                                                 <div className='mb-3'>
-                                                    <label htmlFor='' className='form-label'>Trạng Thái</label>
+                                                    <label htmlFor='' className='form-label'>{t('status')}</label>
                                                     <select
-                                                        {...register('status', { required: 'Chọn một trạng thái.' })}
+                                                        {...register('status', { required: t('select_status') })}
                                                         className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                        <option value="">------Chọn trạng thái------</option>
-                                                        <option value="1">Hiển thị</option>
-                                                        <option value="0">Ẩn</option>
+                                                        <option value="">{t('select_status')}</option>
+                                                        <option value="1">{t('active')}</option>
+                                                        <option value="0">{t('block')}</option>
                                                     </select>
 
                                                     {
@@ -243,17 +242,17 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Mô Tả</label>
+                                            <label className='form-label'>{t('short_desc')}</label>
                                             <textarea
                                                 {...register('short_desc')}
                                                 className='form-control'
-                                                rows={3}
-                                                placeholder='Nhập mô tả.'>
+                                                rows={5}
+                                                placeholder={t('enter_short_desc')}>
                                             </textarea>
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Nội Dung</label>
+                                            <label htmlFor='' className='form-label'>{t('content')}</label>
                                             <JoditEditor
                                                 ref={editor}
                                                 value={content}
@@ -264,7 +263,7 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Hình Ảnh</label>
+                                            <label className='form-label'>{t('image')}</label>
                                             <br />
                                             <input
                                                 type="file"
@@ -286,7 +285,7 @@ const Create = ({ placeholder }) => {
                                                                     className='btn btn-danger mt-3 w-100'
                                                                     onClick={() => removeTempImage(image.id)}
                                                                 >
-                                                                    Xóa Ảnh
+                                                                    {t('remove_image')}
                                                                 </button>
                                                             </div>
                                                         )
@@ -302,7 +301,7 @@ const Create = ({ placeholder }) => {
                                                         ? <>
                                                             <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                         </>
-                                                        : 'Lưu'
+                                                        : t('save')
                                                 }
                                             </button>
                                         </div>

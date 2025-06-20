@@ -150,7 +150,7 @@ const Create = ({ placeholder }) => {
                                         <div className="mb-3">
                                             <label className='form-label'>{t('title')}</label>
                                             <input
-                                                {...register('title', { required: t('required') })}
+                                                {...register('title', { required: t('title_required') })}
                                                 type='text'
                                                 className={`form-control ${errors.title && 'is-invalid'}`}
                                                 placeholder={t('enter_title')}
