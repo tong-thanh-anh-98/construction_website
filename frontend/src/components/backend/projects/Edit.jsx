@@ -364,7 +364,7 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className="mb-3">
-                                                <div className="row gy-3">
+                                                <div className="row">
                                                     {project.image && !removeImage && (
                                                         <div className="col-md-4">
                                                             <div className="card h-100 shadow-sm">

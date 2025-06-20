@@ -22,6 +22,7 @@ const Edit = ({ placeholder }) => {
     const [removeImage, setRemoveImage] = useState(false);
     const [tempImages, setTempImages] = useState([]);
     const fileInputRef = useRef(null);
+    const [isDeleting, setIsDeleting] = useState(false); // Cho nút xóa
 
     const config = useMemo(() => ({
         readonly: false,
@@ -106,6 +107,7 @@ const Edit = ({ placeholder }) => {
         const formData = new FormData();
         const file = e.target.files[0];
         formData.append("image", file);
+        setDisable(true);
 
         try {
             const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
@@ -132,11 +134,15 @@ const Edit = ({ placeholder }) => {
             }
         } catch (error) {
             console.error('Upload error:', error.message);
+        } finally {
+            setDisable(false);
         }
     }
 
     const removeTempImage = async (id) => {
-        if (confirm("Confirm deletion – are you sure?")) {
+        if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+            setIsDeleting(true);
+
             try {
                 const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
                     method: 'DELETE',
@@ -151,19 +157,22 @@ const Edit = ({ placeholder }) => {
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
                     if (fileInputRef.current) fileInputRef.current.value = null;
-                    toast.success('Image removed successfully');
+                    toast.success('Hình ảnh đã được xóa.');
                 } else {
                     toast.error(result.message);
                 }
             } catch (error) {
                 console.error('Remove image error:', error.message);
-                toast.error('Remove image error');
+            } finally {
+                setIsDeleting(false);
             }
         }
     };
 
 
     const deleteService = async () => {
+        setDisable(true);
+
         try {
             const res = await fetch(`${apiUrlAdmin}/services/${deleteId}`, {
                 method: 'DELETE',
@@ -185,6 +194,7 @@ const Edit = ({ placeholder }) => {
             console.error('Error:', error);
         } finally {
             setShowModal(false);
+            setDisable(false);
         }
     };
 
@@ -200,37 +210,34 @@ const Edit = ({ placeholder }) => {
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 onConfirm={deleteService}
-                title={`Are you sure you want to delete service?`}
             />
 
             <main>
                 <div className="container my-5">
                     <div className="row">
                         <div className="col-md-3">
-                            {/* Sidebar */}
                             <Sidebar />
                         </div>
 
                         <div className="col-md-9">
-                            {/* Dashboard */}
                             <div className="card shadow border-0">
                                 <div className="card-body">
                                     <div className="card-body">
                                         <div className="d-flex justify-content-between">
-                                            <h4 className='h5'><Link to="/admin/services">Services</Link> / Edit</h4>
+                                            <h4 className='h5'><Link to="/admin/services">Dịch Vụ</Link> / Chỉnh Sửa</h4>
                                         </div>
 
                                         <form onSubmit={handleSubmit(updateService)}>
                                             <div className="mb-3">
-                                                <label htmlFor="" className='form-label'>Title</label>
+                                                <label htmlFor="" className='form-label'>Tiêu Đề</label>
                                                 <input
                                                     {...register('title',
-                                                        { required: 'The name field is required' }
+                                                        { required: 'Bắt buộc nhập.' }
                                                     )
                                                     }
                                                     type='text'
                                                     className={`form-control ${errors.title && 'is-invalid'}`}
-                                                    placeholder='Enter name'
+                                                    placeholder='Nhập tiêu đề.'
                                                 />
 
                                                 {
@@ -242,12 +249,12 @@ const Edit = ({ placeholder }) => {
                                                 <label htmlFor="" className='form-label'>Slug</label>
                                                 <input
                                                     {...register('slug',
-                                                        { required: 'The slug field is required' }
+                                                        { required: 'Bắt buộc nhập.' }
                                                     )
                                                     }
                                                     type='text'
                                                     className={`form-control ${errors.slug && 'is-invalid'}`}
-                                                    placeholder='Enter slug'
+                                                    placeholder='Nhập slug'
                                                 />
 
                                                 {
@@ -256,17 +263,17 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Short Description</label>
+                                                <label htmlFor='' className='form-label'>Mô Tả</label>
                                                 <textarea
                                                     {...register('short_desc')}
                                                     className='form-control'
                                                     rows={5}
-                                                    placeholder='Short description'>
+                                                    placeholder='Nhập mô tả.'>
                                                 </textarea>
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Content</label>
+                                                <label htmlFor='' className='form-label'>Nội Dung</label>
                                                 <JoditEditor
                                                     ref={editor}
                                                     value={content}
@@ -277,17 +284,17 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Status</label>
+                                                <label htmlFor='' className='form-label'>Trạng Thái</label>
                                                 <select
                                                     {
                                                     ...register('status',
-                                                        { required: 'Please select a status' }
+                                                        { required: 'Chọn một trạng thái.' }
                                                     )
                                                     }
                                                     className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                    <option value="">Select a status</option>
-                                                    <option value="1">Active</option>
-                                                    <option value="0">Block</option>
+                                                    <option value="">Chọn trạng thái</option>
+                                                    <option value="1">Hiển thị</option>
+                                                    <option value="0">Ẩn</option>
                                                 </select>
 
                                                 {
@@ -296,7 +303,7 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Images</label>
+                                                <label htmlFor='' className='form-label'>Hình Ảnh</label>
                                                 <br />
                                                 <input
                                                     type="file"
@@ -304,70 +311,84 @@ const Edit = ({ placeholder }) => {
                                                     onChange={handleFile} />
                                             </div>
 
-                                            <div className="row">
-                                                {/* Ảnh gốc nếu chưa xoá */}
-                                                {service.image && !removeImage && (
-                                                    <div className="col-md-3 mb-4">
-                                                        <div className="card h-100 shadow-sm">
-                                                            <img
-                                                                src={service.image_url}
-                                                                alt={service.title}
-                                                                className="card-img-top"
-                                                            />
-                                                            <div className="card-body p-2">
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-danger btn-sm w-100"
-                                                                    onClick={() => {
-                                                                        if (confirm("Confirm deletion – are you sure?")) {
-                                                                            setRemoveImage(true);
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    Remove Image
-                                                                </button>
+                                            <div className="mb-3">
+                                                <div className="row">
+                                                    {service.image && !removeImage && (
+                                                        <div className="col-md-4">
+                                                            <div className="card h-100 shadow-sm">
+                                                                <img
+                                                                    src={service.image_url}
+                                                                    alt={service.title}
+                                                                    className="card-img-top"
+                                                                />
+                                                                <div className="card-body p-2">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-danger btn-sm w-100"
+                                                                        onClick={() => {
+                                                                            if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+                                                                                setRemoveImage(true);
+                                                                            }
+                                                                        }}
+                                                                    >
+                                                                        Xóa Ảnh
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                )}
+                                                    )}
 
-                                                {/* Ảnh tạm thời */}
-                                                {tempImages && tempImages.map((image) => (
-                                                    <div className="col-md-3 mb-4" key={`temp-${image.id}`}>
-                                                        <div className="card h-100 shadow-sm">
-                                                            <img
-                                                                src={image.image_url}
-                                                                alt={image.name}
-                                                                className="card-img-top"
-                                                            />
-                                                            <div className="card-body p-2">
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-danger btn-sm w-100"
-                                                                    onClick={() => removeTempImage(image.id)}
-                                                                >
-                                                                    Remove Image
-                                                                </button>
+                                                    {tempImages && tempImages.map((image) => (
+                                                        <div className="col-md-4" key={`temp-${image.id}`}>
+                                                            <div className="card h-100 shadow-sm">
+                                                                <img
+                                                                    src={image.image_url}
+                                                                    alt={image.name}
+                                                                    className="card-img-top"
+                                                                />
+                                                                <div className="card-body p-2">
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-danger btn-sm w-100"
+                                                                        onClick={() => removeTempImage(image.id)}
+                                                                    >
+                                                                        Xóa Ảnh
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
                                             </div>
 
-                                            <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                                {disable ? 'Updating...' : 'Update'}
-                                            </button>
+                                            <div className='mb-3'>
+                                                <button disabled={disable} type="submit" className="btn btn-primary mt-3">
+                                                    {
+                                                        disable
+                                                            ? <>
+                                                                <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                            </>
+                                                            : 'Lưu'
+                                                    }
+                                                </button>
 
-                                            <button
-                                                type="button"
-                                                className="btn btn-danger mt-3 ms-2"
-                                                onClick={() => {
-                                                    setDeleteId(service.id);
-                                                    setShowModal(true);
-                                                }}
-                                            >
-                                                Delete
-                                            </button>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-danger mt-3 ms-2"
+                                                    onClick={() => {
+                                                        setDeleteId(service.id);
+                                                        setShowModal(true);
+                                                    }}
+                                                >
+                                                    {
+                                                        isDeleting
+                                                            ? <>
+                                                                <span className="btn btn-primary spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                            </>
+                                                            : 'Xóa'
+                                                    }
+                                                </button>
+                                            </div>
 
                                         </form>
                                     </div>

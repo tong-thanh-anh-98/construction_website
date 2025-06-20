@@ -273,7 +273,7 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <div className='row gy-3'>
+                                            <div className='row'>
                                                 {
                                                     tempImages && tempImages.map((image) => {
                                                         return (

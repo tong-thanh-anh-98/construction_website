@@ -25,7 +25,7 @@ const Create = ({ placeholder }) => {
 
     const config = useMemo(() => ({
         readonly: false,
-        placeholder: placeholder || 'Enter Content',
+        placeholder: placeholder || 'Nhập nội dung.',
     }),
         [placeholder]
     );
@@ -71,6 +71,7 @@ const Create = ({ placeholder }) => {
         const formData = new FormData();
         const file = e.target.files[0];
         formData.append("image", file);
+        setDisable(true); // disable button submit when image uploading.
 
         try {
             const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
@@ -92,11 +93,15 @@ const Create = ({ placeholder }) => {
             }
         } catch (error) {
             console.error('Upload error:', error.message);
+        } finally {
+            setDisable(false); // enable button submit when image uploaded
         }
     }
 
     const removeTempImage = async (id) => {
-        if (confirm("Confirm deletion – are you sure?")) {
+        if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+            setDisable(true);
+
             try {
                 const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
                     method: 'DELETE',
@@ -111,13 +116,14 @@ const Create = ({ placeholder }) => {
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
                     if (fileInputRef.current) fileInputRef.current.value = '';
-                    toast.success('Image removed successfully');
+                    toast.success('Hình ảnh đã được xóa.');
                 } else {
                     toast.error(result.message);
                 }
             } catch (error) {
                 console.error('Remove image error:', error.message);
-                toast.error('Remove image error');
+            } finally {
+                setDisable(false);
             }
         }
     };
@@ -136,21 +142,21 @@ const Create = ({ placeholder }) => {
                             <div className="card shadow border-0">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'><Link to="/admin/services">Services</Link> / Create</h4>
+                                        <h4 className='h5'><Link to="/admin/services">Dịch Vụ</Link> / Tạo</h4>
                                     </div>
                                     <hr />
 
                                     <form onSubmit={handleSubmit(saveService)}>
                                         <div className="mb-3">
-                                            <label htmlFor="" className='form-label'>Title</label>
+                                            <label htmlFor="" className='form-label'>Tiêu Đề</label>
                                             <input
                                                 {...register('title',
-                                                    { required: 'The name field is required' }
+                                                    { required: 'Bắt buộc nhập.' }
                                                 )
                                                 }
                                                 type='text'
                                                 className={`form-control ${errors.title && 'is-invalid'}`}
-                                                placeholder='Enter name'
+                                                placeholder='Nhập tiêu đề.'
                                             />
 
                                             {
@@ -162,12 +168,12 @@ const Create = ({ placeholder }) => {
                                             <label htmlFor="" className='form-label'>Slug</label>
                                             <input
                                                 {...register('slug',
-                                                    { required: 'The slug field is required' }
+                                                    { required: 'Bắt buộc nhập.' }
                                                 )
                                                 }
                                                 type='text'
                                                 className={`form-control ${errors.slug && 'is-invalid'}`}
-                                                placeholder='Enter slug'
+                                                placeholder='Nhập slug.'
                                             />
 
                                             {
@@ -176,38 +182,38 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Short Description</label>
+                                            <label htmlFor='' className='form-label'>Mô Tả</label>
                                             <textarea
                                                 {...register('short_desc')}
                                                 className='form-control'
                                                 rows={5}
-                                                placeholder='Short description'>
+                                                placeholder='Nhập mô tả.'>
                                             </textarea>
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Content</label>
+                                            <label htmlFor='' className='form-label'>Nội Dung</label>
                                             <JoditEditor
                                                 ref={editor}
                                                 value={content}
                                                 config={config}
-                                                tabIndex={1} // tabIndex of textarea
+                                                tabIndex={1}
                                                 onBlur={newContent => setContent(newContent)}
                                             />
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Status</label>
+                                            <label htmlFor='' className='form-label'>Trạng Thái</label>
                                             <select
                                                 {
                                                 ...register('status',
-                                                    { required: 'Please select a status' }
+                                                    { required: 'Chọn một trạng thái.' }
                                                 )
                                                 }
                                                 className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                <option value="">Select a status</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Block</option>
+                                                <option value="">Chọn trạng thái</option>
+                                                <option value="1">Hiển thị</option>
+                                                <option value="0">Ẩn</option>
                                             </select>
 
                                             {
@@ -216,7 +222,7 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Images</label>
+                                            <label htmlFor='' className='form-label'>Hình Ảnh</label>
                                             <br />
                                             <input
                                                 type="file"
@@ -224,12 +230,12 @@ const Create = ({ placeholder }) => {
                                                 onChange={handleFile} />
                                         </div>
 
-                                        <div className='pb-3'>
-                                            <div className='row gy-3'>
+                                        <div className='mb-3'>
+                                            <div className='row'>
                                                 {
                                                     tempImages && tempImages.map((image) => {
                                                         return (
-                                                            <div className='col-md-3' key={`temp-${image.id}`}>
+                                                            <div className='col-md-4' key={`temp-${image.id}`}>
                                                                 <div className='card shadow'>
                                                                     <img src={image.image_url} alt={image.name} className='w-100' />
                                                                 </div>
@@ -238,7 +244,7 @@ const Create = ({ placeholder }) => {
                                                                     className='btn btn-danger mt-3 w-100'
                                                                     onClick={() => removeTempImage(image.id)}
                                                                 >
-                                                                    Remove Image
+                                                                    Xóa ảnh
                                                                 </button>
                                                             </div>
                                                         )
@@ -249,7 +255,13 @@ const Create = ({ placeholder }) => {
 
                                         <div className='mb-3'>
                                             <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                                {disable ? 'Creating...' : 'Create'}
+                                                {
+                                                    disable
+                                                        ? <>
+                                                            <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        </>
+                                                        : 'Lưu'
+                                                }
                                             </button>
                                         </div>
                                     </form>
