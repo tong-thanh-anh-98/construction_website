@@ -1,20 +1,22 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../backend/context/AuthContext'
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 
 const Sidebar = () => {
     const { logout } = useContext(AuthContext);
+    const { t } = useTranslation();
     return (
         <div className="card shadow border-0">
             <div className="card-body py-4 sidebar">
-                <h4>Danh Mục</h4>
+                <h4>{t('dashboard')}</h4>
                 <ul>
-                    <li><Link to="/admin/dashboard">Bảng Điều Khiển</Link></li>
-                    <li><Link to="/admin/services">Dịch Vụ</Link></li>
-                    <li><Link to="/admin/projects">Dự Án</Link></li>
-                    <li><a href="#">Bài Viết</a></li>
+                    <li><Link to="/admin/dashboard">{t('dashboard')}</Link></li>
+                    <li><Link to="/admin/services">{t('services')}</Link></li>
+                    <li><Link to="/admin/projects">{t('projects')}</Link></li>
+                    <li><a href="#">{t('posts')}</a></li>
                     <li>
-                        <button className='btn btn-primary mt-4' onClick={logout}>Đăng Xuất</button>
+                        <button className='btn btn-primary mt-4' onClick={logout}>{t('logout')}</button>
                     </li>
                 </ul>
             </div>

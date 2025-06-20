@@ -13,6 +13,9 @@ class SlugHelper
         // Thay thế & bằng "va"
         $string = str_replace('&', 'va', $string);
 
+        // Thay thế / bằng -
+        $string = str_replace('/', '-', $string);
+
         // Tạo slug
         return Str::slug($string, '-');
     }

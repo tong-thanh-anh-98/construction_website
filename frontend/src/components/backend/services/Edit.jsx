@@ -8,8 +8,10 @@ import JoditEditor from 'jodit-react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import ModalDelete from '../../common/ModalDelete';
+import { useTranslation } from 'react-i18next';
 
 const Edit = ({ placeholder }) => {
+    const { t } = useTranslation();
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [disable, setDisable] = useState(false);
@@ -140,7 +142,7 @@ const Edit = ({ placeholder }) => {
     }
 
     const removeTempImage = async (id) => {
-        if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+        if (confirm(t('confirm_remove'))) {
             setIsDeleting(true);
 
             try {
@@ -157,7 +159,7 @@ const Edit = ({ placeholder }) => {
                 if (result.status === 200) {
                     setTempImages(prev => prev.filter(img => img.id !== id));
                     if (fileInputRef.current) fileInputRef.current.value = null;
-                    toast.success('Hình ảnh đã được xóa.');
+                    toast.success(result.message);
                 } else {
                     toast.error(result.message);
                 }
@@ -224,20 +226,17 @@ const Edit = ({ placeholder }) => {
                                 <div className="card-body">
                                     <div className="card-body">
                                         <div className="d-flex justify-content-between">
-                                            <h4 className='h5'><Link to="/admin/services">Dịch Vụ</Link> / Chỉnh Sửa</h4>
+                                            <h4 className='h5'><Link to="/admin/services">{t('service')}</Link> / {t('edit')}</h4>
                                         </div>
 
                                         <form onSubmit={handleSubmit(updateService)}>
                                             <div className="mb-3">
-                                                <label htmlFor="" className='form-label'>Tiêu Đề</label>
+                                                <label className='form-label'>{t('title')}</label>
                                                 <input
-                                                    {...register('title',
-                                                        { required: 'Bắt buộc nhập.' }
-                                                    )
-                                                    }
+                                                    {...register('title', { required: t('required') })}
                                                     type='text'
                                                     className={`form-control ${errors.title && 'is-invalid'}`}
-                                                    placeholder='Nhập tiêu đề.'
+                                                    placeholder={t('enter_title')}
                                                 />
 
                                                 {
@@ -246,15 +245,12 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className="mb-3">
-                                                <label htmlFor="" className='form-label'>Slug</label>
+                                                <label className='form-label'>{t('slug')}</label>
                                                 <input
-                                                    {...register('slug',
-                                                        { required: 'Bắt buộc nhập.' }
-                                                    )
-                                                    }
+                                                    {...register('slug', { required: t('slug_required') })}
                                                     type='text'
                                                     className={`form-control ${errors.slug && 'is-invalid'}`}
-                                                    placeholder='Nhập slug'
+                                                    placeholder={t('enter_slug')}
                                                 />
 
                                                 {
@@ -263,17 +259,17 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Mô Tả</label>
+                                                <label className='form-label'>{t('short_desc')}</label>
                                                 <textarea
                                                     {...register('short_desc')}
                                                     className='form-control'
                                                     rows={5}
-                                                    placeholder='Nhập mô tả.'>
+                                                    placeholder={t('enter_short_desc')}>
                                                 </textarea>
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Nội Dung</label>
+                                                <label htmlFor='' className='form-label'>{t('content')}</label>
                                                 <JoditEditor
                                                     ref={editor}
                                                     value={content}
@@ -284,17 +280,13 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Trạng Thái</label>
+                                                <label htmlFor='' className='form-label'>{t('status')}</label>
                                                 <select
-                                                    {
-                                                    ...register('status',
-                                                        { required: 'Chọn một trạng thái.' }
-                                                    )
-                                                    }
+                                                     {...register('status', { required: t('select_status') })}
                                                     className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                    <option value="">Chọn trạng thái</option>
-                                                    <option value="1">Hiển thị</option>
-                                                    <option value="0">Ẩn</option>
+                                                    <option value="">{t('select_status')}</option>
+                                                    <option value="1">{t('active')}</option>
+                                                    <option value="0">{t('block')}</option>
                                                 </select>
 
                                                 {
@@ -303,7 +295,7 @@ const Edit = ({ placeholder }) => {
                                             </div>
 
                                             <div className='mb-3'>
-                                                <label htmlFor='' className='form-label'>Hình Ảnh</label>
+                                                <label className='form-label'>{t('image')}</label>
                                                 <br />
                                                 <input
                                                     type="file"
@@ -326,12 +318,12 @@ const Edit = ({ placeholder }) => {
                                                                         type="button"
                                                                         className="btn btn-danger btn-sm w-100"
                                                                         onClick={() => {
-                                                                            if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+                                                                            if (confirm(t('confirm_remove'))) {
                                                                                 setRemoveImage(true);
                                                                             }
                                                                         }}
                                                                     >
-                                                                        Xóa Ảnh
+                                                                        {t('remove_image')}
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -352,7 +344,7 @@ const Edit = ({ placeholder }) => {
                                                                         className="btn btn-danger btn-sm w-100"
                                                                         onClick={() => removeTempImage(image.id)}
                                                                     >
-                                                                        Xóa Ảnh
+                                                                        {t('remove_image')}
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -368,7 +360,7 @@ const Edit = ({ placeholder }) => {
                                                             ? <>
                                                                 <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                             </>
-                                                            : 'Lưu'
+                                                            : t('save')
                                                     }
                                                 </button>
 
@@ -385,7 +377,7 @@ const Edit = ({ placeholder }) => {
                                                             ? <>
                                                                 <span className="btn btn-primary spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                                                             </>
-                                                            : 'Xóa'
+                                                            : t('delete')
                                                     }
                                                 </button>
                                             </div>

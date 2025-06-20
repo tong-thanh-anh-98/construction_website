@@ -31,28 +31,33 @@ Install Frontend:
 - React Jodit WYSIWYG Editor: npm i jodit-react
 - Installation lodash: npm i lodash
 - Cài thư viện react-i18next (thêm đa ngôn ngữ):
-
-* npm install i18next react-i18next i18next-http-backend i18next-browser-languagedetector axios
+- npm install react-i18next i18next i18next-http-backend i18next-browser-languagedetector
 * cấu hình:
-  import i18n from 'i18next';
-  import Backend from 'i18next-http-backend';
-  import LanguageDetector from 'i18next-browser-languagedetector';
-  import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import HttpApi from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 i18n
-.use(Backend)
-.use(LanguageDetector)
-.use(initReactI18next)
-.init({
-fallbackLng: 'en',
-debug: true,
-interpolation: {
-escapeValue: false,
-},
-backend: {
-loadPath: '/locales/{{lng}}/{{ns}}.json',
-},
-});
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    supportedLngs: ['vi', 'en'],
+    fallbackLng: 'vi',
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage']
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}/translation.json',
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+
+export default i18n;
 
 export default i18n;
 
@@ -71,3 +76,11 @@ Install Backend:
 
 * php artisan lang:add vi
 * php artisan lang:add en
+cấu hình trong AppServiceProvider:
+public function boot(): void
+    {
+        $lang = request()->header('Accept-Language');
+        if ($lang && in_array($lang, ['vi', 'en'])) {
+            App::setLocale($lang);
+        }
+    }

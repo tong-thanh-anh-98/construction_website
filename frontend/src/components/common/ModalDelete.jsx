@@ -1,4 +1,8 @@
-const ModalDelete = ({ show, onClose, onConfirm, title = 'Bạn có chắc chắn muốn xóa nó không?' }) => {
+import { useTranslation } from 'react-i18next';
+
+const ModalDelete = ({ show, onClose, onConfirm, title }) => {
+    const { t } = useTranslation();
+
     if (!show) return null;
 
     return (
@@ -7,17 +11,17 @@ const ModalDelete = ({ show, onClose, onConfirm, title = 'Bạn có chắc chắ
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title">Xác nhận</h5>
+                        <h5 className="modal-title">{t('confirm')}</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
 
                     <div className="modal-body">
-                        <p>{title}</p>
+                        <p>{title || t('confirm_remove')}</p>
                     </div>
 
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>Hủy</button>
-                        <button type="button" className="btn btn-danger" onClick={onConfirm}>Xóa</button>
+                        <button type="button" className="btn btn-secondary" onClick={onClose}>{t('cancel')}</button>
+                        <button type="button" className="btn btn-danger" onClick={onConfirm}>{t('delete')}</button>
                     </div>
 
                 </div>
