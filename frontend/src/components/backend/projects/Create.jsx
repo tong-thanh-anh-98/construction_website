@@ -72,6 +72,7 @@ const Create = ({ placeholder }) => {
         const formData = new FormData();
         const file = e.target.files[0];
         formData.append("image", file);
+        setDisable(true); // disable button submit when image uploading.
 
         try {
             const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
@@ -93,11 +94,15 @@ const Create = ({ placeholder }) => {
             }
         } catch (error) {
             console.error('Upload error:', error.message);
+        } finally {
+            setDisable(false); // enable button submit when image uploaded.
         }
     };
 
     const removeTempImage = async (id) => {
         if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+            setDisable(true);
+
             try {
                 const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
                     method: 'DELETE',
@@ -118,6 +123,8 @@ const Create = ({ placeholder }) => {
                 }
             } catch (error) {
                 console.error('Remove error:', error.message);
+            } finally {
+                setDisable(false);
             }
         }
     };
@@ -189,11 +196,11 @@ const Create = ({ placeholder }) => {
                                                         className="form-control"
                                                         {...register('construction_type')}
                                                     >
-                                                        <option value="">Chọn loại xây dựng</option>
-                                                        <option value="Residential Construction">Xây dựng nhà ở</option>
-                                                        <option value="Commercial Construction">Xây dựng thương mại</option>
-                                                        <option value="Industrial Construction">Xây dựng công nghiệp</option>
-                                                        <option value="Infrastructure Construction">Xây dựng cơ sở hạ tầng</option>
+                                                        <option value="">------Chọn loại xây dựng------</option>
+                                                        <option value="residential">Xây dựng nhà ở</option>
+                                                        <option value="commercial">Xây dựng thương mại</option>
+                                                        <option value="industrial">Xây dựng công nghiệp</option>
+                                                        <option value="infrastructure">Xây dựng cơ sở hạ tầng</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -207,10 +214,12 @@ const Create = ({ placeholder }) => {
                                                         className="form-control"
                                                         {...register('sector')}
                                                     >
-                                                        <option value="">Chọn ngành</option>
-                                                        <option value="Health">Sức khỏe</option>
-                                                        <option value="Education">Giáo dục</option>
-                                                        <option value="Corporate">Doanh nghiệp</option>
+                                                        <option value="">------Chọn lĩnh vực------</option>
+                                                        <option value="health">Sức khỏe</option>
+                                                        <option value="education">Giáo dục</option>
+                                                        <option value="corporate">Doanh nghiệp</option>
+                                                        <option value="individual">Cá nhân</option>
+                                                        <option value="community">Cộng đồng</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -221,9 +230,9 @@ const Create = ({ placeholder }) => {
                                                     <select
                                                         {...register('status', { required: 'Chọn một trạng thái.' })}
                                                         className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                        <option value="">Chọn trạng thái</option>
+                                                        <option value="">------Chọn trạng thái------</option>
                                                         <option value="1">Hiển thị</option>
-                                                        <option value="0">Ẩn đi</option>
+                                                        <option value="0">Ẩn</option>
                                                     </select>
 
                                                     {
@@ -234,7 +243,7 @@ const Create = ({ placeholder }) => {
                                         </div>
 
                                         <div className='mb-3'>
-                                            <label htmlFor='' className='form-label'>Mô Tả Ngắn Gọn</label>
+                                            <label htmlFor='' className='form-label'>Mô Tả</label>
                                             <textarea
                                                 {...register('short_desc')}
                                                 className='form-control'
@@ -288,7 +297,13 @@ const Create = ({ placeholder }) => {
 
                                         <div className='mb-3'>
                                             <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                                {disable ? 'Đang tạo...' : 'Tạo'}
+                                                {
+                                                    disable
+                                                        ? <>
+                                                            <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        </>
+                                                        : 'Lưu'
+                                                }
                                             </button>
                                         </div>
                                     </form>

@@ -38,6 +38,7 @@ const Edit = ({ placeholder }) => {
     const [showModal, setShowModal] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const [removeImage, setRemoveImage] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false); // Cho nút xóa
 
     // Fetch project data to pre-fill form
     const fetchProject = useCallback(async () => {
@@ -117,6 +118,7 @@ const Edit = ({ placeholder }) => {
         const formData = new FormData();
         const file = e.target.files[0];
         formData.append("image", file);
+        setDisable(true);
 
         try {
             const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
@@ -143,11 +145,15 @@ const Edit = ({ placeholder }) => {
             }
         } catch (error) {
             console.error('Upload error:', error.message);
+        } finally {
+            setDisable(false);
         }
     }
 
     const removeTempImage = async (id) => {
         if (confirm("Bạn có chắc chắn muốn xóa nó không?")) {
+            setDisable(true);
+
             try {
                 const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
                     method: 'DELETE',
@@ -168,11 +174,15 @@ const Edit = ({ placeholder }) => {
                 }
             } catch (error) {
                 console.error('Remove image error:', error.message);
+            } finally {
+                setDisable(false);
             }
         }
     };
 
     const deleteProject = async () => {
+        setIsDeleting(true);
+
         try {
             const res = await fetch(`${apiUrlAdmin}/projects/${deleteId}`, {
                 method: 'DELETE',
@@ -194,6 +204,7 @@ const Edit = ({ placeholder }) => {
             console.error('Error:', error);
         } finally {
             setShowModal(false);
+            setIsDeleting(false);
         }
     };
 
@@ -276,11 +287,11 @@ const Edit = ({ placeholder }) => {
                                                             className="form-control"
                                                             {...register('construction_type')}
                                                         >
-                                                            <option value="">Chọn loại xây dựng</option>
-                                                            <option value="Residential Construction(Xây dựng nhà ở)">Xây dựng nhà ở</option>
-                                                            <option value="Commercial Construction(Xây dựng thương mại)">Xây dựng thương mại</option>
-                                                            <option value="Industrial Construction(Xây dựng công nghiệp)">Xây dựng công nghiệp</option>
-                                                            <option value="Infrastructure Construction(Xây dựng cơ sở hạ tầng)">Xây dựng cơ sở hạ tầng</option>
+                                                            <option value="">------Chọn loại xây dựng------</option>
+                                                            <option value="residential">Xây dựng nhà ở</option>
+                                                            <option value="commercial">Xây dựng thương mại</option>
+                                                            <option value="industrial">Xây dựng công nghiệp</option>
+                                                            <option value="infrastructure">Xây dựng cơ sở hạ tầng</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -294,12 +305,12 @@ const Edit = ({ placeholder }) => {
                                                             className="form-control"
                                                             {...register('sector')}
                                                         >
-                                                            <option value="">Chọn lĩnh vực</option>
-                                                            <option value="Health(Sức khỏe)">Sức khỏe</option>
-                                                            <option value="Education(Giáo dục)">Giáo dục</option>
-                                                            <option value="Corporate(Doanh nghiệp)">Doanh nghiệp</option>
-                                                            <option value="Individual(Cá nhân)">Cá nhân</option>
-                                                            <option value="Community(Cộng đồng)">Cộng đồng</option>
+                                                            <option value="">------Chọn lĩnh vực------</option>
+                                                            <option value="health">Sức khỏe</option>
+                                                            <option value="education">Giáo dục</option>
+                                                            <option value="corporate">Doanh nghiệp</option>
+                                                            <option value="individual">Cá nhân</option>
+                                                            <option value="community">Cộng đồng</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -310,9 +321,9 @@ const Edit = ({ placeholder }) => {
                                                         <select
                                                             {...register('status', { required: 'Chọn một trạng thái.' })}
                                                             className={`form-control ${errors.status && 'is-invalid'}`}>
-                                                            <option value="">Chọn trạng thái</option>
+                                                            <option value="">------Chọn trạng thái-------</option>
                                                             <option value="1">Hiển thị</option>
-                                                            <option value="0">Ẩn đi</option>
+                                                            <option value="0">Ẩn</option>
                                                         </select>
 
                                                         {
@@ -404,18 +415,31 @@ const Edit = ({ placeholder }) => {
 
                                             <div className='mb-3'>
                                                 <button disabled={disable} type="submit" className="btn btn-primary mt-3">
-                                                    {disable ? 'Đang sửa...' : 'Chỉnh Sửa'}
+                                                    {
+                                                        disable
+                                                            ? <>
+                                                                <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                            </>
+                                                            : 'Lưu'
+                                                    }
                                                 </button>
 
                                                 <button
                                                     type="button"
                                                     className="btn btn-danger mt-3 ms-2"
+                                                    disabled={isDeleting}
                                                     onClick={() => {
                                                         setDeleteId(project.id);
                                                         setShowModal(true);
                                                     }}
                                                 >
-                                                    Xóa
+                                                    {
+                                                        isDeleting
+                                                            ? <>
+                                                                <span className="btn btn-primary spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                            </>
+                                                            : 'Xóa'
+                                                    }
                                                 </button>
                                             </div>
                                         </form>

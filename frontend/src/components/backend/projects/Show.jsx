@@ -83,7 +83,7 @@ const Show = () => {
                                                                     <td>#{project.id}</td>
                                                                     <td>{project.title}</td>
                                                                     <td>{project.slug}</td>
-                                                                    <td>{project.status === 1 ? 'Hiển thị' : 'Bị Ẩn'}</td>
+                                                                    <td>{project.status === 1 ? 'Hiển thị' : 'Ẩn'}</td>
                                                                 </tr>
                                                             ))
                                                         }
