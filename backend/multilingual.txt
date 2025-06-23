@@ -1,0 +1,193 @@
+Multilingual installation and configuration: cài đặt và cấu hình đa ngôn ngữ trong Laravel 12 + ReactJS + i18next
+
+I. Laravel 12 – Backend (API)
+
+- Cài bản dịch Laravel chính thức (tiếng Việt, đa ngôn ngữ): composer require laravel-lang/lang
+=> Sau đó publish:
+* php artisan lang:add vi
+* php artisan lang:add en
+- cấu hình trong AppServiceProvider:
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        $lang = request()->header('Accept-Language');
+        if ($lang && in_array($lang, ['vi', 'en'])) {
+            App::setLocale($lang);
+        }
+    }
+}
+
+
+1. Cấu trúc thư mục ngôn ngữ
+
+lang/
+├── en/
+│   └── auth.php
+├── vi/
+│   └── auth.php
+
+Ví dụ lang/vi/auth.php:
+return [
+    'login_success' => 'Đăng nhập quản trị thành công.',
+    'login_failed' => 'Email hoặc mật khẩu không đúng.',
+    'validation_failed' => 'Dữ liệu không hợp lệ.',
+    'logout_success' => 'Đăng xuất thành công.',
+    'server_error' => 'Đã xảy ra lỗi khi xác thực.',
+];
+
+2. Cấu hình mặc định trong config/app.php
+'locale' => 'vi',
+'fallback_locale' => 'en',
+
+3. Tạo middleware SetLocale: php artisan make:middleware SetLocale
+app/Http/Middleware/SetLocale.php:
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
+
+class SetLocale
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $locale = $request->header('X-Locale', config('app.locale'));
+        App::setLocale($locale);
+        return $next($request);
+    }
+}
+
+4. Gắn middleware trong bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->append(\App\Http\Middleware\HandleCors::class); // CORS
+    $middleware->append(\App\Http\Middleware\SetLocale::class); // Set ngôn ngữ
+})
+
+5. Sử dụng __() để lấy chuỗi dịch trong controller:
+return response()->json([
+    'status' => 422,
+    'message' => __('auth.validation_failed'),
+    'errors' => $validator->errors(),
+], 422);
+
+6. CORS cấu hình (config/cors.php): tạo file thủ công
+'paths' => ['api/*'],
+'allowed_origins' => ['http://localhost:5173'],
+'allowed_headers' => ['*'],
+'allowed_methods' => ['*'],
+
+
+II. ReactJS – Frontend (Vite + i18next)
+
+1. Cài các package:
+npm install i18next react-i18next i18next-http-backend i18next-browser-languagedetector
+
+2. Cấu hình src/i18n.js:
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import HttpApi from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+i18n
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    supportedLngs: ['vi', 'en'],
+    fallbackLng: 'vi',
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage']
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}/translation.json',
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+
+export default i18n;
+
+
+3. Thư mục ngôn ngữ frontend:
+public/
+└── locales/
+    ├── vi/
+    │   └── translation.json
+    └── en/
+        └── translation.json
+
+Ví dụ vi/translation.json:
+{
+  "admin_login": "Đăng nhập quản trị",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "email_required": "Vui lòng nhập email.",
+  "email_invalid": "Email không hợp lệ.",
+  "password_required": "Vui lòng nhập mật khẩu.",
+  "enter_email": "Nhập email",
+  "enter_password": "Nhập mật khẩu",
+  "login": "Đăng nhập",
+  "logging_in": "Đang đăng nhập...",
+  "server_error": "Có lỗi xảy ra."
+}
+
+4. Sử dụng dịch trong Login.jsx
+import { useTranslation } from 'react-i18next';
+...
+const { t, i18n } = useTranslation();
+...
+<label>{t('email')}</label>
+<input
+  {...register('email', {
+    required: t('email_required'),
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      message: t('email_invalid')
+    }
+  })}
+/>
+
+
+5. Gửi X-Locale trong API call
+const response = await fetch("http://localhost:8000/api/authenticate", {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'X-Locale': i18n.language //  gửi ngôn ngữ đang dùng
+  },
+  body: JSON.stringify(data)
+});
+
+6. Hiển thị lỗi từ backend (validation / hệ thống):
+if (result.status === 200) {
+  toast.success(result.message);
+  // ...
+} else if (response.status === 422 && result.errors) {
+  Object.values(result.errors).forEach((messages) =>
+    messages.forEach((msg) => toast.error(msg))
+  );
+} else {
+  toast.error(result.message || t('server_error'));
+}

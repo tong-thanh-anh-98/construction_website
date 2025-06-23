@@ -1,4 +1,8 @@
-Setup project:
+########################################################################
+#################################################################
+SETUP PROJECTS
+########################################################
+################################################
 Install backend:
 
 - cd "project name"
@@ -16,9 +20,9 @@ Install frontend ReactJs with vite:
 
 ########################################################################
 #################################################################
+PROJECT SETTINGS
 ########################################################
 ################################################
-
 Install Frontend:
 
 - react bootstrap: npm install react-bootstrap bootstrap
@@ -30,57 +34,25 @@ Install Frontend:
 - React icons: npm install react-icons
 - React Jodit WYSIWYG Editor: npm i jodit-react
 - Installation lodash: npm i lodash
-- Cài thư viện react-i18next (thêm đa ngôn ngữ):
-- npm install react-i18next i18next i18next-http-backend i18next-browser-languagedetector
-* cấu hình:
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import HttpApi from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-
-i18n
-  .use(HttpApi)
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    supportedLngs: ['vi', 'en'],
-    fallbackLng: 'vi',
-    detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage']
-    },
-    backend: {
-      loadPath: '/locales/{{lng}}/translation.json',
-    },
-    react: {
-      useSuspense: false,
-    },
-  });
-
-export default i18n;
-
-export default i18n;
-
-########################################################################
-#################################################################
-########################################################
-################################################
 
 Install Backend:
-
 - Install Laravel Sanctum: php artisan install:api
 - Installing Intervention Image: composer require intervention/image
-- Clear cache IntelliSense trong VSCode (Ctrl+Shift+P → “Reload Window”)|(Tùy chọn) Chạy lại composer dump-autoload nếu dùng CLI: composer dump-autoload
-- Cài bản dịch Laravel chính thức (tiếng Việt, đa ngôn ngữ): composer require laravel-lang/lang
-  => Sau đó publish:
 
-* php artisan lang:add vi
-* php artisan lang:add en
-cấu hình trong AppServiceProvider:
-public function boot(): void
-    {
-        $lang = request()->header('Accept-Language');
-        if ($lang && in_array($lang, ['vi', 'en'])) {
-            App::setLocale($lang);
-        }
-    }
+- Clear cache IntelliSense trong VSCode (Ctrl+Shift+P → “Reload Window”)|(Tùy chọn) Chạy lại composer dump-autoload nếu dùng CLI: composer dump-autoload
++ 1. Reload Window (trong VSCode): Lệnh: Ctrl + Shift + P → gõ Reload Window → Enter
+Mục đích:
+- Làm mới hoàn toàn giao diện và trạng thái của VSCode.
+- Khắc phục sự cố IntelliSense (gợi ý code, auto-complete).
+- Tái khởi động các extension đang chạy (ví dụ: PHP Intelephense, Laravel Blade Snippets...).
+- Cập nhật lại cây thư mục và cấu trúc dự án nếu VSCode chưa nhận ra các thay đổi file.
+
++ 2. composer dump-autoload
+- Lệnh CLI trong Laravel/PHP: composer dump-autoload
+Mục đích:
+-Tái tạo file autoload (vendor/composer/autoload_classmap.php...) mà Composer sử dụng để tự động load các class trong dự án PHP.
+- Được dùng khi bạn:
+  + Tạo file class mới (controller, model, service...).
+  + Xóa hoặc đổi tên class.
+  + Gặp lỗi Class not found.
+=> Composer autoload giúp PHP biết class nằm ở đâu để tự động require đúng file khi chạy.
