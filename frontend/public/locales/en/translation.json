@@ -67,5 +67,17 @@
   "REQUIRED": "-------------MỤC BẮT BUỘC NHẬP--------------",
   "title_required": "Title is required.",
   "slug_required": "Slug is required.",
-  "status_required": "Please select a status."
+  "status_required": "Please select a status.",
+
+  "LOGIN": "-------------------MÀN HÌNH LOGIN------------------------",
+  "admin_login": "Admin Login",
+  "email": "Email",
+  "enter_email": "Enter email",
+  "email_required": "Email is required.",
+  "email_invalid": "Invalid email address.",
+  "password": "Password",
+  "enter_password": "Enter password",
+  "password_required": "Password is required.",
+  "login": "Login",
+  "logging_in": "Logging in..."
 }

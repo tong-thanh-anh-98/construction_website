@@ -67,5 +67,17 @@
   "REQUIRED": "-------------MỤC BẮT BUỘC NHẬP--------------",
   "title_required": "Tiêu đề là bắt buộc.",
   "slug_required": "Slug là bắt buộc.",
-  "status_required": "Trạng thái là bắt buộc."
+  "status_required": "Trạng thái là bắt buộc.",
+
+  "LOGIN": "-------------------MÀN HÌNH LOGIN------------------------",
+  "admin_login": "Đăng nhập quản trị",
+  "email": "Email",
+  "enter_email": "Nhập email",
+  "email_required": "Email không được để trống.",
+  "email_invalid": "Email không hợp lệ.",
+  "password": "Mật khẩu",
+  "enter_password": "Nhập mật khẩu",
+  "password_required": "Mật khẩu không được để trống.",
+  "login": "Đăng nhập",
+  "logging_in": "Đang đăng nhập..."
 }
