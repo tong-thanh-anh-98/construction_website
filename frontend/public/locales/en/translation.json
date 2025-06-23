@@ -63,6 +63,8 @@
   "confirm_remove": "Are you sure you want to delete it?",
   "image_deleted": "Image has been deleted.",
   "upload_error": "Upload error.",
+  "notate": "The list is currently empty.",
+  "logout_success": "Logged out of administrator account.",
 
   "REQUIRED": "-------------MỤC BẮT BUỘC NHẬP--------------",
   "title_required": "Title is required.",

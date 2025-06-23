@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class AuthenticationController extends Controller
 {
@@ -23,8 +22,7 @@ class AuthenticationController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 422,
-                    // 'message' => 'Validation failed.',
-                    'message' => __('auth.validation_failed'), // áp dụng cho đa ngôn ngữ.
+                    'message' => __('auth.validation_failed'),
                     'errors' => $validator->errors(),
                 ], 422);
             } else {
@@ -41,13 +39,11 @@ class AuthenticationController extends Controller
                         'id' => Auth::user()->id,
                         'token' => $token,
                         'status' => 200,
-                        // 'message' => 'Admin authentication successfully.',
-                        'message' => __('auth.login_success'), // áp dụng cho đa ngôn ngữ.
+                        'message' => __('auth.login_success'),
                     ], 200);
                 } else {
                     return response()->json([
                         'status' => 422,
-                        // 'message' => 'Either Email/Password is incorrect.',
                         'message' => __('auth.login_failed'),
                     ], 422);
                 }
@@ -57,7 +53,6 @@ class AuthenticationController extends Controller
             Log::error('Authentication error: ' . $e->getMessage());
 
             return response()->json([
-                // 'message' => 'Something went wrong during authentication.',
                 'message' => __('auth.server_error'),
             ], 500);
         }

@@ -28,7 +28,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Successfully.',
+                'message' => __('message.successfully'),
                 'data'    => $services
             ], 200);
         } catch (\Exception $e) {
@@ -36,7 +36,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Failed.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -69,7 +69,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 201,
-                'message'   => 'Created successfully.',
+                'message' => __('message.created_successfully'),
                 'data'      => $service
             ], 201);
         } catch (\Throwable $e) {
@@ -78,7 +78,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -95,13 +95,13 @@ class ServiceController extends Controller
             if (!$service) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Successfully.',
+                'message' => __('message.successfully'),
                 'data'    => $service
             ], 200);
         } catch (\Exception $e) {
@@ -109,7 +109,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -128,7 +128,7 @@ class ServiceController extends Controller
             if (!$service) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
@@ -163,7 +163,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Updated Successfully.',
+                'message' => __('message.uploaded_successfully'),
                 'data'      => $service
             ], 200);
         } catch (\Throwable $e) {
@@ -172,7 +172,7 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Update failed.',
+                'message' => __('message.internal_server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -189,7 +189,7 @@ class ServiceController extends Controller
             if (!$service) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
             // xóa hình ảnh trong thư mục nếu xóa services
@@ -201,14 +201,14 @@ class ServiceController extends Controller
 
             return response()->json([
                 'status'  => 200,
-                'message'    => 'Deleted Successfully.'
+                'message' => __('message.deleted_successfully'),
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

@@ -11,7 +11,7 @@ import ModalDelete from '../../common/ModalDelete';
 import { useTranslation } from 'react-i18next';
 
 const Edit = ({ placeholder }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const editor = useRef(null);
     const [content, setContent] = useState('');
     const [disable, setDisable] = useState(false);
@@ -49,6 +49,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -68,7 +69,7 @@ const Edit = ({ placeholder }) => {
         } catch (err) {
             console.error('Fetch error:', err);
         }
-    }, [params.id, reset]);
+    }, [params.id, reset, i18n.language]);
 
     const updateService = async (data) => {
         const newData = { ...data, "content": content, "imageId": imageId, removeImage: removeImage ? 1 : 0 }
@@ -80,6 +81,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: JSON.stringify(newData)
@@ -116,6 +118,7 @@ const Edit = ({ placeholder }) => {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: formData
@@ -128,6 +131,7 @@ const Edit = ({ placeholder }) => {
             } else {
                 setImageId(result.data.id);
                 setTempImages(prev => [...prev, result.data]);
+                toast.success(result.message);
 
                 // Reset input sau khi upload thành công
                 if (fileInputRef.current) {
@@ -150,6 +154,7 @@ const Edit = ({ placeholder }) => {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
+                        'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                         'Authorization': `Bearer ${adminToken()}`
                     }
                 });
@@ -181,6 +186,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -282,7 +288,7 @@ const Edit = ({ placeholder }) => {
                                             <div className='mb-3'>
                                                 <label htmlFor='' className='form-label'>{t('status')}</label>
                                                 <select
-                                                     {...register('status', { required: t('select_status') })}
+                                                    {...register('status', { required: t('select_status') })}
                                                     className={`form-control ${errors.status && 'is-invalid'}`}>
                                                     <option value="">{t('select_status')}</option>
                                                     <option value="1">{t('active')}</option>

@@ -1,7 +1,13 @@
-const Notate = ({ text = 'Danh sách hiện đang trống.' }) => {
-    return (
-        <div className='text-center py-5 text-muted'>{text}</div>
-    )
-}
+import { useTranslation } from 'react-i18next';
 
-export default Notate
+const Notate = ({ text }) => {
+    const { t } = useTranslation();
+
+    return (
+        <div className='text-center py-5 text-muted'>
+            {text || t('notate')}
+        </div>
+    );
+};
+
+export default Notate;

@@ -12,6 +12,6 @@ return [
     'validation_failed'     => 'Validation failed.',
     'logout_success'        => 'You logout successfully.',
     'server_error'          => 'Something went wrong during authentication.',
-    'unauthenticated'       => 'unauthenticated',
+    'unauthenticated'       => 'Unauthenticated.',
     'logout_failed'         => 'Log failed, please try again.',
 ];

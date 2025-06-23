@@ -10,7 +10,7 @@ import JoditEditor from 'jodit-react';
 import { useTranslation } from 'react-i18next';
 
 const Create = ({ placeholder }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const config = useMemo(() => ({
         readonly: false,
         placeholder: placeholder || t('enter_content'),
@@ -42,6 +42,7 @@ const Create = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: JSON.stringify(newData)
@@ -79,6 +80,7 @@ const Create = ({ placeholder }) => {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: formData
@@ -91,6 +93,7 @@ const Create = ({ placeholder }) => {
             } else {
                 setImageId(result.data.id);
                 setTempImages(prev => [...prev, result.data]);
+                toast.success(result.message);
             }
         } catch (error) {
             console.error('Upload error:', error.message);
@@ -108,6 +111,7 @@ const Create = ({ placeholder }) => {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
+                        'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                         'Authorization': `Bearer ${adminToken()}`
                     }
                 });

@@ -55,7 +55,7 @@ const Login = () => {
 
             } else {
                 // Các lỗi khác: ví dụ sai email/pass
-                toast.error(result.message || t('server_error'));
+                toast.error(result.message);
             }
         } catch (error) {
             console.error('Error has occurred:', error);

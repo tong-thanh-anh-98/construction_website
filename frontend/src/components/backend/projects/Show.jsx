@@ -2,7 +2,7 @@ import Header from '../../common/Header';
 import Sidebar from '../../common/Sidebar';
 import Footer from '../../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import Notate from '../../common/Notate';
@@ -10,12 +10,12 @@ import Loader from '../../common/Loader';
 import { useTranslation } from 'react-i18next';
 
 const Show = () => {
+    const { t, i18n } = useTranslation();
     const [loader, setLoader] = useState(false);
     const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
-    const { t } = useTranslation();
 
-    const fetchProjects = async () => {
+    const fetchProjects = useCallback(async () => {
         setLoader(true);
         try {
             const response = await fetch(`${apiUrlAdmin}/projects`, {
@@ -23,6 +23,7 @@ const Show = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -38,11 +39,11 @@ const Show = () => {
         } finally {
             setLoader(false);
         }
-    }
+    }, [i18n.language]);
 
     useEffect(() => {
         fetchProjects()
-    }, []);
+    }, [fetchProjects]);
 
     return (
         <>

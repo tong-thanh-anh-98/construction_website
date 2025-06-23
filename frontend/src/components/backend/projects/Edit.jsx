@@ -11,7 +11,7 @@ import ModalDelete from '../../common/ModalDelete';
 import { useTranslation } from 'react-i18next';
 
 const Edit = ({ placeholder }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const config = useMemo(() => ({
         readonly: false,
         placeholder: placeholder || '',
@@ -50,6 +50,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -72,7 +73,7 @@ const Edit = ({ placeholder }) => {
         } catch (err) {
             console.error('Fetch error:', err);
         }
-    }, [params.id, reset]);
+    }, [params.id, reset, i18n.language]);
 
     const updateProject = async (data) => {
         const newData = {
@@ -90,6 +91,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: JSON.stringify(newData)
@@ -127,6 +129,7 @@ const Edit = ({ placeholder }) => {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: formData
@@ -139,6 +142,7 @@ const Edit = ({ placeholder }) => {
             } else {
                 setImageId(result.data.id);
                 setTempImages(prev => [...prev, result.data]);
+                toast.success(result.message);
 
                 // Reset input upload successfully.
                 if (fileInputRef.current) {
@@ -161,6 +165,7 @@ const Edit = ({ placeholder }) => {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
+                        'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                         'Authorization': `Bearer ${adminToken()}`
                     }
                 });
@@ -191,6 +196,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });

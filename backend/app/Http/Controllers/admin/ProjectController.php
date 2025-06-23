@@ -28,7 +28,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Successfully.',
+                'message' => __('message.successfully'),
                 'data'    => $projects
             ], 200);
         } catch (\Exception $e) {
@@ -36,7 +36,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -63,7 +63,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 201,
-                'message'   => 'Created Successfully.',
+                'message' => __('message.created_successfully'),
                 'data'      => $project
             ], 201);
         } catch (\Throwable $e) {
@@ -72,7 +72,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -89,13 +89,13 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
             return response()->json([
                 'status'  => 200,
-                'message' => 'Successfully.',
+                'message' => __('message.successfully'),
                 'data'    => $project
             ], 200);
         } catch (\Exception $e) {
@@ -103,7 +103,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -122,7 +122,7 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
@@ -151,7 +151,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Updated Successfully.',
+                'message' => __('message.uploaded_successfully'),
                 'data'      => $project
             ], 200);
         } catch (\Throwable $e) {
@@ -160,7 +160,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -177,7 +177,7 @@ class ProjectController extends Controller
             if (!$project) {
                 return response()->json([
                     'status'    => 404,
-                    'message'   => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
             // xóa ảnh trong thư mục nếu xóa project
@@ -189,14 +189,14 @@ class ProjectController extends Controller
 
             return response()->json([
                 'status'  => 200,
-                'message'    => 'Deleted Successfully.'
+                'message' => __('message.deleted_successfully'),
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status'  => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

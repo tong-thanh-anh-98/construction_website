@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Header from '../../common/Header';
 import Footer from '../../common/Footer';
 import Sidebar from '../../common/Sidebar';
@@ -10,12 +10,12 @@ import Notate from '../../common/Notate';
 import { useTranslation } from 'react-i18next';
 
 const Show = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [services, setServices] = useState([]);
     const [loader, setLoader] = useState(false);
     const navigate = useNavigate();
 
-    const fetchServices = async () => {
+   const fetchServices = useCallback(async () => {
         setLoader(true);
         try {
             const response = await fetch(`${apiUrlAdmin}/services`, {
@@ -23,6 +23,7 @@ const Show = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -38,11 +39,11 @@ const Show = () => {
         } finally {
             setLoader(false);
         }
-    }
+    }, [i18n.language]); // thêm dependency
 
     useEffect(() => {
         fetchServices()
-    }, []);
+    }, [fetchServices]);
 
     return (
         <>

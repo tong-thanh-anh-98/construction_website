@@ -63,6 +63,8 @@
   "confirm_remove": "Bạn có chắc chắn muốn xóa nó không?",
   "image_deleted": "Hình ảnh đã được xóa.",
   "upload_error": "Lỗi tải ảnh.",
+  "notate": "Danh sách hiện đang trống.",
+  "logout_success": "Đã đăng xuất khỏi tài khoản quản trị viên.",
 
   "REQUIRED": "-------------MỤC BẮT BUỘC NHẬP--------------",
   "title_required": "Tiêu đề là bắt buộc.",

@@ -36,7 +36,7 @@ class TempImageController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 400,
-                'message' => "Bad Request",
+                'message' => __('message.bad_request'),
                 'errors' => $validator->errors()
             ], 400);
         }
@@ -48,7 +48,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => 'Uploaded Successfully.',
+                'message'   => __('message.uploaded_successfully'),
                 'data'      => $model
             ], 200);
         } catch (\Throwable $e) {
@@ -57,7 +57,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => 'Internal Server Error.',
+                'message'   => __('message.internal_server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -71,13 +71,13 @@ class TempImageController extends Controller
             if (!$image) {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Successfully.',
+                'message' => __('message.successfully'),
                 'data' => [
                     'id' => $image->id,
                     'name' => $image->name,
@@ -92,7 +92,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status' => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error' => $e->getMessage(), // Ẩn nếu cần bảo mật
             ], 500);
         }
@@ -107,7 +107,7 @@ class TempImageController extends Controller
             if (!$image) {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Not Found.',
+                    'message' => __('message.not_found'),
                 ], 404);
             }
 
@@ -115,14 +115,14 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Deleted Successfully.',
+                'message' => __('message.deleted_successfully'),
             ]);
         } catch (\Throwable $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status' => 500,
-                'message' => 'Internal Server Error.',
+                'message' => __('message.internal_server_error'),
                 'error' => $e->getMessage(), // Có thể ẩn nếu không muốn expose lỗi
             ], 500);
         }
