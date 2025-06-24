@@ -48,7 +48,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status'    => 200,
-                'message'   => __('message.uploaded_successfully'),
+                'message' => __('message.upload_success'),
                 'data'      => $model
             ], 200);
         } catch (\Throwable $e) {
@@ -57,7 +57,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status'    => 500,
-                'message'   => __('message.internal_server_error'),
+                'message'   => __('message.server_error'),
                 'error'     => $e->getMessage()
             ], 500);
         }
@@ -77,7 +77,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => __('message.successfully'),
+                'message' => __('message.success'),
                 'data' => [
                     'id' => $image->id,
                     'name' => $image->name,
@@ -92,7 +92,7 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status' => 500,
-                'message' => __('message.internal_server_error'),
+                'message' => __('message.server_error'),
                 'error' => $e->getMessage(), // Ẩn nếu cần bảo mật
             ], 500);
         }
@@ -115,14 +115,14 @@ class TempImageController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'message' => __('message.deleted_successfully'),
+                'message' => __('message.delete_success'),
             ]);
         } catch (\Throwable $e) {
             Log::error('Errors: ' . $e->getMessage());
 
             return response()->json([
                 'status' => 500,
-                'message' => __('message.internal_server_error'),
+                'message' => __('message.server_error'),
                 'error' => $e->getMessage(), // Có thể ẩn nếu không muốn expose lỗi
             ], 500);
         }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\front;
 
-use App\Models\Service;
+use App\Models\Project;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-class ServiceController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class ServiceController extends Controller
     public function index()
     {
         try {
-            $services = Service::where('status', 1)->orderBy('created_at', 'desc')->get();
+            $projects = Project::where('status', 1)->orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'status'  => 200,
                 'message' => __('message.success'),
-                'data'    => $services
+                'data'    => $projects
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
@@ -36,17 +36,17 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function latestServices(Request $request)
+    public function latestProjects(Request $request)
     {
         try {
-            $services = Service::where('status', 1)
-            ->take($request->get('limit'))
-            ->orderBy('created_at', 'desc')->get();
+            $projects = Project::where('status', 1)
+                ->take($request->get('limit'))
+                ->orderBy('created_at', 'desc')->get();
 
             return response()->json([
                 'status'  => 200,
                 'message' => __('message.success'),
-                'data'    => $services
+                'data'    => $projects
             ], 200);
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());

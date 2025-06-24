@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 return [
-    'successfully'                  => 'Successfully.', // status 200 function index
-    'internal_server_error'         => 'Internal Server Error.', // status 500
-    'created_successfully.'         => 'Created Successfully.', // status 200 function create
-    'not_found'                     => 'Not Found.', // status 404
-    'bad_request'                   => 'Bad Request', // status 400
-    'uploaded_successfully'         => 'Uploaded Successfully.', // status 200 function update
-    'deleted_successfully'          => 'Deleted Successfully.', // status 200 function delete
+    'success'              => 'Successfully.', // status 200 function index
+    'server_error'         => 'Internal Server Error.', // status 500
+    'create_success'       => 'Created Successfully.', // status 200 function create
+    'not_found'            => 'Not Found.', // status 404
+    'bad_request'          => 'Bad Request', // status 400
+    'upload_success'       => 'Uploaded Successfully.', // status 200 function upload file
+    'update_success'       => 'Updated Successfully.', // status 200 function update
+    'delete_success'       => 'Deleted Successfully.', // status 200 function delete
 ];
