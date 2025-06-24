@@ -1,24 +1,24 @@
 // Global Colors
-// $primary-color: #fe538d;
-// $secondary-color: #FFB703;
 $primary-color: #6f42c1;
-$secondary-color: #c49b48;
+$secondary-color: #FFB703;
 $text-color: #000;
 $text-white: #FFFFFF;
 $dark-background: #222725;
 $light-background: #9e9b9b;
 
-// font text
-// @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
-
-// body {
-//     font-family: "Rubik", sans-serif;
-// }
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body {
     font-family: 'Roboto', sans-serif;
+}
+
+.sticky-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -376,4 +376,8 @@ footer {
             }
         }
     }
+}
+
+main {
+  padding-top: 50px;
 }

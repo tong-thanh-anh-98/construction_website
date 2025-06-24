@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthContext } from './context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import '../../i18n';
 
 const Login = () => {
     const { t, i18n } = useTranslation();

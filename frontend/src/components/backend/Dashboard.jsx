@@ -1,10 +1,12 @@
-import React from 'react'
-import Header from '../common/Header'
-import Footer from '../common/Footer'
-import Sidebar from '../common/Sidebar'
-import Notate from '../common/Notate'
+import Header from '../common/Header';
+import Footer from '../common/Footer';
+import Sidebar from '../common/Sidebar';
+import Notate from '../common/Notate';
+import { useTranslation } from 'react-i18next';
 
 const Dashboard = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Header />
@@ -19,7 +21,7 @@ const Dashboard = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'>Bảng Điều Khiển</h4>
+                                        <h4 className='h5'>{t('dashboard')}</h4>
                                     </div>
                                     <hr />
 

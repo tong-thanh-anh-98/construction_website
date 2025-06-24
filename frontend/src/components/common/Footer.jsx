@@ -46,7 +46,7 @@ const Footer = () => {
                 </div>
 
                 <hr />
-                <p className='text-center pt-4'>© 2025 Công Ty Xây Dựng</p>
+                <p className='text-center pt-4'>Copyright © 2025 | Construction Solution Company</p>
             </div>
         </footer>
     )

@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 const Header = () => {
     const { t, i18n } = useTranslation();
     return (
-        <header>
+        <header className="sticky-header">
             <div className="container py-3">
                 <Navbar expand="lg">
                     <Navbar.Brand href="/" className='logo'>
-                        Website<span> {t('construction')}</span>
+                        <span> {t('web_tag')}</span>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -22,7 +22,6 @@ const Header = () => {
                             <Nav.Link href="/blogs" className='nav-link'>{t('blogs')}</Nav.Link>
                             <Nav.Link href="/contact" className='nav-link'>{t('contact')}</Nav.Link>
 
-                            {/* Dropdown chọn ngôn ngữ hiển thị từ <Nav.Link> */}
                             <Dropdown as={Nav.Item}>
                                 <Dropdown.Toggle as={Nav.Link} className="nav-link">
                                     {t('language')}

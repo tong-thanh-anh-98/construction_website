@@ -39,9 +39,10 @@ class ProjectController extends Controller
     public function latestProjects(Request $request)
     {
         try {
-            $projects = Project::where('status', 1)
-                ->take($request->get('limit'))
-                ->orderBy('created_at', 'desc')->get();
+            $projects = Project::orderBy('created_at', 'desc')
+                        ->where('status', 1)
+                        ->limit($request->limit)
+                        ->get();
 
             return response()->json([
                 'status'  => 200,

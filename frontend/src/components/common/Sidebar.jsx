@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '../backend/context/AuthContext'
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
@@ -8,7 +8,7 @@ const Sidebar = () => {
     const { t } = useTranslation();
     return (
         <div className="card shadow border-0">
-            <div className="card-body py-4 sidebar">
+            <div className="card-body py-5 sidebar">
                 <h4>{t('dashboard')}</h4>
                 <ul>
                     <li><Link to="/admin/dashboard">{t('dashboard')}</Link></li>

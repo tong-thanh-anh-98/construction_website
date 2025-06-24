@@ -1,7 +1,9 @@
 import AboutImg from '../../assets/images/about-us.jpg';
-
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
+    const { t } = useTranslation();
+
     return (
         < section className="section-2 py-5" >
             <div className="container">
@@ -11,15 +13,10 @@ const About = () => {
                     </div>
 
                     <div className="col-md-6">
-                        <span>Giới Thiệu</span>
-                        <h2>Kiến tạo công trình bền vững</h2>
-                        <p>
-                            Chúng tôi xây dựng những công trình chất lượng, mang lại giá trị lâu dài cho khách hàng.
-                        </p>
-
-                        <p>
-                            Với đội ngũ chuyên nghiệp và tận tâm, chúng tôi hiện thực hóa mọi ý tưởng của bạn.
-                        </p>
+                        <span>{t('about_tag')}</span>
+                        <h2>{t('about_title')}</h2>
+                        <p>{t('about_description_1')}</p>
+                        <p>{t('about_description_2')}</p>
                     </div>
                 </div>
             </div>

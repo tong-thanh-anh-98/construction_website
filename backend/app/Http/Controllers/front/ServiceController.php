@@ -39,9 +39,10 @@ class ServiceController extends Controller
     public function latestServices(Request $request)
     {
         try {
-            $services = Service::where('status', 1)
-            ->take($request->get('limit'))
-            ->orderBy('created_at', 'desc')->get();
+            $services = Service::orderBy('created_at', 'desc')
+                ->where('status', 1)
+                ->limit($request->limit)
+                ->get();
 
             return response()->json([
                 'status'  => 200,

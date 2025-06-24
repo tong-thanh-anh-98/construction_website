@@ -1,6 +1,7 @@
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Hero from '../common/Hero';
+import { useTranslation } from 'react-i18next';
 
 import { adminToken, apiUrlFront } from '../common/http';
 import { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import { toast } from 'react-toastify';
 
 
 const Services = () => {
+    const { t } = useTranslation();
     const [services, setServices] = useState([]);
 
     const fetchServices = async () => {
@@ -41,21 +43,18 @@ const Services = () => {
             <Header />
             <main>
                 <Hero
-                    preHeading='Chất Lượng. Uy Tín. Giá Trị.'
-                    heading='Dịch Vụ'
-                    text='Chúng tôi cung cấp giải pháp xây dựng trọn gói — từ tư vấn, thiết kế đến thi công và bàn giao. <br />
-                        Với đội ngũ chuyên nghiệp và quy trình tối ưu, mỗi dự án đều được hoàn thiện đúng tiến độ, chất lượng và ngân sách.'
+                    preHeading={t('service_pre_heading')}
+                    heading={t('service_heading')}
+                    text={t('service_hero_text')}
                 />
 
                 {/* Our Services */}
                 <section className="section-3 bg-light py-5">
                     <div className="container py-5">
                         <div className="section-header text-center">
-                            <span>Dịch Vụ</span>
-                            <h2>Giải Pháp Xây Dựng Toàn Diện</h2>
-                            <p>
-                                Chúng tôi cung cấp dịch vụ xây dựng từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng là ưu tiên hàng đầu.
-                            </p>
+                            <span>{t('service_tag')}</span>
+                            <h2>{t('service_title')}</h2>
+                            <p>{t('service_description')}</p>
                         </div>
 
                         <div className="row pt-4">
@@ -82,7 +81,7 @@ const Services = () => {
                                                             {service.short_desc}
                                                         </p>
                                                     </div>
-                                                    <a href="#" className='btn btn-primary small'>Xem Thêm</a>
+                                                    <a href="#" className='btn btn-primary small'>{t('see_more')}</a>
                                                 </div>
                                             </div>
                                         </div>

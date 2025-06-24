@@ -6,15 +6,17 @@ import Header from '../common/Header';
 import Footer from '../common/Footer';
 import About from '../common/About';
 
-import ServiceImg2 from '../../assets/images/construction2.jpg';
 import Icon1 from '../../assets/images/icon-1.svg';
 import Icon2 from '../../assets/images/icon-2.svg';
 import Icon3 from '../../assets/images/icon-3.svg';
 import AvatarImg from '../../assets/images/author-2.jpg';
 import BlogImg from '../../assets/images/construction3.jpg';
 import LatestServices from '../common/LatestServices';
+import LatestProjects from '../common/LatestProjects';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t } = useTranslation();
 
     return (
         <>
@@ -25,14 +27,12 @@ const Home = () => {
                     <div className="hero d-flex align-items-center">
                         <div className="container-fluid">
                             <div className="text-center">
-                                <span>Construction Website</span>
-                                <h1>Kiến trúc đỉnh cao — Tinh tế & Bền vững</h1>
-                                <p>
-                                    Biến ý tưởng thành công trình thực tế với chất lượng vượt trội và đam mê sáng tạo.<br />
-                                </p>
+                                <span>{t('web_tag')}</span>
+                                <h1>{t('slogan')}</h1>
+                                <p>{t('slogan_desc')}</p>
                                 <div className="mt-4">
-                                    <a className='btn btn-primary large'>Liên Hệ</a>
-                                    <a className='btn btn-secondary ms-2 large'> Xem Dự Án</a>
+                                    <a className='btn btn-primary large'>{t('contact')}</a>
+                                    <a className='btn btn-secondary ms-2 large'>{t('project')}</a>
                                 </div>
                             </div>
                         </div>
@@ -102,42 +102,7 @@ const Home = () => {
                 </section>
 
                 {/* Our Projects */}
-                <section className="section-3 bg-light py-5">
-                    <div className="container-fluid py-5">
-                        <div className="section-header text-center">
-                            <span>Dự Án</span>
-                            <h2>Các công trình tiêu biểu</h2>
-                            <p>
-                                Chúng tôi thực hiện các dự án xây dựng trọn gói — từ thiết kế, thi công đến hoàn thiện. Cam kết chất lượng, tiến độ và sự hài lòng của khách hàng.
-                            </p>
-                        </div>
-
-                        <div className="row pt-4">
-                            {[...Array(4)].map((_, index) => (
-                                <div className="col-md-3 col-lg-3" key={index}>
-                                    <div className="item">
-                                        <div className="service-image">
-                                            <img src={ServiceImg2} alt="" className='w-100' />
-                                        </div>
-
-                                        <div className="service-body">
-                                            <div className="service-title">
-                                                <h3>Nhà ở xã hội – Chất lượng vì cộng đồng</h3>
-                                            </div>
-
-                                            <div className="service-content">
-                                                <p>
-                                                    Chúng tôi tự hào thực hiện nhiều dự án nhà ở xã hội, mang đến không gian sống an toàn, tiện nghi và bền vững cho người dân có thu nhập thấp và trung bình. Dự án tiết kiệm chi phí nhưng vẫn đảm bảo chất lượng và tính thẩm mỹ cao.
-                                                </p>
-                                            </div>
-                                            <a href="#" className='btn btn-primary small'>Xem thêm</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                <LatestProjects />
 
                 <section className="section-5 py-5">
                     <div className="container">
