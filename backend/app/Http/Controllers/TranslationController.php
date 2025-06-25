@@ -14,14 +14,14 @@ class TranslationController extends Controller
         try {
             App::setLocale($locale);
 
-            $langPath = resource_path("lang/{$locale}.json");
+            $langPath = lang_path("{$locale}.json");
 
             if (!File::exists($langPath)) {
+                Log::error("Lang file not found: {$langPath}");
                 return response()->json(['error' => 'Language file not found'], 404);
             }
 
             $content = File::get($langPath);
-
             $translations = json_decode($content, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
