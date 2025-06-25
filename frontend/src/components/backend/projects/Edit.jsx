@@ -242,7 +242,7 @@ const Edit = ({ placeholder }) => {
                                 <div className="card-body">
                                     <div className="card-body">
                                         <div className="d-flex justify-content-between">
-                                            <h4 className='h5'><Link to="/admin/projects">{t('project')}</Link> / {t('edit')}</h4>
+                                            <h4 className='h5'><Link to="/admin/projects">{t('projects')}</Link> / {t('edit')}</h4>
                                         </div>
                                         <hr />
 
@@ -326,7 +326,7 @@ const Edit = ({ placeholder }) => {
                                                     <div className='mb-3'>
                                                         <label htmlFor='' className='form-label'>{t('status')}</label>
                                                         <select
-                                                            {...register('status', { required: t('select_status') })}
+                                                            {...register('status', { required: t('status_required') })}
                                                             className={`form-control ${errors.status && 'is-invalid'}`}>
                                                             <option value="">{t('select_status')}</option>
                                                             <option value="1">{t('active')}</option>

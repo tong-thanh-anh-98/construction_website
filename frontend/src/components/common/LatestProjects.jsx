@@ -48,7 +48,7 @@ const LatestProjects = () => {
                     {
                         projects && projects.map(project => {
                             return (
-                                <div className="col-md-4 col-lg-4" key={`service-${project.id}`}>
+                                <div className="col-md-4 col-lg-4" key={`project-${project.id}`}>
                                     <div className="item">
                                         <div className="service-image">
                                             <img

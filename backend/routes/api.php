@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\ProjectController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\AuthenticationController;
@@ -9,7 +11,8 @@ use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\front\ProjectController as FrontProjectController;
 use App\Http\Controllers\front\ServiceController as FrontServiceController;
 
-Route::post('authenticate', [AuthenticationController::class, 'authenticate']);
+Route::get('/translations/{locale}', [TranslationController::class, 'getTranslations'])->name('getTranslations');
+Route::post('authenticate', [AuthenticationController::class, 'authenticate'])->name('authenticate');
 
 // Group admin
 Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(function () {
@@ -18,10 +21,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
     Route::apiResource('services', ServiceController::class);
     Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('articles', ArticleController::class);
 
-    Route::post('save-temp-images', [TempImageController::class, 'store']);
-    Route::get('get-temp-images/{id}', [TempImageController::class, 'show']);
-    Route::delete('remove-temp-images/{id}', [TempImageController::class, 'removeTempImage']);
+    Route::post('save-temp-images', [TempImageController::class, 'store'])->name('store');
+    Route::get('get-temp-images/{id}', [TempImageController::class, 'show'])->name('show');
+    Route::delete('remove-temp-images/{id}', [TempImageController::class, 'removeTempImage'])->name('removeTempImage');
 });
 
 // Group front

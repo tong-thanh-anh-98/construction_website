@@ -32,7 +32,7 @@ const Home = () => {
                                 <p>{t('slogan_desc')}</p>
                                 <div className="mt-4">
                                     <a className='btn btn-primary large'>{t('contact')}</a>
-                                    <a className='btn btn-secondary ms-2 large'>{t('project')}</a>
+                                    <a className='btn btn-primary ms-2 large'>{t('projects')}</a>
                                 </div>
                             </div>
                         </div>

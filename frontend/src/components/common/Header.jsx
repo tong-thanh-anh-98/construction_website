@@ -19,7 +19,7 @@ const Header = () => {
                             <Nav.Link href="/about" className='nav-link'>{t('about')}</Nav.Link>
                             <Nav.Link href="/services" className='nav-link'>{t('services')}</Nav.Link>
                             <Nav.Link href="/projects" className='nav-link'>{t('projects')}</Nav.Link>
-                            <Nav.Link href="/blogs" className='nav-link'>{t('blogs')}</Nav.Link>
+                            <Nav.Link href="/blogs" className='nav-link'>{t('blog_new')}</Nav.Link>
                             <Nav.Link href="/contact" className='nav-link'>{t('contact')}</Nav.Link>
 
                             <Dropdown as={Nav.Item}>

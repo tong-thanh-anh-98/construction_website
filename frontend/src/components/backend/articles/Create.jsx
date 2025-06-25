@@ -1,13 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
-import Header from '../../common/Header';
-import Footer from '../../common/Footer';
-import Sidebar from '../../common/Sidebar';
 import { useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
+import Header from '../../common/Header';
+import Sidebar from '../../common/Sidebar';
 import JoditEditor from 'jodit-react';
-import { useTranslation } from 'react-i18next';
+import Footer from '../../common/Footer';
 
 const Create = ({ placeholder }) => {
     const { t, i18n } = useTranslation();
@@ -32,12 +32,12 @@ const Create = ({ placeholder }) => {
     const [tempImages, setTempImages] = useState([]);
     const fileInputRef = useRef(null);
 
-    const saveProject = async (data) => {
+    const saveArticle = async (data) => {
         const newData = { ...data, "content": content, "imageId": imageId }
         setDisable(true);
 
         try {
-            const response = await fetch(`${apiUrlAdmin}/projects`, {
+            const response = await fetch(`${apiUrlAdmin}/articles`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const Create = ({ placeholder }) => {
 
             if (result.status === 201) {
                 toast.success(result.message);
-                navigate('/admin/projects');
+                navigate('/admin/articles');
             } else if (result.errors) {
                 const formErrors = result.errors;
 
@@ -147,11 +147,11 @@ const Create = ({ placeholder }) => {
                             <div className="card shadow border-0">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'><Link to="/admin/projects">{t('projects')}</Link> / {t('create')}</h4>
+                                        <h4 className='h5'><Link to="/admin/articles">{t('articles')}</Link> / {t('create')}</h4>
                                     </div>
                                     <hr />
 
-                                    <form onSubmit={handleSubmit(saveProject)}>
+                                    <form onSubmit={handleSubmit(saveArticle)}>
                                         <div className="mb-3">
                                             <label className='form-label'>{t('title')}</label>
                                             <input
@@ -182,52 +182,6 @@ const Create = ({ placeholder }) => {
 
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <div className="mb-3">
-                                                    <label className='form-label'>{t('location')}</label>
-                                                    <input
-                                                        {...register('location')}
-                                                        type='text'
-                                                        className="form-control"
-                                                        placeholder={t('enter_location')}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-md-6">
-                                                <div className="mb-3">
-                                                    <label className='form-label'>{t('construction_type')}</label>
-                                                    <select
-                                                        className="form-control"
-                                                        {...register('construction_type')}
-                                                    >
-                                                        <option value="">{t('select_construction')}</option>
-                                                        <option value="residential">{t('residential')}</option>
-                                                        <option value="commercial">{t('commercial')}</option>
-                                                        <option value="industrial">{t('industrial')}</option>
-                                                        <option value="infrastructure">{t('infrastructure')}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <div className="mb-3">
-                                                    <label className='form-label'>{t('sector')}</label>
-                                                    <select
-                                                        className="form-control"
-                                                        {...register('sector')}
-                                                    >
-                                                        <option value="">{t('select_sector')}</option>
-                                                        <option value="health">{t('health')}</option>
-                                                        <option value="education">{t('education')}</option>
-                                                        <option value="corporate">{t('corporate')}</option>
-                                                        <option value="individual">{t('individual')}</option>
-                                                        <option value="community">{t('community')}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
                                                 <div className='mb-3'>
                                                     <label htmlFor='' className='form-label'>{t('status')}</label>
                                                     <select
@@ -243,16 +197,18 @@ const Create = ({ placeholder }) => {
                                                     }
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div className='mb-3'>
-                                            <label className='form-label'>{t('short_desc')}</label>
-                                            <textarea
-                                                {...register('short_desc')}
-                                                className='form-control'
-                                                rows={5}
-                                                placeholder={t('enter_short_desc')}>
-                                            </textarea>
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className='form-label'>{t('author')}</label>
+                                                    <input
+                                                        {...register('author')}
+                                                        type='text'
+                                                        className="form-control"
+                                                        placeholder={t('enter_author')}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className='mb-3'>

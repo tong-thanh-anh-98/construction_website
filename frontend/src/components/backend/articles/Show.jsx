@@ -1,49 +1,51 @@
+import { useTranslation } from 'react-i18next';
 import Header from '../../common/Header';
 import Sidebar from '../../common/Sidebar';
-import Footer from '../../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
+import Footer from '../../common/Footer';
 import { useCallback, useEffect, useState } from 'react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
-import { toast } from 'react-toastify';
-import Notate from '../../common/Notate';
 import Loader from '../../common/Loader';
-import { useTranslation } from 'react-i18next';
+import Notate from '../../common/Notate';
+import { toast } from 'react-toastify';
 
 const Show = () => {
     const { t, i18n } = useTranslation();
     const [loader, setLoader] = useState(false);
-    const [projects, setProjects] = useState([]);
+    const [articles, setArticles] = useState([]);
     const navigate = useNavigate();
 
-    const fetchProjects = useCallback(async () => {
+    const fetchArticle = useCallback(async () => {
         setLoader(true);
+
         try {
-            const response = await fetch(`${apiUrlAdmin}/projects`, {
+            const response = await fetch(`${apiUrlAdmin}/articles`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                     'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();
+            console.log(result.data);
 
             if (result.status === 200) {
-                setProjects(result.data);
+                setArticles(result.data);
             } else {
                 toast.error(result.message);
             }
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            console.error(error);
         } finally {
             setLoader(false);
         }
     }, [i18n.language]);
 
     useEffect(() => {
-        fetchProjects()
-    }, [fetchProjects]);
+        fetchArticle();
+    }, [fetchArticle]);
 
     return (
         <>
@@ -59,13 +61,13 @@ const Show = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className='h5'>{t('projects')}</h4>
-                                        <Link to="/admin/projects/create" className="btn btn-primary">{t('create')}</Link>
+                                        <h4 className='h5'>{t('articles')}</h4>
+                                        <Link to="/admin/articles/create" className="btn btn-primary">{t('create')}</Link>
                                     </div>
                                     <hr />
                                     {
                                         loader ? <Loader /> : (
-                                            projects.length > 0 ? (
+                                            articles.length > 0 ? (
                                                 <table className="table table-striped">
                                                     <thead>
                                                         <tr>
@@ -77,17 +79,17 @@ const Show = () => {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            projects.map(project =>
+                                                            articles && articles.map(article =>
                                                             (
-                                                                <tr key={`project-${project.id}`}
-                                                                    onClick={() => navigate(`/admin/projects/edit/${project.id}`)}
+                                                                <tr key={`article-${article.id}`}
+                                                                    onClick={() => navigate(`/admin/articles/edit/${article.id}`)}
                                                                     style={{ cursor: 'pointer' }}
                                                                 >
-                                                                    <td>#{project.id}</td>
-                                                                    <td>{project.title}</td>
-                                                                    <td>{project.slug}</td>
+                                                                    <td>#{article.id}</td>
+                                                                    <td>{article.title}</td>
+                                                                    <td>{article.slug}</td>
                                                                     <td>
-                                                                        {project.status === 1 ? t('active') : t('block')}
+                                                                        {article.status === 1 ? t('active') : t('block')}
                                                                     </td>
                                                                 </tr>
                                                             ))

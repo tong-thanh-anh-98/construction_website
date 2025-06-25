@@ -50,15 +50,14 @@ class ProjectRequest extends FormRequest
         ];
 
         if ($this->isMethod('post')) {
-            $rules['slug'] = 'required|string|unique:projects,slug';
-        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
-            $routeParam = $this->route('project'); // có thể là object hoặc string ID
-            $projectId = is_object($routeParam) ? $routeParam->id : $routeParam;
+            $rules['slug'] = ['required', 'string', Rule::unique('projects', 'slug')];
+        }
 
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['slug'] = [
-                'required',
-                'string',
-                Rule::unique('projects', 'slug')->ignore($projectId),
+                    'required',
+                    'string',
+                    Rule::unique('projects', 'slug')->ignore($this->route('project')),
             ];
         }
 

@@ -3,11 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Helpers\SlugHelper;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServiceRequest extends FormRequest
+class ArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,21 +39,22 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title'       => 'required',
-            'short_desc'  => 'nullable|string',
-            'content'     => 'nullable|string',
-            'status'      => 'required|in:0,1',
+            'title'             => 'required|string',
+            'author'            => 'required|string',
+            'content'           => 'nullable|string',
+            'image'             => 'nullable|string',
+            'status'            => 'required|integer|in:0,1',
         ];
 
         if ($this->isMethod('post')) {
-            $rules['slug'] = ['required', 'string', Rule::unique('services', 'slug')];
+            $rules['slug'] = ['required', 'string', Rule::unique('articles', 'slug')];
         }
 
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['slug'] = [
-                'required',
-                'string',
-                Rule::unique('services', 'slug')->ignore($this->route('service')),
+                    'required',
+                    'string',
+                    Rule::unique('articles', 'slug')->ignore($this->route('article')),
             ];
         }
 
