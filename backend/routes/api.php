@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\front\ArticleController as FrontArticleController;
 use App\Http\Controllers\front\ProjectController as FrontProjectController;
 use App\Http\Controllers\front\ServiceController as FrontServiceController;
 
@@ -35,4 +36,7 @@ Route::prefix('front')->name('front.')->group(function () {
 
     Route::get('get-projects', [FrontProjectController::class, 'index'])->name('index');
     Route::get('get-latest-projects', [FrontProjectController::class, 'latestProjects'])->name('latestProjects');
+
+    Route::get('get-all-articles', [FrontArticleController::class, 'getAllArticles'])->name('getAllArticles');
+    Route::get('get-latest-articles', [FrontArticleController::class, 'latestArticles'])->name('latestArticles');
 });

@@ -144,6 +144,12 @@
     "about_title": "Building Sustainable Structures",
     "about_description_1": "We build high-quality structures that deliver long-term value to our clients.",
     "about_description_2": "With a professional and dedicated team, we turn your ideas into reality.",
+    "about_hero_preHeading": "Quality. Trust. Value.",
+    "about_hero_heading": "About Us",
+    "about_hero_text": "We bring your ideas to life with meticulous craftsmanship, <br /> attention to every detail, and a commitment to sustainable value.",
+    "about_our_team_tag": "Our Team",
+    "about_our_team_title": "Meet Our Team",
+    "about_our_team_description": "We are a team of passionate, creative, and experienced architects, engineers, and professionals. Each member contributes to delivering effective, sustainable, and distinctive construction solutions.",
 
     "Project Section": "PROJECT SECTION",
     "project_hero_preHeading": "Shaping the Future, Leading in Quality",
@@ -159,5 +165,21 @@
     "service_hero_text": "We provide turnkey construction solutions — from consulting and design to construction and handover. With a professional team and optimized process, each project is delivered on time, within budget, and with excellent quality.",
     "service_tag": "Services",
     "service_title": "Comprehensive Construction Solutions",
-    "service_description": "We offer construction services from design to full completion. Commitment to quality, deadlines, and customer satisfaction is our top priority."
+    "service_description": "We offer construction services from design to full completion. Commitment to quality, deadlines, and customer satisfaction is our top priority.",
+
+    "Blog & New Section": "BLOG & NEW SECTION",
+    "article_pre_heading": "New Perspective",
+    "article_heading": "Blog & News",
+    "article_text": "Explore expert insights, project updates, and industry trends. Stay informed with the latest from Amazing Constructions.",
+    "article_tag": "Blog & News",
+    "article_title": "Latest Updates & Industry Insights",
+    "article_description": "Discover articles, news, and emerging trends in the construction industry. We share practical perspectives, technology updates, and experiences from ongoing projects.",
+
+    "Contact Section": "CONTACT SECTION",
+    "contact_hero_preHeading": "Get in Touch",
+    "contact_hero_heading": "Contact Us",
+    "contact_hero_text": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.",
+    "contact_tag": "Contact",
+    "contact_title": "Contact",
+    "contact_description": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together."
 }

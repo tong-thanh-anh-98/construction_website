@@ -1,46 +1,86 @@
-import BlogImg from '../../assets/images/construction3.jpg';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 import Hero from '../common/Hero';
+import { useTranslation } from 'react-i18next';
+import { useCallback, useEffect, useState } from 'react';
+import { adminToken, apiUrlFront } from '../common/http';
+import { toast } from 'react-toastify';
 
 
 const Blogs = () => {
+    const { t, i18n } = useTranslation();
+    const [articles, setArticles] = useState([]);
+
+    const fetchArticles = useCallback(async () => {
+        try {
+            const response = await fetch(`${apiUrlFront}/get-all-articles`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Locale': i18n.language,
+                    'Authorization': `Bearer ${adminToken()}`
+                }
+            });
+            const result = await response.json();
+            console.log(result.data);
+
+            if (result.status === 200) {
+                setArticles(result.data);
+            } else {
+                toast.error(result.message);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }, [i18n.language]);
+
+    useEffect(() => {
+        fetchArticles()
+    }, [fetchArticles]);
+
     return (
         <>
             <Header />
             <main>
                 <Hero
-                    preHeading="Góc Nhìn Mới"
-                    heading="Blog & Tin Tức"
-                    text="Khám phá góc nhìn chuyên gia, cập nhật dự án và xu hướng ngành. Đón đọc những thông tin mới nhất từ Amazing Constructions."
+                    preHeading={t('article_pre_heading')}
+                    heading={t('article_heading')}
+                    text={t('article_text')}
                 />
 
                 <section className='section-6 bg-light py-5'>
                     <div className="container">
                         <div className="section-header text-center">
-                            <span>Blog & Tin Tức</span>
-                            <h2>Cập Nhật Mới Nhất & Góc Nhìn Ngành</h2>
-                            <p>
-                                Cùng khám phá những bài viết, tin tức và xu hướng mới trong ngành xây dựng. Chúng tôi chia sẻ góc nhìn thực tế, cập nhật công nghệ và kinh nghiệm từ các dự án đang triển khai.
-                            </p>
+                            <span>{t('article_tag')}</span>
+                            <h2>{t('article_title')}</h2>
+                            <p>{t('article_description')}</p>
                         </div>
                         <div className="row pt-3">
-                            {[...Array(3)].map((_, index) => (
-                                <div className="col-md-4" key={index}>
-                                    <div className="card shadow border-0">
-                                        <div className="card-img-top">
-                                            <img src={BlogImg} alt="" className='w-100' />
-                                        </div>
+                            {
+                                articles && articles.map(article => {
+                                    return (
+                                        <div className="col-md-4" key={`article-${article.id}`}>
+                                            <div className="card shadow border-0">
+                                                <div className="card-img-top">
+                                                    <img
+                                                        src={article.image_url}
+                                                        alt={article.title}
+                                                        className="w-100"
+                                                    />
+                                                </div>
 
-                                        <div className="card-body p-4">
-                                            <div className='mb-3'>
-                                                <a href="#" className='title'>Tiêu đề bài viết</a>
+                                                <div className="card-body p-4">
+                                                    <div className='mb-3'>
+                                                        <a href="#" className='title'>{article.title}</a>
+                                                    </div>
+                                                    <a href="#" className='btn btn-primary small'>{t('see_more')}</a>
+                                                </div>
                                             </div>
-                                            <a href="#" className='btn btn-primary small'>Xem thêm</a>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </section>

@@ -14,6 +14,7 @@ import BlogImg from '../../assets/images/construction3.jpg';
 import LatestServices from '../common/LatestServices';
 import LatestProjects from '../common/LatestProjects';
 import { useTranslation } from 'react-i18next';
+import LatestBlog from '../common/LatestBlog';
 
 const Home = () => {
     const { t } = useTranslation();
@@ -154,36 +155,8 @@ const Home = () => {
                     </Swiper>
                 </section>
 
-                <section className='section-6 bg-light py-5'>
-                    <div className="container">
-                        <div className="section-header text-center">
-                            <span>Blog & Tin Tức</span>
-                            <h2>Cập nhật mới nhất & góc nhìn chuyên ngành</h2>
-                            <p>
-                                Khám phá những bài viết, tin tức và xu hướng mới trong ngành xây dựng. Chúng tôi chia sẻ góc nhìn thực tế, công nghệ mới và kinh nghiệm từ các dự án đang triển khai.
-                            </p>
-                        </div>
-
-                        <div className="row pt-3">
-                            {[...Array(3)].map((_, index) => (
-                                <div className="col-md-4" key={index}>
-                                    <div className="card shadow border-0">
-                                        <div className="card-img-top">
-                                            <img src={BlogImg} alt="" className='w-100' />
-                                        </div>
-
-                                        <div className="card-body p-4">
-                                            <div className='mb-3'>
-                                                <a href="#" className='title'>Tiêu đề bài viết</a>
-                                            </div>
-                                            <a href="#" className='btn btn-primary small'>Xem Thêm</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                {/* Blog & New section */}
+                <LatestBlog />
             </main>
             <Footer />
         </>

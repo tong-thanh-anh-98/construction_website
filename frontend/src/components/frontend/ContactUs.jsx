@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import Header from '../common/Header'
-import Footer from '../common/Footer'
-import Hero from '../common/Hero'
-
+import { useState } from 'react';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
+import Hero from '../common/Hero';
+import { useTranslation } from 'react-i18next';
 
 const ContactUs = () => {
+    const { t } = useTranslation();
     const [disable] = useState(false);
 
     return (
@@ -12,18 +13,17 @@ const ContactUs = () => {
             <Header />
             <main>
                 <Hero
-                    preHeading='Get in Touch'
-                    heading='Contact Us'
-                    text='Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.'
+                    preHeading={t("contact_hero_preHeading")}
+                    heading={t("contact_hero_heading")}
+                    text={t("contact_hero_text")}
                 />
 
                 <section className="section-9 py-5">
                     <div className="container">
                         <div className="section-header text-center">
-                            <h2>Liên Hệ</h2>
-                            <p>
-                                Bạn có câu hỏi hoặc dự án cần thực hiện? Chúng tôi luôn sẵn sàng hỗ trợ. Hãy liên hệ để cùng nhau tạo nên những công trình tuyệt vời.
-                            </p>
+                            <h2>{t("contact_title")}</h2>
+                            <p>{t("contact_description")}</p>
+
                         </div>
 
                         <div className="row mt-5">

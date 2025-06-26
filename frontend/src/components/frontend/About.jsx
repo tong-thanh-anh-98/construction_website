@@ -4,16 +4,19 @@ import Footer from '../common/Footer'
 import { default as AboutUS } from '../common/About';
 import TeamImg from '../../assets/images/pexels.jpg'
 import Hero from '../common/Hero';
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Header />
             <main>
                 <Hero
-                    preHeading="Chất lượng. Uy tín. Giá trị."
-                    heading="Giới Thiệu"
-                    text="Chúng tôi hiện thực hóa ý tưởng của bạn bằng tay nghề tinh xảo, <br /> chú trọng từng chi tiết và xây dựng giá trị bền vững."
+                    preHeading={t("about_hero_preHeading")}
+                    heading={t("about_hero_heading")}
+                    text={t("about_hero_text")}
                 />
 
                 <AboutUS />
@@ -22,11 +25,9 @@ const About = () => {
                 <section className="section-8 bg-light py-5">
                     <div className="container-fluid py-5">
                         <div className="section-header text-center">
-                            <span>Đội Ngũ</span>
-                            <h2>Đội Ngũ Của Chúng Tôi</h2>
-                            <p>
-                                Chúng tôi là tập thể kiến trúc sư, kỹ sư và chuyên gia đầy đam mê, sáng tạo và kinh nghiệm. Mỗi thành viên đều góp phần mang đến giải pháp xây dựng hiệu quả, bền vững và khác biệt.
-                            </p>
+                            <span>{t("about_our_team_tag")}</span>
+                            <h2>{t("about_our_team_title")}</h2>
+                            <p>{t("about_our_team_description")}</p>
                         </div>
                         <div className="row pt-3">
                             {[...Array(4)].map((_, index) => (
@@ -38,10 +39,10 @@ const About = () => {
 
                                         <div className="card-body p-4">
                                             <div className="card-title pb-0 mb-0">
-                                                Họ Và Tên
+                                                Tên
                                             </div>
                                             <div className="card-sub-title mb-2">
-                                                Kiến trúc sư xây dựng
+                                                chức danh
                                             </div>
                                             <a href="#">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-linkedin" viewBox="0 0 16 16">

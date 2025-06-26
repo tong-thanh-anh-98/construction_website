@@ -144,6 +144,12 @@
     "about_title": "Kiến tạo công trình bền vững",
     "about_description_1": "Chúng tôi xây dựng những công trình chất lượng, mang lại giá trị lâu dài cho khách hàng.",
     "about_description_2": "Với đội ngũ chuyên nghiệp và tận tâm, chúng tôi hiện thực hóa mọi ý tưởng của bạn.",
+    "about_hero_preHeading": "Chất lượng. Uy tín. Giá trị.",
+    "about_hero_heading": "Giới Thiệu",
+    "about_hero_text": "Chúng tôi hiện thực hóa ý tưởng của bạn bằng tay nghề tinh xảo, <br /> chú trọng từng chi tiết và xây dựng giá trị bền vững.",
+    "about_our_team_tag": "Đội Ngũ",
+    "about_our_team_title": "Đội Ngũ Của Chúng Tôi",
+    "about_our_team_description": "Chúng tôi là tập thể kiến trúc sư, kỹ sư và chuyên gia đầy đam mê, sáng tạo và kinh nghiệm. Mỗi thành viên đều góp phần mang đến giải pháp xây dựng hiệu quả, bền vững và khác biệt.",
 
     "Project Section": "PROJECT SECTION",
     "project_hero_preHeading": "Kiến Tạo Tương Lai, Dẫn Đầu Chất Lượng",
@@ -159,5 +165,21 @@
     "service_hero_text": "Chúng tôi cung cấp giải pháp xây dựng trọn gói — từ tư vấn, thiết kế đến thi công và bàn giao. Với đội ngũ chuyên nghiệp và quy trình tối ưu, mỗi dự án đều được hoàn thiện đúng tiến độ, chất lượng và ngân sách.",
     "service_tag": "Dịch Vụ",
     "service_title": "Giải Pháp Xây Dựng Toàn Diện",
-    "service_description": "Chúng tôi cung cấp dịch vụ xây dựng từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng là ưu tiên hàng đầu."
+    "service_description": "Chúng tôi cung cấp dịch vụ xây dựng từ thiết kế đến thi công hoàn thiện. Cam kết chất lượng, đúng tiến độ và sự hài lòng của khách hàng là ưu tiên hàng đầu.",
+
+    "Blog & New Section": "BLOG & NEW SECTION",
+    "article_pre_heading": "Góc Nhìn Mới",
+    "article_heading": "Blog & Tin Tức",
+    "article_text": "Khám phá góc nhìn chuyên gia, cập nhật dự án và xu hướng ngành. Đón đọc những thông tin mới nhất từ Amazing Constructions.",
+    "article_tag": "Blog & Tin Tức",
+    "article_title": "Cập Nhật Mới Nhất & Góc Nhìn Ngành",
+    "article_description": "Cùng khám phá những bài viết, tin tức và xu hướng mới trong ngành xây dựng. Chúng tôi chia sẻ góc nhìn thực tế, cập nhật công nghệ và kinh nghiệm từ các dự án đang triển khai.",
+
+    "Contact Section": "CONTACT SECTION",
+    "contact_hero_preHeading": "Liên Hệ",
+    "contact_hero_heading": "Liên Lạc Với Chúng Tôi",
+    "contact_hero_text": "Bạn có câu hỏi hoặc dự án cần thực hiện? Chúng tôi luôn sẵn sàng hỗ trợ. Hãy liên hệ để cùng nhau tạo nên những công trình tuyệt vời.",
+    "contact_tag": "Liên Hệ",
+    "contact_title": "Liên Hệ",
+    "contact_description": "Bạn có câu hỏi hoặc dự án cần thực hiện? Chúng tôi luôn sẵn sàng hỗ trợ. Hãy liên hệ để cùng nhau tạo nên những công trình tuyệt vời."
 }
