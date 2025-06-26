@@ -181,5 +181,25 @@
     "contact_hero_text": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.",
     "contact_tag": "Contact",
     "contact_title": "Contact",
-    "contact_description": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together."
+    "contact_description": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.",
+
+    "Footer Website": "FOOTER WEBSITE",
+    "footer_about_title": "About Us",
+    "footer_about_text": "We provide turnkey construction solutions — from design and execution to completion. Committed to quality, on-time delivery, and customer satisfaction.",
+    "footer_services_title": "Services",
+    "footer_service_1": "Architectural & Interior Design",
+    "footer_service_2": "Civil & Industrial Construction",
+    "footer_service_3": "Project Management & Supervision",
+    "footer_service_4": "Renovation & Repair",
+    "footer_links_title": "Quick Links",
+    "footer_link_about": "About Us",
+    "footer_link_services": "Services",
+    "footer_link_projects": "Projects",
+    "footer_link_news": "News",
+    "footer_link_contact": "Contact",
+    "footer_contact_title": "Contact",
+    "footer_contact_phone": "Hotline: 0909 123 456",
+    "footer_contact_email": "Email: contact@constructions.vn",
+    "footer_contact_address": "Address: Go Vap District, Ho Chi Minh City",
+    "footer_copyright": "Copyright © 2025 | Construction Solution Company"
 }

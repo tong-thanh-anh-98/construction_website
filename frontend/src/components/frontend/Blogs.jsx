@@ -60,7 +60,7 @@ const Blogs = () => {
                             {
                                 articles && articles.map(article => {
                                     return (
-                                        <div className="col-md-4" key={`article-${article.id}`}>
+                                        <div className="col-md-4 mb-3" key={`article-${article.id}`}>
                                             <div className="card shadow border-0">
                                                 <div className="card-img-top">
                                                     <img
