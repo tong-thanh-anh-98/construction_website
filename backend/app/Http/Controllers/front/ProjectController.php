@@ -12,7 +12,7 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllProjects()
     {
         try {
             $projects = Project::where('status', 1)->orderBy('created_at', 'desc')->get();

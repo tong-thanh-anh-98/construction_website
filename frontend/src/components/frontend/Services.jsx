@@ -14,7 +14,7 @@ const Services = () => {
 
     const fetchServices = async () => {
         try {
-            const response = await fetch(`${apiUrlFront}/get-services`, {
+            const response = await fetch(`${apiUrlFront}/get-all-services`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

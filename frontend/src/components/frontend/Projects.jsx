@@ -12,7 +12,7 @@ const Projects = () => {
 
     const fetchProjects = useCallback(async () => {
         try {
-            const response = await fetch(`${apiUrlFront}/get-projects`, {
+            const response = await fetch(`${apiUrlFront}/get-all-projects`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

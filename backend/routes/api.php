@@ -31,10 +31,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
 // Group front
 Route::prefix('front')->name('front.')->group(function () {
-    Route::get('get-services', [FrontServiceController::class, 'index'])->name('index');
+    Route::get('get-all-services', [FrontServiceController::class, 'getAllServices'])->name('getAllServices');
     Route::get('get-latest-services', [FrontServiceController::class, 'latestServices'])->name('latestServices');
 
-    Route::get('get-projects', [FrontProjectController::class, 'index'])->name('index');
+    Route::get('get-all-projects', [FrontProjectController::class, 'getAllProjects'])->name('getAllProjects');
     Route::get('get-latest-projects', [FrontProjectController::class, 'latestProjects'])->name('latestProjects');
 
     Route::get('get-all-articles', [FrontArticleController::class, 'getAllArticles'])->name('getAllArticles');

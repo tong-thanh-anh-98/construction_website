@@ -12,7 +12,7 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllServices()
     {
         try {
             $services = Service::where('status', 1)->orderBy('created_at', 'desc')->get();
