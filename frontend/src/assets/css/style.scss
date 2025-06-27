@@ -12,15 +12,6 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-.sticky-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1030;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 h1 {
     font-size: 4.5em;
 }
@@ -95,7 +86,19 @@ a {
     }
 }
 
+main {
+    padding-top: 80px;
+}
+
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
     nav {
         .nav-link {
             text-transform: uppercase;
@@ -376,8 +379,4 @@ footer {
             }
         }
     }
-}
-
-main {
-  padding-top: 50px;
 }

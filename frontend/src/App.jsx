@@ -27,109 +27,56 @@ import { default as ShowArticles } from './components/backend/articles/Show';
 import { default as CreateArticles } from './components/backend/articles/Create';
 import { default as EditArticles } from './components/backend/articles/Edit';
 
-function App() {
+import { default as ShowTestimonials } from './components/backend/testimonials/Show';
+import { default as CreateTestimonials } from './components/backend/testimonials/Create';
+import { default as EditTestimonials } from './components/backend/testimonials/Edit';
 
+function App() {
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    {/* router frontend (user) */}
-                    <Route path='/' element={<Home />} />
-                    <Route path='/about' element={<About />} />
-                    <Route path='/services' element={<Services />} />
-                    <Route path='/projects' element={<Projects />} />
-                    <Route path='/blogs' element={<Blogs />} />
-                    <Route path='/contact' element={<ContactUs />} />
+                    {/* Frontend - Public */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/blogs" element={<Blogs />} />
+                    <Route path="/contact" element={<ContactUs />} />
 
-                    {/* route backend (admin) */}
-                    <Route path='/admin/login' element={<Login />} />
+                    {/* Backend - Public */}
+                    <Route path="/admin/login" element={<Login />} />
 
-                    <Route path='/admin/dashboard'
-                        element={
-                            <RequireAuth>
-                                <Dashboard />
-                            </RequireAuth>
-                        }
-                    />
+                    {/* Backend - Protected */}
+                    <Route element={<RequireAuth />}>
+                        <Route path="/admin/dashboard" element={<Dashboard />} />
 
-                    <Route path='/admin/services'
-                        element={
-                            <RequireAuth>
-                                <ShowServices />
-                            </RequireAuth>
-                        }
-                    />
+                        {/* Services */}
+                        <Route path="/admin/services" element={<ShowServices />} />
+                        <Route path="/admin/services/create" element={<CreateServices />} />
+                        <Route path="/admin/services/edit/:id" element={<EditServices />} />
 
-                    <Route path='/admin/services/create'
-                        element={
-                            <RequireAuth>
-                                <CreateServices />
-                            </RequireAuth>
-                        }
-                    />
+                        {/* Projects */}
+                        <Route path="/admin/projects" element={<ShowProjects />} />
+                        <Route path="/admin/projects/create" element={<CreateProjects />} />
+                        <Route path="/admin/projects/edit/:id" element={<EditProjects />} />
 
-                    <Route path='/admin/services/edit/:id'
-                        element={
-                            <RequireAuth>
-                                <EditServices />
-                            </RequireAuth>
-                        }
-                    />
+                        {/* Articles */}
+                        <Route path="/admin/articles" element={<ShowArticles />} />
+                        <Route path="/admin/articles/create" element={<CreateArticles />} />
+                        <Route path="/admin/articles/edit/:id" element={<EditArticles />} />
 
-                    <Route path='/admin/projects'
-                        element={
-                            <RequireAuth>
-                                <ShowProjects />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route path='/admin/projects/edit/:id'
-                        element={
-                            <RequireAuth>
-                                <EditProjects />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route path='/admin/projects/create'
-                        element={
-                            <RequireAuth>
-                                <CreateProjects />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route path='/admin/articles'
-                        element={
-                            <RequireAuth>
-                                <ShowArticles />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route path='/admin/articles/create'
-                        element={
-                            <RequireAuth>
-                                <CreateArticles />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route path='/admin/articles/edit/:id'
-                        element={
-                            <RequireAuth>
-                                <EditArticles />
-                            </RequireAuth>
-                        }
-                    />
+                        {/* Testimonials */}
+                        <Route path="/admin/testimonials" element={<ShowTestimonials />} />
+                        <Route path="/admin/testimonials/create" element={<CreateTestimonials />} />
+                        <Route path="/admin/testimonials/edit/:id" element={<EditTestimonials />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
-            <ToastContainer
-                position="top-center"
-            />
+
+            <ToastContainer position="top-center" />
         </>
-    )
+    );
 }
 
-export default App
+export default App;

@@ -9,12 +9,15 @@ const Sidebar = () => {
     return (
         <div className="card shadow border-0">
             <div className="card-body py-5 sidebar">
-                <h4>{t('dashboard')}</h4>
+                <h4 className='text-center'>{t('management_screen')}</h4>
+                <hr />
+                
                 <ul>
                     <li><Link to="/admin/dashboard">{t('dashboard')}</Link></li>
                     <li><Link to="/admin/services">{t('services')}</Link></li>
                     <li><Link to="/admin/projects">{t('projects')}</Link></li>
                     <li><Link to="/admin/articles">{t('articles')}</Link></li>
+                    <li><Link to="/admin/testimonials">{t('testimonials')}</Link></li>
                     <li>
                         <button className='btn btn-primary mt-4' onClick={logout}>{t('logout')}</button>
                     </li>

@@ -59,6 +59,9 @@
     "contact": "Liên Hệ",
     "dashboard": "Bảng Điều Khiển",
     "articles": "Bài Viết",
+    "testimonials": "Lời Chứng Thực",
+    "select_language": "Chọn Ngôn Ngữ",
+    "management_screen": "Màn Hình Quản lý",
 
     "modal": "MODAL",
     "confirm": "Xác nhận",
@@ -75,6 +78,8 @@
     "construction_type": "Loại hình xây dựng",
     "sector": "Lĩnh Vực",
     "author": "Tác Giả",
+    "testimonial": "Lời chứng thực",
+    "citation": "Trích dẫn",
 
     "input": "INPUT",
     "enter_title": "Nhập tiêu đề",
@@ -85,7 +90,9 @@
     "select_status": "Chọn trạng thái",
     "select_sector": "Chọn lĩnh vực",
     "select_construction": "Chọn loại hình xây dựng",
-    "enter_author": "Enter tác giả",
+    "enter_author": "Nhập tên tác giả",
+    "enter_citation": "Nhập trích dẫn",
+    "enter_testimonials": "Nhập lời chứng thực",
 
     "option": "OPTION",
     "active": "Hiển thị",

@@ -59,6 +59,9 @@
     "contact": "Contact",
     "dashboard": "Dashboard",
     "articles": "Articles",
+    "testimonials": "Testimonials",
+    "select_language": "Select Language",
+    "management_screen": "Management Screen",
 
     "modal": "MODAL",
     "confirm": "Confirm",
@@ -75,6 +78,8 @@
     "construction_type": "Construction Type",
     "sector": "Sector",
     "author": "Author",
+    "testimonial": "Testimonial",
+    "citation": "Citation",
 
     "input": "INPUT",
     "enter_title": "Enter title",
@@ -86,6 +91,8 @@
     "select_sector": "Select sector",
     "select_construction": "Select construction type",
     "enter_author": "Enter author",
+    "enter_citation": "Enter citation",
+    "enter_testimonials": "Enter testimonial",
 
     "option": "OPTION",
     "active": "Active",

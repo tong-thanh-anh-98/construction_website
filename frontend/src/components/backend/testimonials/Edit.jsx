@@ -1,0 +1,368 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Header from '../../common/Header'
+import Sidebar from '../../common/Sidebar'
+import JoditEditor from 'jodit-react'
+import { useTranslation } from 'react-i18next'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { adminToken, apiUrlAdmin } from '../../common/http'
+import { toast } from 'react-toastify'
+import ModalDelete from '../../common/ModalDelete'
+
+const Edit = ({ placeholder }) => {
+    const { t, i18n } = useTranslation();
+    const editor = useRef(null);
+    const [testimonial, setTestimonial] = useState('');
+    const [disable, setDisable] = useState(false);
+    const [imageId, setImageId] = useState(null);
+    const [detailTestimonial, setDetailTestimonial] = useState([]);
+    const navigate = useNavigate();
+    const params = useParams();
+    const [showModal, setShowModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+    const [removeImage, setRemoveImage] = useState(false);
+    const [tempImages, setTempImages] = useState([]);
+    const fileInputRef = useRef(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    const config = useMemo(() => ({
+        readonly: false,
+        placeholder: placeholder || '',
+    }), [placeholder]);
+
+    // Fetch Testimonial data to pre-fill form
+    const fetchTestimonial = useCallback(async () => {
+        try {
+            const response = await fetch(`${apiUrlAdmin}/testimonials/${params.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Locale': i18n.language,
+                    'Authorization': `Bearer ${adminToken()}`
+                }
+            });
+
+            const result = await response.json();
+            const data = result.data;
+            setTestimonial(data.testimonial);
+            setDetailTestimonial(data);
+
+            reset({
+                citation: data.citation,
+                status: data.status,
+            });
+
+        } catch (err) {
+            console.error('Fetch error:', err);
+        }
+    }, [params.id, reset, i18n.language]);
+
+    const updateTestimonial = async (data) => {
+        const newData = { ...data, "testimonial": testimonial, "imageId": imageId, removeImage: removeImage ? 1 : 0 }
+        setDisable(true);
+
+        try {
+            const response = await fetch(`${apiUrlAdmin}/testimonials/${params.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Locale': i18n.language,
+                    'Authorization': `Bearer ${adminToken()}`
+                },
+                body: JSON.stringify(newData)
+            });
+
+            const result = await response.json();
+            console.log(result.data);
+
+            if (result.status === 200) {
+                toast.success(result.message);
+                navigate('/admin/testimonials');
+            } else if (result.errors) {
+                Object.keys(result.errors).forEach((field) => {
+                    setError(field, { type: 'server', message: result.errors[field][0] });
+                });
+            } else {
+                toast.error(result.message);
+            }
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+        } finally {
+            setDisable(false);
+        }
+    };
+
+    const handleFile = async (e) => {
+        const formData = new FormData();
+        const file = e.target.files[0];
+        formData.append("image", file);
+        setDisable(true);
+
+        try {
+            const res = await fetch(`${apiUrlAdmin}/save-temp-images`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Locale': i18n.language,
+                    'Authorization': `Bearer ${adminToken()}`
+                },
+                body: formData
+            });
+
+            const result = await res.json();
+
+            if (result.status === 400) {
+                toast.error(result.errors.image[0]);
+            } else {
+                setImageId(result.data.id);
+                setTempImages(prev => [...prev, result.data]);
+                toast.success(result.message);
+
+                // Reset input sau khi upload success
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = null;
+                }
+            }
+        } catch (error) {
+            console.error('Upload error:', error.message);
+        } finally {
+            setDisable(false);
+        }
+    }
+
+    const removeTempImage = async (id) => {
+        if (confirm(t('confirm_remove'))) {
+            setIsDeleting(true);
+
+            try {
+                const res = await fetch(`${apiUrlAdmin}/remove-temp-images/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Locale': i18n.language,
+                        'Authorization': `Bearer ${adminToken()}`
+                    }
+                });
+
+                const result = await res.json();
+
+                if (result.status === 200) {
+                    setTempImages(prev => prev.filter(img => img.id !== id));
+                    if (fileInputRef.current) fileInputRef.current.value = null;
+                    toast.success(result.message);
+                } else {
+                    toast.error(result.message);
+                }
+            } catch (error) {
+                console.error('Remove image error:', error.message);
+            } finally {
+                setIsDeleting(false);
+            }
+        }
+    };
+
+    const deleteTestimonials = async () => {
+        setDisable(true);
+
+        try {
+            const res = await fetch(`${apiUrlAdmin}/testimonials/${deleteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Locale': i18n.language,
+                    'Authorization': `Bearer ${adminToken()}`
+                }
+            });
+            const result = await res.json();
+
+            if (result.status === 200) {
+                toast.success(result.message);
+                navigate('/admin/testimonials');
+            } else {
+                toast.error(result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setShowModal(false);
+            setDisable(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTestimonial();
+    }, [fetchTestimonial]);
+
+    return (
+        <>
+            <Header />
+
+            <ModalDelete
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={deleteTestimonials}
+            />
+
+            <main>
+                <div className="container my-5">
+                    <div className="row">
+                        <div className="col-md-3">
+                            <Sidebar />
+                        </div>
+
+                        <div className="col-md-9">
+                            <div className="card shadow border-0">
+                                <div className="card-body">
+                                    <div className="d-flex justify-content-between">
+                                        <h4 className='h5'><Link to="/admin/testimonials">{t('testimonials')}</Link> / {t('edit')}</h4>
+                                    </div>
+                                    <hr />
+
+                                    <form onSubmit={handleSubmit(updateTestimonial)}>
+                                        <div className='mb-3'>
+                                            <label htmlFor='' className='form-label'>{t('testimonial')}</label>
+                                            <JoditEditor
+                                                ref={editor}
+                                                value={testimonial}
+                                                config={config}
+                                                tabIndex={1}
+                                                onBlur={newTestimonial => setTestimonial(newTestimonial)}
+                                            />
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label className='form-label'>{t('citation')}</label>
+                                            <textarea
+                                                {...register('citation')}
+                                                className='form-control'
+                                                rows={5}
+                                                placeholder={t('enter_citation')}>
+                                            </textarea>
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label htmlFor='' className='form-label'>{t('status')}</label>
+                                            <select
+                                                {...register('status', { required: t('status_required') })}
+                                                className={`form-control ${errors.status && 'is-invalid'}`}>
+                                                <option value="">{t('select_status')}</option>
+                                                <option value="1">{t('active')}</option>
+                                                <option value="0">{t('block')}</option>
+                                            </select>
+
+                                            {
+                                                errors.status && <p className='invalid-feedback'>{errors.status?.message}</p>
+                                            }
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label className='form-label'>{t('image')}</label>
+                                            <br />
+                                            <input
+                                                type="file"
+                                                ref={fileInputRef}
+                                                onChange={handleFile} />
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <div className="row">
+                                                {detailTestimonial.image && !removeImage && (
+                                                    <div className="col-md-4">
+                                                        <div className="card h-100 shadow-sm">
+                                                            <img
+                                                                src={detailTestimonial.image_url}
+                                                                alt={detailTestimonial.title}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body p-2">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-sm w-100"
+                                                                    onClick={() => {
+                                                                        if (confirm(t('confirm_remove'))) {
+                                                                            setRemoveImage(true);
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    {t('remove_image')}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {tempImages && tempImages.map((image) => (
+                                                    <div className="col-md-4" key={`temp-${image.id}`}>
+                                                        <div className="card h-100 shadow-sm">
+                                                            <img
+                                                                src={image.image_url}
+                                                                alt={image.name}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body p-2">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-sm w-100"
+                                                                    onClick={() => removeTempImage(image.id)}
+                                                                >
+                                                                    {t('remove_image')}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <button disabled={disable} type="submit" className="btn btn-primary mt-3">
+                                                {
+                                                    disable
+                                                        ? <>
+                                                            <span className="btn btn-primary spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        </>
+                                                        : t('save')
+                                                }
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="btn btn-danger mt-3 ms-2"
+                                                onClick={() => {
+                                                    setDeleteId(detailTestimonial.id);
+                                                    setShowModal(true);
+                                                }}
+                                            >
+                                                {
+                                                    isDeleting
+                                                        ? <>
+                                                            <span className="btn btn-primary spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                        </>
+                                                        : t('delete')
+                                                }
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </>
+    )
+}
+
+export default Edit
