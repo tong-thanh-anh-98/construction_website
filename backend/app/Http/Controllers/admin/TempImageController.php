@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class TempImageController extends Controller
 {
-    protected $imageService;
+    protected $imageTemp;
 
-    public function __construct(ImageUploadService $imageService)
+    public function __construct(ImageUploadService $imageTemp)
     {
-        $this->imageService = $imageService;
+        $this->imageTemp = $imageTemp;
     }
 
     /**
@@ -42,7 +42,7 @@ class TempImageController extends Controller
         }
 
         try {
-            $model = $this->imageService->storeTempImage($request->image);
+            $model = $this->imageTemp->storeTempImage($request->image);
 
             DB::commit();
 
@@ -93,7 +93,6 @@ class TempImageController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => __('message.server_error'),
-                'error' => $e->getMessage(), // Ẩn nếu cần bảo mật
             ], 500);
         }
     }
@@ -111,7 +110,7 @@ class TempImageController extends Controller
                 ], 404);
             }
 
-            $this->imageService->deleteTempImage($image->id);
+            $this->imageTemp->deleteTempImage($image->id);
 
             return response()->json([
                 'status' => 200,
@@ -123,7 +122,6 @@ class TempImageController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => __('message.server_error'),
-                'error' => $e->getMessage(), // Có thể ẩn nếu không muốn expose lỗi
             ], 500);
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Service;
+use App\Traits\HandlesImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,8 @@ use App\Http\Requests\ServiceRequest;
 
 class ServiceController extends Controller
 {
+    use HandlesImage;
+
     protected $imageService;
 
     public function __construct(ImageUploadService $imageService)
@@ -60,10 +63,13 @@ class ServiceController extends Controller
 
             $service = Service::create($data);
 
-            if ($request->has('imageId')) {
-                $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $request->imageId);
-                $service->update(['image' => $fileName]);
-            }
+            // if ($request->has('imageId')) {
+            //     $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $request->imageId);
+            //     $service->update(['image' => $fileName]);
+            // }
+
+            // Gọi trait để tải ảnh lên
+            $this->handleImageStore($request, $service, 'services', $this->imageService);
 
             DB::commit();
 
@@ -140,22 +146,25 @@ class ServiceController extends Controller
                 'status',
             ]);
 
-            if ($request->filled('imageId') && is_numeric($request->imageId)) {
-                // Có ảnh mới → chuyển từ temp sang permanent
-                $tempImageId = (int) $request->imageId;
-                $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $tempImageId);
-                // Xóa ảnh cũ nếu có
-                if ($service->image) {
-                    $this->imageService->deletePermanentImage('services', $service->image);
-                }
-                $data['image'] = $fileName;
-            } elseif ($request->boolean('removeImage') && !$request->filled('imageId')) {
-                // Chỉ xóa ảnh nếu không có ảnh mới đi kèm
-                if ($service->image) {
-                    $this->imageService->deletePermanentImage('services', $service->image);
-                }
-                $data['image'] = null;
-            }
+            // if ($request->filled('imageId') && is_numeric($request->imageId)) {
+            //     // Có ảnh mới → chuyển từ temp sang permanent
+            //     $tempImageId = (int) $request->imageId;
+            //     $fileName = $this->imageService->moveTempToPermanent('services', $service->id, $tempImageId);
+            //     // Xóa ảnh cũ nếu có
+            //     if ($service->image) {
+            //         $this->imageService->deletePermanentImage('services', $service->image);
+            //     }
+            //     $data['image'] = $fileName;
+            // } elseif ($request->boolean('removeImage') && !$request->filled('imageId')) {
+            //     // Chỉ xóa ảnh nếu không có ảnh mới đi kèm
+            //     if ($service->image) {
+            //         $this->imageService->deletePermanentImage('services', $service->image);
+            //     }
+            //     $data['image'] = null;
+            // }
+
+            // Gọi trait để xóa ảnh
+            $data['image'] = $this->handleImageUpdate($request, $service, 'services', $this->imageService);
 
             $service->update($data);
 
@@ -192,11 +201,14 @@ class ServiceController extends Controller
                     'message' => __('message.not_found'),
                 ], 404);
             }
-            // xóa hình ảnh trong thư mục nếu xóa services
-            if ($service->image) {
-                $this->imageService->deletePermanentImage('services', $service->image);
-            }
 
+            // // xóa hình ảnh trong thư mục nếu xóa services
+            // if ($service->image) {
+            //     $this->imageService->deletePermanentImage('services', $service->image);
+            // }
+
+            // Gọi trait để xóa ảnh khi xóa service
+            $this->handleImageDestroy($service, 'services', $this->imageService);
             $service->delete();
 
             return response()->json([

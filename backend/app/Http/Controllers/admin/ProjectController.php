@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Project;
+use App\Traits\HandlesImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,8 @@ use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
+    use HandlesImage;
+
     protected $imageProject;
 
     public function __construct(ImageUploadService $imageProject)
@@ -54,10 +57,8 @@ class ProjectController extends Controller
 
             $project = Project::create($data);
 
-            if ($request->has('imageId')) {
-                $fileName = $this->imageProject->moveTempToPermanent('projects', $project->id, $request->imageId);
-                $project->update(['image' => $fileName]);
-            }
+            // Gọi trait để tải ảnh lên
+            $this->handleImageStore($request, $project, 'projects', $this->imageProject);
 
             DB::commit();
 
@@ -128,22 +129,8 @@ class ProjectController extends Controller
 
             $data = $this->extractProjectData($request);
 
-            if ($request->filled('imageId') && is_numeric($request->imageId)) {
-                // TH1: Có ảnh mới, chuyển từ temp sang permanent
-                $tempImageId = (int) $request->imageId;
-                $fileName = $this->imageProject->moveTempToPermanent('projects', $project->id, $tempImageId);
-                // Xóa ảnh cũ nếu có
-                if ($project->image) {
-                    $this->imageProject->deletePermanentImage('projects', $project->image);
-                }
-                $data['image'] = $fileName;
-            } elseif ($request->boolean('removeImage') && !$request->filled('imageId')) {
-                // TH2: Chỉ xóa ảnh nếu không có ảnh mới đi kèm
-                if ($project->image) {
-                    $this->imageProject->deletePermanentImage('projects', $project->image);
-                }
-                $data['image'] = null;
-            }
+            // Gọi trait để xóa ảnh
+            $data['image'] = $this->handleImageUpdate($request, $project, 'projects', $this->imageProject);
 
             $project->update($data);
 
@@ -180,11 +167,9 @@ class ProjectController extends Controller
                     'message' => __('message.not_found'),
                 ], 404);
             }
-            // xóa ảnh trong thư mục nếu xóa project
-            if ($project->image) {
-                $this->imageProject->deletePermanentImage('projects', $project->image);
-            }
 
+            // Gọi trait để xóa ảnh khi xóa project
+            $this->handleImageDestroy($project, 'projects', $this->imageProject);
             $project->delete();
 
             return response()->json([

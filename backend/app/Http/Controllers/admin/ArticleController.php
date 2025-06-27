@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
+use App\Traits\HandlesImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -12,6 +12,8 @@ use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends Controller
 {
+    use HandlesImage;
+
     protected $imageArticle;
 
     public function __construct(ImageUploadService $imageArticle)
@@ -54,10 +56,8 @@ class ArticleController extends Controller
             $data = $this->extractArticleData($request);
             $article = Article::create($data);
 
-            if ($request->has('imageId')) {
-                $fileName = $this->imageArticle->moveTempToPermanent('articles', $article->id, $request->imageId);
-                $article->update(['image' => $fileName]);
-            }
+            // Gọi trait tải ảnh lên
+            $this->handleImageStore($request, $article, 'articles', $this->imageArticle);
 
             DB::commit();
 
@@ -127,24 +127,8 @@ class ArticleController extends Controller
 
             $data = $this->extractArticleData($request);
 
-            if ($request->filled('imageId') && is_numeric($request->imageId)) {
-                // TH1: Có ảnh mới, chuyển từ temp sang permanent
-                $tempImageId = (int)$request->imageId;
-                $fileName = $this->imageArticle->moveTempToPermanent('articles', $article->id, $tempImageId);
-
-                if ($article->image) {
-                    $this->imageArticle->deletePermanentImage('articles', $article->image);
-                }
-
-                $data['image'] = $fileName;
-            } elseif ($request->boolean('removeImage') && !$request->filled('imageId')) {
-                // TH2: Chỉ xóa ảnh nếu không có ảnh mới đi kèm
-                if ($article->image) {
-                    $this->imageArticle->deletePermanentImage('articles', $article->image);
-                }
-
-                $data['image'] = null;
-            }
+            // Gọi trait xóa ảnh
+            $data['image'] = $this->handleImageUpdate($request, $article, 'articles', $this->imageArticle);
 
             $article->update($data);
             DB::commit();
@@ -181,10 +165,8 @@ class ArticleController extends Controller
                 ], 404);
             }
 
-            if ($article->image) {
-                $this->imageArticle->deletePermanentImage('articles', $article->image);
-            }
-
+            // Gọi trait để xóa ảnh khi xóa article
+            $this->handleImageDestroy($article, 'articles', $this->imageArticle);
             $article->delete();
 
             return response()->json([
@@ -204,6 +186,9 @@ class ArticleController extends Controller
 
     /**
      * Method extractArticleData
+     *
+     * @param ArticleRequest $request
+     *
      */
     private function extractArticleData(ArticleRequest $request)
     {
