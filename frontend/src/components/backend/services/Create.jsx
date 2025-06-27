@@ -1,13 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import Sidebar from '../../common/Sidebar';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../../common/Header';
-import Footer from '../../common/Footer';
 import { useForm } from 'react-hook-form';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
 import { useTranslation } from 'react-i18next';
+import HeaderAdmin from '../../common/HeaderAdmin';
 
 const Create = ({ placeholder }) => {
     const { t, i18n } = useTranslation();
@@ -134,7 +133,7 @@ const Create = ({ placeholder }) => {
 
     return (
         <>
-            <Header />
+            <HeaderAdmin />
             <main>
                 <div className="container my-5">
                     <div className="row">
@@ -265,7 +264,6 @@ const Create = ({ placeholder }) => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </>
     )
 }

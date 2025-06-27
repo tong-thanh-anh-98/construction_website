@@ -1,6 +1,4 @@
-import Header from '../../common/Header';
 import Sidebar from '../../common/Sidebar';
-import Footer from '../../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
@@ -8,6 +6,7 @@ import { toast } from 'react-toastify';
 import Notate from '../../common/Notate';
 import Loader from '../../common/Loader';
 import { useTranslation } from 'react-i18next';
+import HeaderAdmin from '../../common/HeaderAdmin';
 
 const Show = () => {
     const { t, i18n } = useTranslation();
@@ -47,7 +46,7 @@ const Show = () => {
 
     return (
         <>
-            <Header />
+            <HeaderAdmin />
             <main>
                 <div className="container my-5">
                     <div className="row">
@@ -105,7 +104,6 @@ const Show = () => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </>
     )
 }

@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
-import Header from '../../common/Header';
 import Sidebar from '../../common/Sidebar';
 import JoditEditor from 'jodit-react';
-import Footer from '../../common/Footer';
+import HeaderAdmin from '../../common/HeaderAdmin';
 
 const Create = ({ placeholder }) => {
     const { t, i18n } = useTranslation();
@@ -135,7 +134,7 @@ const Create = ({ placeholder }) => {
 
     return (
         <>
-            <Header />
+            <HeaderAdmin />
             <main>
                 <div className="container my-5">
                     <div className="row">
@@ -272,7 +271,6 @@ const Create = ({ placeholder }) => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </>
     )
 }

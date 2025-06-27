@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Sidebar from '../../common/Sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Footer from '../../common/Footer';
-import Header from '../../common/Header';
 import { useForm } from 'react-hook-form';
 import JoditEditor from 'jodit-react';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
 import ModalDelete from '../../common/ModalDelete';
 import { useTranslation } from 'react-i18next';
+import HeaderAdmin from '../../common/HeaderAdmin';
 
 const Edit = ({ placeholder }) => {
     const { t, i18n } = useTranslation();
@@ -212,7 +211,7 @@ const Edit = ({ placeholder }) => {
 
     return (
         <>
-            <Header />
+            <HeaderAdmin />
 
             <ModalDelete
                 show={showModal}
@@ -396,7 +395,6 @@ const Edit = ({ placeholder }) => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </>
     )
 }
