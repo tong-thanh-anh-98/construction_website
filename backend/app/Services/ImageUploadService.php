@@ -15,45 +15,44 @@ class ImageUploadService
 {
     protected $manager;
 
+    /**
+     * Method __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->manager = new ImageManager(Driver::class);
     }
 
     /**
-     * Upload tạm thời (TempImage), lưu cả bản thumb
+     * Method storeTempImage
+     *
+     * @param UploadedFile $file
+     *
+     * @return TempImage
      */
     public function storeTempImage(UploadedFile $file): TempImage
     {
+        $fileName = Str::uuid() . '.' . $file->extension();
+        $originalPath = public_path("uploads/temp/{$fileName}");
+        $thumbPath = public_path("uploads/temp/thumb/{$fileName}");
+
         try {
-            $ext = $file->extension();
-            $fileName = Str::uuid() . '.' . $ext;
+            $this->makeDirectories([
+                dirname($originalPath),
+                dirname($thumbPath)
+            ]);
 
-            $tempDir = public_path('uploads/temp');
-            $thumbDir = public_path('uploads/temp/thumb');
+            $file->move(dirname($originalPath), $fileName);
 
-            $this->makeDirectories([$tempDir, $thumbDir]);
-
-            $file->move($tempDir, $fileName);
-            // $this->manager->read($tempDir . '/' . $fileName)
-            //     ->coverDown(720, 480)
-            //     ->save($thumbDir . '/' . $fileName);
-            $originalPath = $tempDir . '/' . $fileName;
-            $thumbPath = $thumbDir . '/' . $fileName;
-
-            // Kiểm tra file đã được lưu chưa
             if (!file_exists($originalPath)) {
                 throw new ImageUploadException("File not saved after move.");
             }
 
-            // Tạo thumb
-            $this->manager->read($originalPath)
-                ->coverDown(720, 480)
-                ->save($thumbPath);
+            $this->resizeImage($originalPath, $thumbPath, 720, 480);
 
-            $tempImage = TempImage::create(['name' => $fileName]);
-
-            return $tempImage;
+            return TempImage::create(['name' => $fileName]);
         } catch (\Throwable $e) {
             Log::error('Temp image upload failed: ' . $e->getMessage());
             throw new ImageUploadException('Failed to upload temporary image.');
@@ -61,107 +60,122 @@ class ImageUploadService
     }
 
     /**
-     * Chuyển ảnh từ thư mục tạm sang thư mục chính thức
+     * Method moveTempToPermanent
+     *
+     * @param string $type
+     * @param int $ownerId
+     * @param int $tempImageId
+     *
+     * @return string
      */
     public function moveTempToPermanent(string $type, int $ownerId, int $tempImageId): string
     {
+        $tempImage = TempImage::find($tempImageId);
+
+        if (!$tempImage) {
+            throw new ImageUploadException('Temp image not found.');
+        }
+
+        $sourcePath = public_path('uploads/temp/' . $tempImage->name);
+
+        if (!file_exists($sourcePath)) {
+            Log::error("Source file not found: {$sourcePath}");
+            $tempImage->delete();
+            throw new ImageUploadException("Temporary image file does not exist.");
+        }
+
+        $fileName = Str::uuid() . "_{$ownerId}." . pathinfo($tempImage->name, PATHINFO_EXTENSION);
+
+        $largePath = public_path("uploads/{$type}/large/{$fileName}");
+        $smallPath = public_path("uploads/{$type}/small/{$fileName}");
+
         try {
-            $tempImage = TempImage::find($tempImageId);
-            if (!$tempImage) {
-                throw new ImageUploadException('Temp image not found.');
-            }
+            $this->makeDirectories([
+                dirname($largePath),
+                dirname($smallPath)
+            ]);
 
-            $ext = pathinfo($tempImage->name, PATHINFO_EXTENSION);
-            $fileName = Str::uuid() . '_' . $ownerId . '.' . $ext;
-
-            $sourcePath = public_path('uploads/temp/' . $tempImage->name);
-
-            $largePath  = public_path("uploads/{$type}/large");
-            $smallPath  = public_path("uploads/{$type}/small");
-
-            $this->makeDirectories([$largePath, $smallPath]);
-
-            // // Small
-            // $this->manager->read($sourcePath)
-            //     ->coverDown(720, 480)
-            //     ->save($smallPath . '/' . $fileName);
-            // // Large
-            // $this->manager->read($sourcePath)
-            //     ->scaleDown(1024, 768)
-            //     ->save($largePath . '/' . $fileName);
-
-            // Kiểm tra file tồn tại
-            if (!file_exists($sourcePath)) {
-                Log::error("Source file not found: {$sourcePath}");
-
-                // Cleanup DB nếu cần
-                $tempImage->delete();
-
-                throw new ImageUploadException("Temporary image file does not exist.");
-            }
-
-            // Tiếp tục resize nếu file tồn tại
-            $this->manager->read($sourcePath)
-                ->coverDown(720, 480)
-                ->save($smallPath . '/' . $fileName);
-
-            // Large
-            $this->manager->read($sourcePath)
-                ->scaleDown(1024, 768)
-                ->save($largePath . '/' . $fileName);
+            $this->resizeImage($sourcePath, $smallPath, 720, 480);
+            $this->resizeImage($sourcePath, $largePath, 1024, 768, 'scaleDown');
 
             return $fileName;
         } catch (\Throwable $e) {
-            Log::error("Move temp to permanent failed for type {$type}: " . $e->getMessage());
+            Log::error("Move temp to permanent failed [{$type}]: " . $e->getMessage());
             throw new ImageUploadException('Failed to move image to permanent location.');
         }
     }
 
     /**
-     * Xóa ảnh chính thức (large và small)
+     * Method deletePermanentImage
+     *
+     * @param string $type
+     * @param string $fileName
+     *
+     * @return void
      */
     public function deletePermanentImage(string $type, string $fileName): void
     {
-        try {
-            if (!$fileName) return;
+        if (!$fileName) return;
 
-            $large = public_path("uploads/{$type}/large/{$fileName}");
-            $small = public_path("uploads/{$type}/small/{$fileName}");
-
-            File::delete([$large, $small]);
-        } catch (\Throwable $e) {
-            Log::error("Delete permanent image failed [{$type}/{$fileName}]: " . $e->getMessage());
-        }
+        File::delete([
+            public_path("uploads/{$type}/large/{$fileName}"),
+            public_path("uploads/{$type}/small/{$fileName}")
+        ]);
     }
 
     /**
-     * Xóa ảnh tạm (file + record DB)
+     * Method deleteTempImage
+     *
+     * @param int $tempImageId
+     *
+     * @return void
      */
     public function deleteTempImage(int $tempImageId): void
     {
-        try {
-            $image = TempImage::find($tempImageId);
-            if (!$image) return;
+        $image = TempImage::find($tempImageId);
+        if (!$image) return;
 
-            $originalPath = public_path('uploads/temp/' . $image->name);
-            $thumbPath = public_path('uploads/temp/thumb/' . $image->name);
+        File::delete([
+            public_path("uploads/temp/{$image->name}"),
+            public_path("uploads/temp/thumb/{$image->name}")
+        ]);
 
-            File::delete([$originalPath, $thumbPath]);
-            $image->delete();
-        } catch (\Throwable $e) {
-            Log::error('Delete temp image failed: ' . $e->getMessage());
-        }
+        $image->delete();
     }
 
     /**
-     * Tạo các thư mục nếu chưa có
+     * Method makeDirectories
+     *
+     * @param array $paths
+     *
+     * @return void
      */
     protected function makeDirectories(array $paths): void
     {
         foreach ($paths as $path) {
-            if (!file_exists($path)) {
+            if (!is_dir($path)) {
                 mkdir($path, 0755, true);
             }
         }
+    }
+
+    /**
+     * Method resizeImage
+     *
+     * @param string $inputPath
+     * @param string $outputPath
+     * @param int $width
+     * @param int $height
+     * @param string $mode
+     *
+     * @return void
+     */
+    protected function resizeImage(string $inputPath, string $outputPath, int $width, int $height, string $mode = 'coverDown'): void
+    {
+        $image = $this->manager->read($inputPath);
+        $resized = $mode === 'scaleDown'
+            ? $image->scaleDown($width, $height)
+            : $image->coverDown($width, $height);
+        $resized->save($outputPath);
     }
 }
