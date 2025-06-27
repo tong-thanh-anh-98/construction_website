@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\admin\ArticleController;
@@ -23,6 +24,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
     Route::apiResource('services', ServiceController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('articles', ArticleController::class);
+    Route::apiResource('testimonials', TestimonialController::class);
 
     Route::post('save-temp-images', [TempImageController::class, 'store'])->name('store');
     Route::get('get-temp-images/{id}', [TempImageController::class, 'show'])->name('show');
