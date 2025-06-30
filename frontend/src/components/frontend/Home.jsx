@@ -1,7 +1,4 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { Pagination } from 'swiper/modules';
-import 'swiper/css/pagination';
+
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import About from '../common/About';
@@ -9,12 +6,11 @@ import About from '../common/About';
 import Icon1 from '../../assets/images/icon-1.svg';
 import Icon2 from '../../assets/images/icon-2.svg';
 import Icon3 from '../../assets/images/icon-3.svg';
-import AvatarImg from '../../assets/images/author-2.jpg';
-import BlogImg from '../../assets/images/construction3.jpg';
 import LatestServices from '../common/LatestServices';
 import LatestProjects from '../common/LatestProjects';
 import { useTranslation } from 'react-i18next';
 import LatestBlog from '../common/LatestBlog';
+import ShowTestimonial from '../common/ShowTestimonial';
 
 const Home = () => {
     const { t } = useTranslation();
@@ -105,55 +101,8 @@ const Home = () => {
                 {/* Our Projects */}
                 <LatestProjects />
 
-                <section className="section-5 py-5">
-                    <div className="container">
-                        <div className="section-header text-center">
-                            <span>Khách Hàng Nói Gì</span>
-                            <h2>Những đánh giá về chúng tôi</h2>
-                            <p>
-                                Chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu. Những phản hồi tích cực từ đối tác và khách hàng là minh chứng cho chất lượng, uy tín và sự tận tâm trong từng dự án.
-                            </p>
-                        </div>
-                    </div>
-                    <Swiper
-                        modules={[Pagination]}
-                        spaceBetween={50}
-                        slidesPerView={3}
-                        pagination={{ clickable: true }}
-                    >
-                        {[...Array(5)].map((_, index) => (
-                            <SwiperSlide>
-                                <div className="card shadow border-0" key={index}>
-                                    <div className="card-body p-5">
-                                        <div className="rating">
-                                            {[...Array(5)].map((_, index) => (
-                                                <svg key={index} xmlns="http://www.w3.org/2000/svg" width="16" height="20" fill="currentColor" className="bi bi-star-fill" viewBox="0 0 16 16">
-                                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                                </svg>
-                                            ))}
-                                        </div>
-                                        <div className="content pb-2">
-                                            <p>
-                                                Chúng tôi rất hài lòng với chất lượng và tiến độ thi công. Đội ngũ làm việc chuyên nghiệp, luôn lắng nghe và đáp ứng đúng yêu cầu thiết kế của chúng tôi.
-                                            </p>
-                                        </div>
-                                        <hr />
-
-                                        <div className="d-flex meta">
-                                            <div>
-                                                <img src={AvatarImg} alt="" width={50} />
-                                            </div>
-                                            <div className='ps-3'>
-                                                <div className='name'>Họ Và Tên</div>
-                                                <div>Khách hàng</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </section>
+                {/* Testimonial Section */}
+                <ShowTestimonial />
 
                 {/* Blog & New section */}
                 <LatestBlog />

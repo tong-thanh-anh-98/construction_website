@@ -80,6 +80,7 @@
     "author": "Author",
     "testimonial": "Testimonial",
     "citation": "Citation",
+    "designation": "Designation",
 
     "input": "INPUT",
     "enter_title": "Enter title",
@@ -93,6 +94,7 @@
     "enter_author": "Enter author",
     "enter_citation": "Enter citation",
     "enter_testimonials": "Enter testimonial",
+    "enter_designation": "Enter designation",
 
     "option": "OPTION",
     "active": "Active",
@@ -127,6 +129,8 @@
     "title_required": "The title field is required",
     "slug_required": "The slug field is required",
     "status_required": "The status field is required",
+    "testimonial_required": "The testimonial field is required",
+    "citation_required": "The citation field is required",
 
     "login_page": "LOGIN",
     "admin_login": "Admin Login",
@@ -189,6 +193,10 @@
     "contact_tag": "Contact",
     "contact_title": "Contact",
     "contact_description": "Have a question or a project in mind? We’re here to help. Reach out to our team and let’s build something great together.",
+
+    "testimonial_tag": "What Customers Say",
+    "testimonial_title": "Testimonials About Us",
+    "testimonial_description": "We always put customer satisfaction first. Positive feedback from our partners and clients is a testament to the quality, reputation, and dedication we bring to every project.",
 
     "Footer Website": "FOOTER WEBSITE",
     "footer_about_title": "About Us",

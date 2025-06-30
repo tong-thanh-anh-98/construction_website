@@ -59,7 +59,7 @@
     "contact": "Liên Hệ",
     "dashboard": "Bảng Điều Khiển",
     "articles": "Bài Viết",
-    "testimonials": "Lời Chứng Thực",
+    "testimonials": "Lời Đánh Giá",
     "select_language": "Chọn Ngôn Ngữ",
     "management_screen": "Màn Hình Quản lý",
 
@@ -78,8 +78,9 @@
     "construction_type": "Loại hình xây dựng",
     "sector": "Lĩnh Vực",
     "author": "Tác Giả",
-    "testimonial": "Lời chứng thực",
-    "citation": "Trích dẫn",
+    "testimonial": "Lời Đánh Giá",
+    "citation": "Trích Dẫn",
+    "designation": "Chức Danh",
 
     "input": "INPUT",
     "enter_title": "Nhập tiêu đề",
@@ -92,7 +93,8 @@
     "select_construction": "Chọn loại hình xây dựng",
     "enter_author": "Nhập tên tác giả",
     "enter_citation": "Nhập trích dẫn",
-    "enter_testimonials": "Nhập lời chứng thực",
+    "enter_testimonials": "Nhập lời đánh giá / nhận xét",
+    "enter_designation": "Nhập chỉ định",
 
     "option": "OPTION",
     "active": "Hiển thị",
@@ -127,6 +129,8 @@
     "title_required": "Trường tiêu đề là bắt buộc",
     "slug_required": "Trường đường dẫn là bắt buộc",
     "status_required": "Trường trạng thái là bắt buộc",
+    "testimonial_required": "Trường lời đánh giá là bắt buộc",
+    "citation_required": "Trường trích dẫn là bắt buộc",
 
     "login_page": "LOGIN",
     "admin_login": "Đăng nhập quản trị",
@@ -189,6 +193,10 @@
     "contact_tag": "Liên Hệ",
     "contact_title": "Liên Hệ",
     "contact_description": "Bạn có câu hỏi hoặc dự án cần thực hiện? Chúng tôi luôn sẵn sàng hỗ trợ. Hãy liên hệ để cùng nhau tạo nên những công trình tuyệt vời.",
+
+    "testimonial_tag": "Khách Hàng Nói Gì",
+    "testimonial_title": "Những đánh giá về chúng tôi",
+    "testimonial_description": "Chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu. Những phản hồi tích cực từ đối tác và khách hàng là minh chứng cho chất lượng, uy tín và sự tận tâm trong từng dự án.",
 
     "Footer Website": "FOOTER WEBSITE",
     "footer_about_title": "Giới Thiệu",

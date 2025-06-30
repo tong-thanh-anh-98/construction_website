@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('citation');
             $table->string('image')->nullable();
             $table->integer('status')->default(1);
+            $table->string('designation')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,18 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import Sidebar from '../../common/Sidebar';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { adminToken, apiUrlAdmin } from '../../common/http';
 import { toast } from 'react-toastify';
-import JoditEditor from 'jodit-react';
 import HeaderAdmin from '../../common/HeaderAdmin';
 
-const Create = ({ placeholder }) => {
+const Create = () => {
     const { t, i18n } = useTranslation();
-    const editor = useRef(null);
     const fileInputRef = useRef(null);
-    const [testimonial, setTestimonial] = useState('');
     const [disable, setDisable] = useState(false);
     const [imageId, setImageId] = useState(null);
     const navigate = useNavigate();
@@ -25,13 +22,10 @@ const Create = ({ placeholder }) => {
         formState: { errors },
     } = useForm();
 
-    const config = useMemo(() => ({
-        readonly: false,
-        placeholder: placeholder || t('enter_testimonials'),
-    }), [placeholder, t]);
+
 
     const saveTestimonial = async (data) => {
-        const newData = { ...data, "testimonial": testimonial, "imageId": imageId }
+        const newData = { ...data, "imageId": imageId }
         setDisable(true);
 
         try {
@@ -153,23 +147,40 @@ const Create = ({ placeholder }) => {
                                     <form onSubmit={handleSubmit(saveTestimonial)}>
                                         <div className='mb-3'>
                                             <label htmlFor='' className='form-label'>{t('testimonial')}</label>
-                                            <JoditEditor
-                                                ref={editor}
-                                                value={testimonial}
-                                                config={config}
-                                                tabIndex={1}
-                                                onBlur={newTestimonial => setTestimonial(newTestimonial)}
-                                            />
+                                            <textarea
+                                                {...register('testimonial', { required: t('testimonial_required') })}
+                                                className={`form-control ${errors.testimonial && 'is-invalid'}`}
+                                                rows={5}
+                                                placeholder={t('enter_testimonials')}>
+                                            </textarea>
+
+                                            {errors.testimonial && (
+                                                <p className='invalid-feedback'>{errors.testimonial.message}</p>
+                                            )}
                                         </div>
 
                                         <div className='mb-3'>
                                             <label className='form-label'>{t('citation')}</label>
-                                            <textarea
-                                                {...register('citation')}
-                                                className='form-control'
-                                                rows={5}
-                                                placeholder={t('enter_citation')}>
-                                            </textarea>
+                                            <input
+                                                {...register('citation', { required: t('citation_required') })}
+                                                type='text'
+                                                className={`form-control ${errors.citation && 'is-invalid'}`}
+                                                placeholder={t('enter_citation')}
+                                            />
+
+                                            {errors.citation && (
+                                                <p className='invalid-feedback'>{errors.citation.message}</p>
+                                            )}
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label className='form-label'>{t('designation')}</label>
+                                            <input
+                                                {...register('designation')}
+                                                type='text'
+                                                className="form-control"
+                                                placeholder={t('enter_designation')}
+                                            />
                                         </div>
 
                                         <div className='mb-3'>
@@ -182,9 +193,9 @@ const Create = ({ placeholder }) => {
                                                 <option value="0">{t('block')}</option>
                                             </select>
 
-                                            {
-                                                errors.status && <p className='invalid-feedback'>{errors.status?.message}</p>
-                                            }
+                                            {errors.status && (
+                                                <p className='invalid-feedback'>{errors.status?.message}</p>
+                                            )}
                                         </div>
 
                                         <div className='mb-3'>

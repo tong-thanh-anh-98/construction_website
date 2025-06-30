@@ -5,6 +5,7 @@ import { default as AboutUS } from '../common/About';
 import TeamImg from '../../assets/images/pexels.jpg'
 import Hero from '../common/Hero';
 import { useTranslation } from 'react-i18next';
+import ShowTestimonial from '../common/ShowTestimonial';
 
 const About = () => {
     const { t } = useTranslation();
@@ -56,6 +57,8 @@ const About = () => {
                         </div>
                     </div>
                 </section>
+
+                <ShowTestimonial />
             </main>
             <Footer />
         </>

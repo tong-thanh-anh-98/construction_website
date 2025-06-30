@@ -195,7 +195,8 @@ class TestimonialController extends Controller
             'testimonial',
             'citation',
             'image',
-            'status'
+            'status',
+            'designation'
         ]);
     }
 }

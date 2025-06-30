@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\front\ArticleController as FrontArticleController;
 use App\Http\Controllers\front\ProjectController as FrontProjectController;
 use App\Http\Controllers\front\ServiceController as FrontServiceController;
+use App\Http\Controllers\front\TestimonialController as FrontTestimonialController;
 
 Route::get('/translations/{locale}', [TranslationController::class, 'getTranslations'])->name('getTranslations');
 Route::post('authenticate', [AuthenticationController::class, 'authenticate'])->name('authenticate');
@@ -41,4 +42,8 @@ Route::prefix('front')->name('front.')->group(function () {
 
     Route::get('get-all-articles', [FrontArticleController::class, 'getAllArticles'])->name('getAllArticles');
     Route::get('get-latest-articles', [FrontArticleController::class, 'latestArticles'])->name('latestArticles');
+
+    Route::get('get-all-testimonials', [FrontTestimonialController::class, 'getAllTestimonials'])->name('getAllTestimonials');
+    Route::get('get-latest-testimonials', [FrontTestimonialController::class, 'latestTestimonials'])->name('latestTestimonials');
+
 });

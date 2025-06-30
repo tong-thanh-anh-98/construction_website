@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Sidebar from '../../common/Sidebar';
-import JoditEditor from 'jodit-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -9,10 +8,8 @@ import { toast } from 'react-toastify';
 import ModalDelete from '../../common/ModalDelete';
 import HeaderAdmin from '../../common/HeaderAdmin';
 
-const Edit = ({ placeholder }) => {
+const Edit = () => {
     const { t, i18n } = useTranslation();
-    const editor = useRef(null);
-    const [testimonial, setTestimonial] = useState('');
     const [disable, setDisable] = useState(false);
     const [imageId, setImageId] = useState(null);
     const [detailTestimonial, setDetailTestimonial] = useState([]);
@@ -33,11 +30,6 @@ const Edit = ({ placeholder }) => {
         formState: { errors },
     } = useForm();
 
-    const config = useMemo(() => ({
-        readonly: false,
-        placeholder: placeholder || '',
-    }), [placeholder]);
-
     // Fetch Testimonial data to pre-fill form
     const fetchTestimonial = useCallback(async () => {
         try {
@@ -53,10 +45,10 @@ const Edit = ({ placeholder }) => {
 
             const result = await response.json();
             const data = result.data;
-            setTestimonial(data.testimonial);
             setDetailTestimonial(data);
 
             reset({
+                testimonial: data.testimonial,
                 citation: data.citation,
                 status: data.status,
             });
@@ -67,7 +59,7 @@ const Edit = ({ placeholder }) => {
     }, [params.id, reset, i18n.language]);
 
     const updateTestimonial = async (data) => {
-        const newData = { ...data, "testimonial": testimonial, "imageId": imageId, removeImage: removeImage ? 1 : 0 }
+        const newData = { ...data, "imageId": imageId, removeImage: removeImage ? 1 : 0 }
         setDisable(true);
 
         try {
@@ -233,23 +225,40 @@ const Edit = ({ placeholder }) => {
                                     <form onSubmit={handleSubmit(updateTestimonial)}>
                                         <div className='mb-3'>
                                             <label htmlFor='' className='form-label'>{t('testimonial')}</label>
-                                            <JoditEditor
-                                                ref={editor}
-                                                value={testimonial}
-                                                config={config}
-                                                tabIndex={1}
-                                                onBlur={newTestimonial => setTestimonial(newTestimonial)}
-                                            />
+                                            <textarea
+                                                {...register('testimonial', { required: t('testimonial_required') })}
+                                                className={`form-control ${errors.testimonial && 'is-invalid'}`}
+                                                rows={5}
+                                                placeholder={t('enter_testimonials')}>
+                                            </textarea>
+
+                                            {errors.testimonial && (
+                                                <p className='invalid-feedback'>{errors.testimonial.message}</p>
+                                            )}
                                         </div>
 
                                         <div className='mb-3'>
                                             <label className='form-label'>{t('citation')}</label>
-                                            <textarea
-                                                {...register('citation')}
-                                                className='form-control'
-                                                rows={5}
-                                                placeholder={t('enter_citation')}>
-                                            </textarea>
+                                            <input
+                                                {...register('citation', { required: t('citation_required') })}
+                                                type='text'
+                                                className={`form-control ${errors.citation && 'is-invalid'}`}
+                                                placeholder={t('enter_citation')}
+                                            />
+
+                                            {errors.citation && (
+                                                <p className='invalid-feedback'>{errors.citation.message}</p>
+                                            )}
+                                        </div>
+
+                                        <div className='mb-3'>
+                                            <label className='form-label'>{t('designation')}</label>
+                                            <input
+                                                {...register('designation')}
+                                                type='text'
+                                                className="form-control"
+                                                placeholder={t('enter_designation')}
+                                            />
                                         </div>
 
                                         <div className='mb-3'>
@@ -262,9 +271,9 @@ const Edit = ({ placeholder }) => {
                                                 <option value="0">{t('block')}</option>
                                             </select>
 
-                                            {
-                                                errors.status && <p className='invalid-feedback'>{errors.status?.message}</p>
-                                            }
+                                            {errors.status && (
+                                                <p className='invalid-feedback'>{errors.status?.message}</p>
+                                            )}
                                         </div>
 
                                         <div className='mb-3'>

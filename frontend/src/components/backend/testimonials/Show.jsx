@@ -84,7 +84,7 @@ const Show = () => {
                                                                     style={{ cursor: 'pointer' }}
                                                                 >
                                                                     <td>#{testimonial.id}</td>
-                                                                    <td dangerouslySetInnerHTML={{ __html: testimonial.testimonial }} />
+                                                                    <td>{testimonial.testimonial}</td>
                                                                     <td>{testimonial.citation}</td>
                                                                     <td>{testimonial.status === 1 ? t('active') : t('block')}</td>
                                                                 </tr>

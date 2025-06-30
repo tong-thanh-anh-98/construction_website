@@ -26,6 +26,7 @@ class TestimonialRequest extends FormRequest
             'citation'          => 'required|string',
             'image'             => 'nullable|string',
             'status'            => 'required|integer|in:0,1',
+            'designation'       => 'nullable|string',
         ];
 
         return $rules;

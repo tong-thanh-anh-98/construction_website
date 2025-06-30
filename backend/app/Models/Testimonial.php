@@ -14,6 +14,7 @@ class Testimonial extends Model
         'citation',
         'image',
         'status',
+        'designation'
     ];
 
     protected $appends = ['image_url'];
