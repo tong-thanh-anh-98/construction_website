@@ -9,7 +9,7 @@ const LatestProjects = () => {
 
     const fetchLatestProjects = useCallback(async () => {
         try {
-            const response = await fetch(`${apiUrlFront}/get-latest-projects?limit=4`, {
+            const response = await fetch(`${apiUrlFront}/get-latest-projects?limit=3`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

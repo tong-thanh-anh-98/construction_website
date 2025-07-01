@@ -23,7 +23,7 @@ const Edit = ({ placeholder }) => {
     const [removeImage, setRemoveImage] = useState(false);
     const [tempImages, setTempImages] = useState([]);
     const fileInputRef = useRef(null);
-    const [isDeleting, setIsDeleting] = useState(false); // Cho nút xóa
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const config = useMemo(() => ({
         readonly: false,
@@ -48,7 +48,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -80,7 +80,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: JSON.stringify(newData)
@@ -117,7 +117,7 @@ const Edit = ({ placeholder }) => {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: formData
@@ -153,7 +153,7 @@ const Edit = ({ placeholder }) => {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
-                        'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                        'X-Locale': i18n.language,
                         'Authorization': `Bearer ${adminToken()}`
                     }
                 });
@@ -185,7 +185,7 @@ const Edit = ({ placeholder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });

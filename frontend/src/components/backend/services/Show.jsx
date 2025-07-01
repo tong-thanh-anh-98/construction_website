@@ -22,7 +22,7 @@ const Show = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 }
             });
@@ -38,7 +38,7 @@ const Show = () => {
         } finally {
             setLoader(false);
         }
-    }, [i18n.language]); // thêm dependency
+    }, [i18n.language]);
 
     useEffect(() => {
         fetchServices()

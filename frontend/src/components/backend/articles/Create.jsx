@@ -79,7 +79,7 @@ const Create = ({ placeholder }) => {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                    'X-Locale': i18n.language,
                     'Authorization': `Bearer ${adminToken()}`
                 },
                 body: formData
@@ -110,7 +110,7 @@ const Create = ({ placeholder }) => {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
-                        'X-Locale': i18n.language, //  gửi ngôn ngữ đang dùng
+                        'X-Locale': i18n.language,
                         'Authorization': `Bearer ${adminToken()}`
                     }
                 });
