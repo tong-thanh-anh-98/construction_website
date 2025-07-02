@@ -18,6 +18,7 @@ const Sidebar = () => {
                     <li><Link to="/admin/projects">{t('projects')}</Link></li>
                     <li><Link to="/admin/articles">{t('articles')}</Link></li>
                     <li><Link to="/admin/testimonials">{t('testimonials')}</Link></li>
+                    <li><Link to="/admin/members">{t('members')}</Link></li>
                     <li>
                         <button className='btn btn-primary mt-4' onClick={logout}>{t('logout')}</button>
                     </li>

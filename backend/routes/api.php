@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TranslationController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\front\ArticleController as FrontArticleController;
+use App\Http\Controllers\front\MemberController as FrontMemberController;
 use App\Http\Controllers\front\ProjectController as FrontProjectController;
 use App\Http\Controllers\front\ServiceController as FrontServiceController;
 use App\Http\Controllers\front\TestimonialController as FrontTestimonialController;
@@ -26,6 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('articles', ArticleController::class);
     Route::apiResource('testimonials', TestimonialController::class);
+    Route::apiResource('members', MemberController::class);
 
     Route::post('save-temp-images', [TempImageController::class, 'store'])->name('store');
     Route::get('get-temp-images/{id}', [TempImageController::class, 'show'])->name('show');
@@ -46,4 +49,5 @@ Route::prefix('front')->name('front.')->group(function () {
     Route::get('get-all-testimonials', [FrontTestimonialController::class, 'getAllTestimonials'])->name('getAllTestimonials');
     Route::get('get-latest-testimonials', [FrontTestimonialController::class, 'latestTestimonials'])->name('latestTestimonials');
 
+    Route::get('get-all-members', [FrontMemberController::class, 'getAllMembers'])->name('getAllMembers');
 });
