@@ -5,7 +5,7 @@ import 'swiper/css/pagination';
 import { useTranslation } from 'react-i18next';
 import AvatarImg from '../../assets/images/author-2.jpg';
 import { useCallback, useEffect, useState } from 'react';
-import { adminToken, apiUrlFront } from './http';
+import { apiUrlFront } from './http';
 import { toast } from 'react-toastify';
 
 const ShowTestimonial = () => {
@@ -20,7 +20,6 @@ const ShowTestimonial = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Locale': i18n.language,
-                    'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();

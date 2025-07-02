@@ -59,4 +59,32 @@ class ServiceController extends Controller
             ], 500);
         }
     }
+
+    public function detailService($id)
+    {
+        try {
+            $service = Service::find($id);
+
+            if (!$service) {
+                return response()->json([
+                    'status'        => 404,
+                    'message'       => __('message.not_found')
+                ], 404);
+            }
+
+            return response()->json([
+                'status'        => 200,
+                'message'       => __('message.success'),
+                'data'          => $service
+            ], 200);
+        } catch (\Throwable $e) {
+            Log::error('Errors: ' . $e->getMessage());
+
+            return response()->json([
+                'status'  => 500,
+                'message' => __('message.server_error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
 }

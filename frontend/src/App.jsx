@@ -6,7 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Home from './components/frontend/Home';
 import About from './components/frontend/About';
+
 import Services from './components/frontend/Services';
+import ServiceDetail from './components/frontend/ServiceDetail';
+
 import Projects from './components/frontend/Projects';
 import Blogs from './components/frontend/Blogs';
 import ContactUs from './components/frontend/ContactUs';
@@ -31,9 +34,9 @@ import { default as ShowTestimonials } from './components/backend/testimonials/S
 import { default as CreateTestimonials } from './components/backend/testimonials/Create';
 import { default as EditTestimonials } from './components/backend/testimonials/Edit';
 
-import {default as ShowMembers} from './components/backend/members/Show';
-import {default as CreateMembers} from './components/backend/members/Create';
-import {default as EditMembers} from './components/backend/members/Edit';
+import { default as ShowMembers } from './components/backend/members/Show';
+import { default as CreateMembers } from './components/backend/members/Create';
+import { default as EditMembers } from './components/backend/members/Edit';
 
 function App() {
     return (
@@ -44,6 +47,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/services" element={<Services />} />
+                    <Route path="/services/:id" element={<ServiceDetail />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/blogs" element={<Blogs />} />
                     <Route path="/contact" element={<ContactUs />} />

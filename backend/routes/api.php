@@ -39,6 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 Route::prefix('front')->name('front.')->group(function () {
     Route::get('get-all-services', [FrontServiceController::class, 'getAllServices'])->name('getAllServices');
     Route::get('get-latest-services', [FrontServiceController::class, 'latestServices'])->name('latestServices');
+    Route::get('get-detail-services/{id}', [FrontServiceController::class, 'detailService'])->name('detailService');
 
     Route::get('get-all-projects', [FrontProjectController::class, 'getAllProjects'])->name('getAllProjects');
     Route::get('get-latest-projects', [FrontProjectController::class, 'latestProjects'])->name('latestProjects');

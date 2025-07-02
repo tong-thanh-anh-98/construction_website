@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { adminToken, apiUrlFront } from './http';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const LatestServices = () => {
     const { t } = useTranslation();
@@ -65,7 +66,7 @@ const LatestServices = () => {
                                                     {service.short_desc}
                                                 </p>
                                             </div>
-                                            <a href="#" className="btn btn-primary small">{t('see_more')}</a>
+                                            <Link to={`/services/${service.id}`} className="btn btn-primary small">{t('see_more')}</Link>
                                         </div>
                                     </div>
                                 </div>

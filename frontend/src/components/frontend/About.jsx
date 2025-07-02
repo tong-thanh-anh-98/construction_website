@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import Header from '../common/Header'
-import Footer from '../common/Footer'
+import React, { useCallback, useEffect, useState } from 'react';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 import { default as AboutUS } from '../common/About';
-import TeamImg from '../../assets/images/pexels.jpg'
 import Hero from '../common/Hero';
 import { useTranslation } from 'react-i18next';
 import ShowTestimonial from '../common/ShowTestimonial';
-import { Link } from 'react-router-dom';
-import { adminToken, apiUrlFront } from '../common/http';
+import { apiUrlFront } from '../common/http';
 import { toast } from 'react-toastify';
 
 const About = () => {
@@ -22,7 +20,6 @@ const About = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Locale': i18n.language,
-                    'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { adminToken, apiUrlFront } from './http';
+import { apiUrlFront } from './http';
 import { toast } from 'react-toastify';
 
 const LatestBlog = () => {
@@ -15,7 +15,6 @@ const LatestBlog = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Locale': i18n.language,
-                    'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();

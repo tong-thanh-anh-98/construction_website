@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Header from '../common/Header';
 import Hero from '../common/Hero';
 import Footer from '../common/Footer';
-import { adminToken, apiUrlFront } from '../common/http';
+import { apiUrlFront } from '../common/http';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
@@ -18,7 +18,6 @@ const Projects = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Locale': i18n.language,
-                    'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();

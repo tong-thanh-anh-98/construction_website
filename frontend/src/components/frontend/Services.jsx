@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { adminToken, apiUrlFront } from '../common/http';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 
 const Services = () => {
@@ -81,7 +82,8 @@ const Services = () => {
                                                             {service.short_desc}
                                                         </p>
                                                     </div>
-                                                    <a href="#" className='btn btn-primary small'>{t('see_more')}</a>
+
+                                                    <Link to={`/services/${service.id}`} className="btn btn-primary small">{t('see_more')}</Link>
                                                 </div>
                                             </div>
                                         </div>

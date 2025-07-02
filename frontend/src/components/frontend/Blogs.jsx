@@ -3,7 +3,7 @@ import Header from '../common/Header';
 import Hero from '../common/Hero';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
-import { adminToken, apiUrlFront } from '../common/http';
+import { apiUrlFront } from '../common/http';
 import { toast } from 'react-toastify';
 
 
@@ -19,7 +19,6 @@ const Blogs = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Locale': i18n.language,
-                    'Authorization': `Bearer ${adminToken()}`
                 }
             });
             const result = await response.json();
