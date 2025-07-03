@@ -11,4 +11,6 @@ return [
     'upload_success'       => 'Uploaded Successfully.', // status 200 function upload file
     'update_success'       => 'Updated Successfully.', // status 200 function update
     'delete_success'       => 'Deleted Successfully.', // status 200 function delete
+
+    'contact_thank_you'    => 'Thanks for contact us.',
 ];

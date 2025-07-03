@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\TestimonialController;
+use App\Http\Controllers\front\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\admin\ArticleController;
@@ -53,4 +54,6 @@ Route::prefix('front')->name('front.')->group(function () {
     Route::get('get-latest-testimonials', [FrontTestimonialController::class, 'latestTestimonials'])->name('latestTestimonials');
 
     Route::get('get-all-members', [FrontMemberController::class, 'getAllMembers'])->name('getAllMembers');
+
+    Route::post('contact-us', [ContactController::class, 'store'])->name('store');
 });
