@@ -8,51 +8,26 @@ import { apiUrlFront } from '../common/http';
 import { toast } from 'react-toastify';
 import ShowTestimonial from '../common/ShowTestimonial';
 
-const ServiceDetail = () => {
+const ProjectDetail = () => {
     const { t, i18n } = useTranslation();
     const params = useParams();
-    const [service, getService] = useState([]);
-    const [services, getServices] = useState([]);
+    const [project, setProject] = useState([]);
 
-    const fetchServices = useCallback(async () => {
+    const fetchProject = useCallback(async () => {
         try {
-            const response = await fetch(`${apiUrlFront}/get-all-services`, {
+            const response = await fetch(`${apiUrlFront}/get-detail-projects/${params.id}`, {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-Locale': i18n.language,
+                    'accept': 'application/json',
+                    'content-Type': 'application/json',
+                    'x-locale': i18n.language,
                 }
             });
             const result = await response.json();
             console.log(result.data);
 
             if (response.ok && result.status === 200) {
-                getServices(result.data);
-            } else {
-                toast.error(result.message);
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
-    }, [i18n.language]);
-
-    const fetchService = useCallback(async () => {
-        try {
-            const response = await fetch(`${apiUrlFront}/get-detail-services/${params.id}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-Locale': i18n.language,
-                }
-            });
-            const result = await response.json();
-            console.log(result.data);
-
-            if (response.ok && result.status === 200) {
-                getService(result.data);
+                setProject(result.data);
             } else {
                 toast.error(result.message);
             }
@@ -63,9 +38,8 @@ const ServiceDetail = () => {
     }, [params.id, i18n.language]);
 
     useEffect(() => {
-        fetchService();
-        fetchServices();
-    }, [fetchService, fetchServices]);
+        fetchProject();
+    }, [fetchProject]);
 
     return (
         <>
@@ -81,34 +55,50 @@ const ServiceDetail = () => {
                                 <div className="card shadow border-0 sidebar">
                                     <div className="card-body px-4 py-4">
                                         <h3 className="mt-2 mb-3">
-                                            <strong>{t('our_services')}</strong>
+                                            <strong>{t('insights')}</strong>
                                         </h3>
+
                                         <ul>
                                             {
-                                                services && services.map(service => {
-                                                    return (
-                                                        <li key={`service-${service.id}`}>
-                                                            <Link to={`/services/${service.id}`}>{service.title}</Link>
-                                                        </li>
-                                                    )
-                                                })
+                                                project.location &&
+                                                <li className='mb-2'>
+                                                    <span className='text-body-secondary'>{t('location')}</span>
+                                                    <p>{project.location}</p>
+                                                </li>
+                                            }
+
+                                            {
+                                                project.construction_type &&
+                                                <li className='mb-2'>
+                                                    <span className='text-body-secondary'>{t('construction_type')}</span>
+                                                    <p>{t(`${project.construction_type}`)}</p>
+                                                </li>
+                                            }
+
+                                            {
+                                                project.construction_type &&
+                                                <li className='mb-2'>
+                                                    <span className='text-body-secondary'>{t('sector')}</span>
+                                                    <p>{t(`${project.sector}`)}</p>
+                                                </li>
                                             }
                                         </ul>
                                     </div>
                                 </div>
                             </div>
+
                             <div className="col-md-8">
                                 <div>
                                     <img
-                                        src={service.image_url}
-                                        alt={service.title}
+                                        src={project.image_url}
+                                        alt={project.title}
                                         className="w-100"
                                     />
                                 </div>
 
-                                <h3 className="py-3">{service.title}</h3>
+                                <h3 className="py-3">{project.title}</h3>
 
-                                <div dangerouslySetInnerHTML={{ __html: service.content }}></div>
+                                <div dangerouslySetInnerHTML={{ __html: project.content }}></div>
                             </div>
                         </div>
                     </div>
@@ -118,9 +108,10 @@ const ServiceDetail = () => {
                     <ShowTestimonial />
                 </section>
             </main>
+
             <Footer />
         </>
     )
 }
 
-export default ServiceDetail
+export default ProjectDetail

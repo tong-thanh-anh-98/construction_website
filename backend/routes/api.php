@@ -43,9 +43,11 @@ Route::prefix('front')->name('front.')->group(function () {
 
     Route::get('get-all-projects', [FrontProjectController::class, 'getAllProjects'])->name('getAllProjects');
     Route::get('get-latest-projects', [FrontProjectController::class, 'latestProjects'])->name('latestProjects');
+    Route::get('get-detail-projects/{id}', [FrontProjectController::class, 'detailProject'])->name('detailProject');
 
     Route::get('get-all-articles', [FrontArticleController::class, 'getAllArticles'])->name('getAllArticles');
     Route::get('get-latest-articles', [FrontArticleController::class, 'latestArticles'])->name('latestArticles');
+    Route::get('get-detail-articles/{id}', [FrontArticleController::class, 'detailArticle'])->name('detailArticle');
 
     Route::get('get-all-testimonials', [FrontTestimonialController::class, 'getAllTestimonials'])->name('getAllTestimonials');
     Route::get('get-latest-testimonials', [FrontTestimonialController::class, 'latestTestimonials'])->name('latestTestimonials');

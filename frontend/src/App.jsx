@@ -11,7 +11,11 @@ import Services from './components/frontend/Services';
 import ServiceDetail from './components/frontend/ServiceDetail';
 
 import Projects from './components/frontend/Projects';
+import ProjectDetail from './components/frontend/ProjectDetail';
+
 import Blogs from './components/frontend/Blogs';
+import ArticleDetail from './components/frontend/ArticleDetail';
+
 import ContactUs from './components/frontend/ContactUs';
 
 import Login from './components/backend/Login';
@@ -46,10 +50,16 @@ function App() {
                     {/* Frontend - Public */}
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
+
                     <Route path="/services" element={<Services />} />
                     <Route path="/services/:id" element={<ServiceDetail />} />
+
                     <Route path="/projects" element={<Projects />} />
+                    <Route path="/projects/:id" element={<ProjectDetail />} />
+
                     <Route path="/blogs" element={<Blogs />} />
+                    <Route path="/articles/:id" element={<ArticleDetail />} />
+
                     <Route path="/contact" element={<ContactUs />} />
 
                     {/* Backend - Public */}

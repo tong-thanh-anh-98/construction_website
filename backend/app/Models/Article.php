@@ -18,7 +18,7 @@ class Article extends Model
         'status',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'formatted_date'];
 
     /**
      * Image URL
@@ -30,5 +30,13 @@ class Article extends Model
         }
 
         return url('uploads/images/no_img.jpg');
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        $locale = app()->getLocale();
+        \Carbon\Carbon::setLocale($locale);
+
+        return \Carbon\Carbon::parse($this->created_at)->translatedFormat('d F, Y');
     }
 }

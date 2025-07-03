@@ -55,4 +55,38 @@ class ArticleController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Method detailArticle
+     *
+     * @param $id
+     *
+     * @return void
+     */
+    public function detailArticle($id)
+    {
+        try {
+            $article = Article::find($id);
+
+            if (!$article) {
+                return response()->json([
+                    'status'        => 404,
+                    'message'       => __('message.not_found')
+                ], 404);
+            }
+
+            return response()->json([
+                'status'        => 200,
+                'message'       => __('message.success'),
+                'data'          => $article
+            ], 200);
+        } catch (\Throwable $e) {
+            Log::error('List errors: ' . $e->getMessage());
+
+            return response()->json([
+                'status'        => 500,
+                'message'       => __('message.server_error'),
+            ], 500);
+        }
+    }
 }

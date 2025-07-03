@@ -41,6 +41,25 @@ const Edit = ({ placeholder }) => {
     const [removeImage, setRemoveImage] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
+    const constructionTypes = useMemo(() => [
+        { value: 'residential', label: t('construction_type_residential') },
+        { value: 'commercial', label: t('construction_type_commercial') },
+        { value: 'industrial', label: t('construction_type_industrial') },
+        { value: 'infrastructure', label: t('construction_type_infrastructure') },
+        { value: 'public', label: t('construction_type_public') },
+        { value: 'mixed_use', label: t('construction_type_mixed_use') },
+    ], [t]);
+
+    const sectors = useMemo(() => [
+        { value: 'residential', label: t('sector_residential') },
+        { value: 'commercial', label: t('sector_commercial') },
+        { value: 'government', label: t('sector_government') },
+        { value: 'education', label: t('sector_education') },
+        { value: 'healthcare', label: t('sector_healthcare') },
+        { value: 'corporate', label: t('sector_corporate') },
+        { value: 'ngo', label: t('sector_ngo') },
+    ], [t]);
+
     // Fetch project data to pre-fill form
     const fetchProject = useCallback(async () => {
         try {
@@ -290,15 +309,12 @@ const Edit = ({ placeholder }) => {
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
                                                         <label className='form-label'>{t('construction_type')}</label>
-                                                        <select
-                                                            className="form-control"
-                                                            {...register('construction_type')}
-                                                        >
+
+                                                        <select className="form-control" {...register('construction_type')}>
                                                             <option value="">{t('select_construction')}</option>
-                                                            <option value="residential">{t('residential')}</option>
-                                                            <option value="commercial">{t('commercial')}</option>
-                                                            <option value="industrial">{t('industrial')}</option>
-                                                            <option value="infrastructure">{t('infrastructure')}</option>
+                                                            {constructionTypes.map(option => (
+                                                                <option key={option.value} value={option.value}>{option.label}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -308,16 +324,12 @@ const Edit = ({ placeholder }) => {
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
                                                         <label className='form-label'>{t('sector')}</label>
-                                                        <select
-                                                            className="form-control"
-                                                            {...register('sector')}
-                                                        >
+
+                                                        <select className="form-control" {...register('sector')}>
                                                             <option value="">{t('select_sector')}</option>
-                                                            <option value="health">{t('health')}</option>
-                                                            <option value="education">{t('education')}</option>
-                                                            <option value="corporate">{t('corporate')}</option>
-                                                            <option value="individual">{t('individual')}</option>
-                                                            <option value="community">{t('community')}</option>
+                                                            {sectors.map(option => (
+                                                                <option key={option.value} value={option.value}>{option.label}</option>
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
